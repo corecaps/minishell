@@ -16,4 +16,5 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+# define PS1 "\033[0;32mMinishell\t\033[0m$"
 #endif

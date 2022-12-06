@@ -23,7 +23,7 @@ int main(int argc,char **argv, char **env)
 	running = 1;
 	while (running)
 	{
-		line = readline("Minishell\t% ");
+		line = readline(PS1);
 		if (ft_strlen(line))
 			add_history(line);
 		printf("Line read : \n\t >> %s\n",line);
