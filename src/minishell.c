@@ -3,30 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/05 11:13:50 by jgarcia          ###   ########.fr       */
+/*   Updated: 2022/12/06 13:29:03 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(int argc,char **argv, char **env)
+int	main(int argc, char **argv, char **env)
 {
+	char	*line;
+	int		running;
+
 	(void) argc;
 	(void) argv;
 	(void) env;
-	char *line;
-	int running;
-
 	running = 1;
 	while (running)
 	{
 		line = readline(PS1);
 		if (ft_strlen(line))
 			add_history(line);
-		printf("Line read : \n\t >> %s\n",line);
+		printf("Line read : \n\t >> %s\n", line);
 		free(line);
 	}
 	return (0);
