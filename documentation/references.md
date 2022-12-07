@@ -6,3 +6,4 @@
 	- state machine in c : https://stackoverflow.com/questions/1371460/state-machines-tutorials#:~:text=State%20machines%20are%20very%20simple,and%20then%20just%20execute%20it.
 	- another state machine in c: https://aticleworld.com/state-machine-using-c/
 - recursive descent parser with implementation in C : https://en.wikipedia.org/wiki/Recursive_descent_parser
+- GNU Readline library : https://web.mit.edu/gnu/doc/html/rlman_2.html
