@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:13:13 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/07 12:36:19 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:46:43 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,11 @@ typedef struct s_ast
 	struct s_ast	*left;
 	struct s_ast	*right;
 }	t_ast;
+
+typedef struct s_data
+{
+	char	*line;
+	t_token	*token;
+}	t_data;
 
 #endif
