@@ -6,14 +6,14 @@
 /*   By: latahbah <latahbah@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:13:13 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/07 12:46:43 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/08 09:21:28 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DATA_STRUCTURES_H
 # define DATA_STRUCTURES_H
 
-typedef enum e_token {
+typedef enum e_tokentype {
 	word,
 	pipe,
 	heredoc,
@@ -22,11 +22,11 @@ typedef enum e_token {
 	out,
 	sinqle_qoute,
 	double_quote
-}	t_token;
+}	t_tokentype;
 
 typedef struct s_token
 {
-	t_token			token_type; // never used enums, maybe here is should be *token_type??
+	t_tokentype		token_type; // never used enums, maybe here is should be *token_type??
 	char			*value;
 	struct s_token	*next_token;
 }	t_token;
