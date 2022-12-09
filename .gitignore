@@ -1,4 +1,5 @@
 minishell
+unit_tests/data_structures_test
 # Prerequisites
 *.d
 

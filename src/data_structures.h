@@ -14,19 +14,19 @@
 # define DATA_STRUCTURES_H
 
 typedef enum e_token {
-	word,
-	pipe,
-	heredoc,
-	append,
-	in,
-	out,
-	sinqle_qoute,
-	double_quote
-}	t_token;
+	E_WORD,
+	E_PIPE,
+	E_HEREDOC,
+	E_APPEND,
+	E_INFILE,
+	E_OUTFILE,
+	E_SINGLE_QUOTED,
+	E_DOULE_QUOTED
+}	t_token_type;
 
 typedef struct s_token
 {
-	t_token			token_type; // never used enums, maybe here is should be *token_type??
+	t_token_type 	token_type;
 	char			*value;
 	struct s_token	*next_token;
 }	t_token;
@@ -34,6 +34,7 @@ typedef struct s_token
 typedef struct s_ast
 {
 	t_token			*token_node;
+	struct s_ast	*parent;
 	struct s_ast	*left;
 	struct s_ast	*right;
 }	t_ast;
