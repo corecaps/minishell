@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_structures.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: latahbah <latahbah@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:13:13 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/08 09:21:28 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/08 17:53:17 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ typedef struct s_ast
 typedef struct s_data
 {
 	char	*line;
-	t_token	*token;
+	char	*start_line;
+	t_token	*start_token;
+	t_token	*cur_token;
 }	t_data;
 
 #endif

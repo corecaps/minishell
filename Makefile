@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+         #
+#    By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/04 12:18:46 by jgarcia           #+#    #+#              #
-#    Updated: 2022/12/05 11:37:17 by jgarcia          ###   ########.fr        #
+#    Updated: 2022/12/08 17:49:00 by latahbah         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,9 @@ RM = rm -f
 SRCDIR = src
 OBJDIR = obj
 BIN = bin
-SRC = minishell.c
+SRC = minishell.c		lexer.c
 OBJ = $(SRC:.c=.o)
-HEADER = minishell.h
+HEADER = *.h
 SOURCE = $(addprefix $(SRCDIR)/,$(SRC))
 OBJECT = $(addprefix $(OBJDIR)/,$(OBJ))
 HEADERS = $(addprefix $(SRCDIR)/,$(HEADER))
