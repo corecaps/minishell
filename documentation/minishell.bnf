@@ -1,0 +1,25 @@
+%%
+
+COMMAND_LINE     
+                 : COMPLETE_COMMAND PIPED_CMD
+                 ;
+PIPED_CMD        
+                 : PIPE COMPLETE_COMMAND PIPED_CMD
+                 |
+                 ;
+COMPLETE_COMMAND 
+                 : REDIRECTION CMD REDIRECTION CMD_ARG REDIRECTION
+                 ;
+REDIRECTION      
+                 : REDIRECTION_TOKEN
+                 | 
+                 ;
+CMD              
+                 : WORD
+                 ;
+CMD_ARG          
+                 : WORD REDIRECTION CMD_ARG
+                 | SINGLE_QUOTED REDIRECTION CMD_ARG
+                 | DOUBLE_QUOTED REDIRECTION CMD_ARG
+                 | REDIRECTION
+                 ;
