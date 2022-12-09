@@ -16,6 +16,8 @@ START_TEST(test_del_ast)
 	while (i++ < 100)
 	{
 		node = add_left(node,test_token);
+		if (node->parent)
+			add_right(node->parent,test_token);
 	}
 	del_ast(get_top(node));
 	del_token_list(test_token);

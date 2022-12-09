@@ -44,13 +44,15 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
+	@echo '====>BUILDING LIBFT<===='
 	@make -C libft
 
 test: $(UNITTESTS)
-	@echo '====>UNIT TESTS<===='
+	@echo '====>RUNNING UNIT TESTS<===='
 	./unit_tests/data_structures_test
 
 $(UNITTESTS):
+	@echo '====>BUILDING UNIT TESTS<===='
 	@make -C unit_tests
 
 clean:
