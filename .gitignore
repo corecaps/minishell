@@ -1,4 +1,5 @@
 minishell
+unit_tests/data_structures_test
 # Prerequisites
 *.d
 
@@ -55,3 +56,4 @@ dkms.conf
 # VS Code
 .vscode
 *.json
+dkms.conf
