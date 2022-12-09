@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:13:13 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/08 17:53:17 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/09 11:53:24 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef enum e_tokentype {
 	in,
 	out,
 	sinqle_qoute,
-	double_quote
+	double_quote,
 }	t_tokentype;
 
 typedef struct s_token
@@ -40,8 +40,9 @@ typedef struct s_ast
 
 typedef struct s_data
 {
+	int		index;
+	int		end;
 	char	*line;
-	char	*start_line;
 	t_token	*start_token;
 	t_token	*cur_token;
 }	t_data;

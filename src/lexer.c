@@ -6,60 +6,12 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 09:34:48 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/08 17:55:47 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/09 14:53:07 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 #include "data_structures.h"
-
-static char	*quotated_word(t_data *data)
-{
-	char	*start_char;
-	int		value_len;
-
-	value_len = 1;
-	start_char = data->line;
-	data->line++;
-	while (*data->line != *start_char && *data->line)
-	{
-		value_len++;
-		data->line++;
-	}
-	if (!*data->line)
-		exit(EXIT_FAILURE);
-	value_len++;
-	data->line++;
-	return (ft_substr(start_char, 0, value_len));
-}	
-
-static char	*common_word(t_data *data)
-{
-	char	*start_value;
-	int		value_len;
-
-	value_len = 0;
-	start_value = data->line;
-	while (*data->line != ' ' && *data->line)
-	{
-		value_len++;
-		data->line++;
-	}
-	if (*data->line)
-		data->line++;
-	return (ft_substr(start_value, 0, value_len));
-}
-
-static char	*get_token_value(t_data *data)
-{
-	char	*result;
-
-	if (*data->line == '\'' || *data->line == '\"')
-		result = quotated_word(data);
-	else
-		result = common_word(data);
-	return (result);
-}
 
 static void	token_init(t_data *data)
 {
@@ -68,7 +20,8 @@ static void	token_init(t_data *data)
 	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
 		exit(EXIT_FAILURE);
-	token->value = get_token_value(data);
+	token->value = ft_substr(data->line, data->index, data->end - data->index);
+	printf("Token->value: %s\n", token->value);
 	if (!token->value)
 		exit(EXIT_FAILURE);
 	if (!data->start_token)
@@ -78,10 +31,53 @@ static void	token_init(t_data *data)
 	data->cur_token = token;
 }
 
-void	get_tokens(t_data *data)
+static void	quotated_token(t_data *data)
 {
-	while (*data->line)
+	char	separator;
+
+	separator = data->line[data->index];
+	data->end++;
+	while (data->line[data->end] != separator && data->line[data->end] != 0)
 	{
+		data->end++;
+	}
+	if (data->line[data->end] == 0)
+		exit(EXIT_FAILURE);
+	else if (data->end == data->index + 1)
+		return ;
+	else
+	{
+		data->end++;
 		token_init(data);
+		data->end--;
+	}
+}
+
+static void	common_token(t_data *data)
+{
+	data->end++;
+	while (data->line[data->end] > 32 && data->line[data->end] < 127)
+		data->end++;
+	if (data->end == data->index + 1)
+		return ;
+	else
+		token_init(data);
+}
+
+void	lexer(t_data *data)
+{
+	data->end = 0;
+	while (data->end < (int)ft_strlen(data->line))
+	{
+		while (data->line[data->end] == ' ' || data->line[data->end] == '\t'
+			|| data->line[data->end] == '\n' || data->line[data->end] == '\v'
+			|| data->line[data->end] == '\f' || data->line[data->end] == '\r')
+			data->end++;
+		data->index = data->end;
+		if (data->line[data->end] == '\'' || data->line[data->end] == '\"')
+			quotated_token(data);
+		else
+			common_token(data);
+		data->end++;
 	}
 }
