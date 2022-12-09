@@ -1,4 +1,3 @@
-
 # Unit tests for minishell
 
 CC		= gcc
@@ -26,14 +25,14 @@ NAMES		= data_structures_test
 all: $(NAMES)
 
 data_structures_test: $(OBJ) $(MS_OBJ) $(LIBFT) $(LCHECK)
-	$(CC) $(OBJ) $(MS_OBJ) $(LINK) -o data_structures_test
+	$(CC) $(OBJDIR)/data_structures.o $(MS_OBJ) $(LINK) -o data_structures_test
 
 $(MS_OBJDIR)/%.o:$(MS_SRCDIR)/%.c
-	mkdir -p ../obj
+	@mkdir -p ../obj
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/%.o: %.c
-	mkdir -p obj
+	@mkdir -p obj
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):

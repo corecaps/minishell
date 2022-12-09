@@ -20,32 +20,40 @@ RM = rm -f
 SRCDIR = src
 OBJDIR = obj
 BIN = bin
-SRC = minishell.c
+SRC = minishell.c token_list.c
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h
 SOURCE = $(addprefix $(SRCDIR)/,$(SRC))
 OBJECT = $(addprefix $(OBJDIR)/,$(OBJ))
 HEADERS = $(addprefix $(SRCDIR)/,$(HEADER))
+UNITTESTS = unit_tests/data_structures_test
 
-all: $(BIN)/$(NAME)
+all: test $(BIN)/$(NAME)
 
 $(BIN)/$(NAME): $(OBJECT) $(LIBFT)
-	mkdir -p $(BIN)
+	@mkdir -p $(BIN)
 	$(CC) $(OBJECT) $(LINK) -o $(BIN)/$(NAME)
 
 debug:	CFLAGS += -g3 -fanalyzer
 debug: all
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	mkdir -p $(OBJDIR)
+	@mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
 	make -C libft
 
+test: $(UNITTESTS)
+	./unit_tests/data_structures_test
+
+$(UNITTESTS):
+	make -C unit_tests
+
 clean:
 	$(RM) $(OBJECT)
 	make clean -C libft
+	make fclean -C unit_tests
 
 fclean: clean
 	$(RM) $(BIN)/$(NAME)
