@@ -13,7 +13,7 @@
 #ifndef DATA_STRUCTURES_H
 # define DATA_STRUCTURES_H
 
-typedef enum e_token {
+typedef enum e_token_type {
 	E_WORD,
 	E_PIPE,
 	E_HEREDOC,
