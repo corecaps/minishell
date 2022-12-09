@@ -25,18 +25,18 @@ NAMES		= data_structures_test
 all: $(NAMES)
 
 data_structures_test: $(OBJ) $(MS_OBJ) $(LIBFT) $(LCHECK)
-	$(CC) $(OBJDIR)/data_structures.o $(MS_OBJ) $(LINK) -o data_structures_test
+	@$(CC) $(OBJDIR)/data_structures.o $(MS_OBJ) $(LINK) -o data_structures_test
 
 $(MS_OBJDIR)/%.o:$(MS_SRCDIR)/%.c
 	@mkdir -p ../obj
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/%.o: %.c
 	@mkdir -p obj
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
-	make -C ../libft
+	@make -C ../libft
 
 $(LCHECK):
 	./libcheckmk.sh

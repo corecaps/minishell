@@ -20,17 +20,18 @@ RM = rm -f
 SRCDIR = src
 OBJDIR = obj
 BIN = bin
-SRC = minishell.c token_list.c
+SRC = minishell.c token_list.c ast.c
 OBJ = $(SRC:.c=.o)
-HEADER = minishell.h
+HEADER = minishell.h data_structures.h
 SOURCE = $(addprefix $(SRCDIR)/,$(SRC))
 OBJECT = $(addprefix $(OBJDIR)/,$(OBJ))
 HEADERS = $(addprefix $(SRCDIR)/,$(HEADER))
 UNITTESTS = unit_tests/data_structures_test
 
-all: test $(BIN)/$(NAME)
+all: norme test $(BIN)/$(NAME)
 
 $(BIN)/$(NAME): $(OBJECT) $(LIBFT)
+	@echo '====>LINK<===='
 	@mkdir -p $(BIN)
 	$(CC) $(OBJECT) $(LINK) -o $(BIN)/$(NAME)
 
@@ -38,17 +39,19 @@ debug:	CFLAGS += -g3 -fanalyzer
 debug: all
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@echo '====>COMPILATION<===='
 	@mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
-	make -C libft
+	@make -C libft
 
 test: $(UNITTESTS)
+	@echo '====>UNIT TESTS<===='
 	./unit_tests/data_structures_test
 
 $(UNITTESTS):
-	make -C unit_tests
+	@make -C unit_tests
 
 clean:
 	$(RM) $(OBJECT)
@@ -62,7 +65,8 @@ fclean: clean
 re: fclean $(BIN)/$(NAME)
 
 norme:
+	@echo '====>NORME<===='
 	norminette $(SOURCE)
-	norminette $(HEADER)
+	norminette $(HEADERS)
 
-.PHONY: all re clean fclean norme debug
+.PHONY: all re clean fclean norme debug test
