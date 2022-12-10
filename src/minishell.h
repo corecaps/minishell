@@ -20,11 +20,16 @@
 # include "data_structures.h"
 # define PS1 "\033[0;32mMinishell\t\033[0m$"
 
-t_token	*add_token(t_token *head, t_token_type type, char *value);
-int		count_token(t_token *head);
-void	del_token_list(t_token *head);
-t_ast	*add_left(t_ast *parent, t_token *token);
-t_ast	*add_right(t_ast *parent, t_token *token);
-t_ast	*get_top(t_ast *node);
-void	del_ast(t_ast *top);
+t_token			*add_token(t_token *head, t_token_type type, char *value);
+int				count_token(t_token *head);
+void			del_token_list(t_token *head);
+t_ast			*add_left(t_ast *parent, t_token *token);
+t_ast			*add_right(t_ast *parent, t_token *token);
+t_ast			*get_top(t_ast *node);
+void			del_ast(t_ast *top);
+int				count_stack(t_stack *head);
+t_token_type	peek(t_stack *head);
+t_token_type	pop(t_stack **head);
+t_stack			*push(t_token_type type, t_stack *head);
+void			del_stack(t_stack *head);
 #endif

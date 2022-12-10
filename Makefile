@@ -20,7 +20,7 @@ RM = rm -f
 SRCDIR = src
 OBJDIR = obj
 BIN = bin
-SRC = minishell.c token_list.c ast.c
+SRC = minishell.c token_list.c ast.c stack.c
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h data_structures.h
 SOURCE = $(addprefix $(SRCDIR)/,$(SRC))
