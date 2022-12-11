@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 12:50:43 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/09 12:51:36 by jgarcia          ###   ########.fr       */
+/*   Updated: 2022/12/09 15:29:31 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	del_token_list(t_token *head)
 	while (head)
 	{
 		head = head->next_token;
+		if (prev->value)
+			free(prev->value);
 		if (prev)
 			free(prev);
 		prev = head;

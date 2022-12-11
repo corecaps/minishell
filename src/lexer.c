@@ -6,12 +6,33 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 09:34:48 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/09 14:53:07 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/11 13:52:49 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 #include "data_structures.h"
+
+static void	get_token_type(t_token *token)
+{
+	//printf("First char = %c\n", token->value[0]);
+	if (token->value[0] == '|')
+		token->token_type = E_PIPE;
+	else if (token->value[0] == '<' && (int)ft_strlen(token->value) == 2)
+		token->token_type = E_HEREDOC;
+	else if (token->value[0] == '<')
+		token->token_type = E_INFILE;
+	else if (token->value[0] == '>' && (int)ft_strlen(token->value) == 2)
+		token->token_type = E_APPEND;
+	else if (token->value[0] == '>')
+		token->token_type = E_OUTFILE;
+	else if (token->value[0] == '\'')
+		token->token_type = E_SINGLE_QUOTED;
+	else if (token->value[0] == '\"')
+		token->token_type = E_DOULE_QUOTED;
+	else
+		token->token_type = E_WORD;
+}
 
 static void	token_init(t_data *data)
 {
@@ -20,10 +41,13 @@ static void	token_init(t_data *data)
 	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
 		exit(EXIT_FAILURE);
+	//typisation_and_expansion.c
+	//printf("After\nIndex = %d\nEnd = %d\n", data->index, data->end);
 	token->value = ft_substr(data->line, data->index, data->end - data->index);
-	printf("Token->value: %s\n", token->value);
 	if (!token->value)
 		exit(EXIT_FAILURE);
+	get_token_type(token);
+	//
 	if (!data->start_token)
 		data->start_token = token;
 	else
@@ -51,17 +75,51 @@ static void	quotated_token(t_data *data)
 		token_init(data);
 		data->end--;
 	}
+	data->end++;
 }
 
 static void	common_token(t_data *data)
 {
-	data->end++;
+	// printf("\nBefore\nIndex = %d\nEnd = %d\n", data->index, data->end);
+	// printf("Cur char = %c\n", data->line[data->end]);
 	while (data->line[data->end] > 32 && data->line[data->end] < 127)
 		data->end++;
-	if (data->end == data->index + 1)
-		return ;
-	else
+	token_init(data);
+}
+
+static void	pipe_token(t_data *data)
+{
+	char	*tmp;
+
+	token_init(data);
+	tmp = data->cur_token->value;
+	data->cur_token->value = "|";
+	free(tmp);
+	data->end++;
+}
+
+static void	redirect_token(t_data *data)
+{
+	if (data->line[data->end] == '>' && data->line[data->end + 1] == '>')
+	{
+		data->end += 2;
 		token_init(data);
+	}
+	else if (data->line[data->end] == '<' && data->line[data->end + 1] == '<')
+	{
+		data->end += 2;
+		token_init(data);
+	}
+	else if (data->line[data->end] == '>')
+	{
+		data->end += 1;
+		token_init(data);
+	}
+	else
+	{
+		data->end += 1;
+		token_init(data);
+	}
 }
 
 void	lexer(t_data *data)
@@ -76,8 +134,13 @@ void	lexer(t_data *data)
 		data->index = data->end;
 		if (data->line[data->end] == '\'' || data->line[data->end] == '\"')
 			quotated_token(data);
+		else if (data->line[data->end] == '>' || data->line[data->end] == '<')
+			redirect_token(data);
+		else if (data->line[data->end] == '|')
+			pipe_token(data);
 		else
 			common_token(data);
-		data->end++;
+		printf("Token->value: %s\n", data->cur_token->value);
+		printf("Token->token_type: %u\n\n", data->cur_token->token_type);
 	}
 }

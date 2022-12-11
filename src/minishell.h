@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:55 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/08 17:21:47 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/10 12:58:47 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,5 @@ t_ast	*add_left(t_ast *parent, t_token *token);
 t_ast	*add_right(t_ast *parent, t_token *token);
 t_ast	*get_top(t_ast *node);
 void	del_ast(t_ast *top);
+void	free_all(t_data *data);
 #endif
