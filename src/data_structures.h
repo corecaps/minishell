@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:13:13 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/12 14:33:03 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/12 16:39:42 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_data
 {
 	int		index;
 	int		end;
+	int		open_quote;
 	char	*line;
 	t_token	*start_token;
 }	t_data;
