@@ -2,7 +2,7 @@
 #include "../libft/libft.h"
 #include "../src/minishell.h"
 
-int main(void)
+int	main(void)
 {
 	return (0);
 }

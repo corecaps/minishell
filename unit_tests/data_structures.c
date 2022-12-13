@@ -36,50 +36,53 @@ START_TEST(test_stack)
 START_TEST(test_del_ast)
 {
 	t_ast	*node;
-	t_token	*test_token;
+	t_data	*data;
 	char	*value;
-	int i;
+	int		i;
 
 	i = 0;
+	data = (t_data *)malloc(sizeof(t_data));
 	node = NULL;
-	test_token = NULL;
+	data->start_token = NULL;
 	value = "test";
-	test_token = add_token(NULL,E_WORD,value);
+	add_token(data, E_WORD, value);
 	while (i++ < 100)
 	{
-		node = add_left(node,test_token);
+		node = add_left(node, data->start_token);
 		if (node->parent)
-			add_right(node->parent,test_token);
+			add_right(node->parent, data->start_token);
 	}
 	del_ast(get_top(node));
-	del_token_list(test_token);
+	free_all(data);
 	free(node);
-	ck_assert_int_eq(1,1);
+	ck_assert_int_eq(1, 1);
 }END_TEST
 
 START_TEST(test_add_left)
 {
 	t_ast	*top;
 	t_ast	*second_node;
-	t_token	*test_token;
-	t_token	*test_token2;
+	t_data	*data;
+	t_data	*data2;
 	char	*value;
 	char	*value2;
 
 	top = NULL;
-	test_token = NULL;
+	data = (t_data *)malloc(sizeof(t_data));
+	data2 = (t_data *)malloc(sizeof(t_data));
+	data->start_token = NULL;
 	value = "top";
 	value2 = "left child";
-	test_token = add_token(NULL,E_WORD,value);
-	test_token2 = add_token(NULL,E_WORD,value2);
-	top = add_left(NULL,test_token);
-	ck_assert_str_eq(test_token->value,top->token_node->value);
-	second_node = add_left(top,test_token2);
-	ck_assert_str_eq(second_node->token_node->value,value2);
-	ck_assert_ptr_eq(second_node->parent,top);
-	ck_assert_ptr_eq(top->left,second_node);
-	free (test_token);
-	free(test_token2);
+	add_token(data, E_WORD, value);
+	add_token(data2, E_WORD, value2);
+	top = add_left(NULL, data->start_token);
+	ck_assert_str_eq(data->start_token->value, top->token_node->value);
+	second_node = add_left(top, data2->start_token);
+	ck_assert_str_eq(second_node->token_node->value, value2);
+	ck_assert_ptr_eq(second_node->parent, top);
+	ck_assert_ptr_eq(top->left, second_node);
+	free_all(data);
+	free_all(data2);
 	free(second_node);
 	free(top);
 }END_TEST
@@ -88,25 +91,27 @@ START_TEST(test_add_right)
 {
 	t_ast	*top;
 	t_ast	*second_node;
-	t_token	*test_token;
-	t_token	*test_token2;
+	t_data	*data;
+	t_data	*data2;
 	char	*value;
 	char	*value2;
 
 	top = NULL;
-	test_token = NULL;
+	data = (t_data *)malloc(sizeof(t_data));
+	data2 = (t_data *)malloc(sizeof(t_data));
+	data->start_token = NULL;
 	value = "top";
 	value2 = "right child";
-	test_token = add_token(NULL,E_WORD,value);
-	test_token2 = add_token(NULL,E_WORD,value2);
-	top = add_left(NULL,test_token);
-	ck_assert_str_eq(test_token->value,top->token_node->value);
-	second_node = add_right(top,test_token2);
-	ck_assert_str_eq(second_node->token_node->value,value2);
-	ck_assert_ptr_eq(second_node->parent,top);
-	ck_assert_ptr_eq(top->right,second_node);
-	free (test_token);
-	free(test_token2);
+	add_token(data, E_WORD, value);
+	add_token(data2, E_WORD, value2);
+	top = add_left(NULL, data->start_token);
+	ck_assert_str_eq(data->start_token->value, top->token_node->value);
+	second_node = add_right(top, data2->start_token);
+	ck_assert_str_eq(second_node->token_node->value, value2);
+	ck_assert_ptr_eq(second_node->parent, top);
+	ck_assert_ptr_eq(top->right, second_node);
+	free_all(data);
+	free_all(data2);
 	free(second_node);
 	free(top);
 }END_TEST
@@ -121,11 +126,11 @@ START_TEST(test_add_token)
 	data->start_token = NULL;
 	value1 = "test";
 	value2 = "test2";
-	add_token(data->start_token, E_WORD, value1);
+	add_token(data, E_WORD, value1);
 	ck_assert_ptr_nonnull(data->start_token);
 	ck_assert_str_eq(data->start_token->value, value1);
 	ck_assert_int_eq(data->start_token->token_type, E_WORD);
-	add_token(data->start_token, E_WORD, value2);
+	add_token(data, E_WORD, value2);
 	ck_assert_ptr_nonnull(data->start_token);
 	ck_assert_ptr_nonnull(data->start_token->next_token);
 	ck_assert_str_eq(data->start_token->value, value1);
@@ -135,11 +140,7 @@ START_TEST(test_add_token)
 	free(data->start_token->next_token);
 	free(data->start_token);
 	data->start_token = NULL;
-	dd_token(data->start_token, E_WORD, NULL);
-	ck_assert_ptr_null(data->start_token);
-	add_token(data->start_token, 255, value1);
-	ck_assert_ptr_null(data->start_token);
-	add_token(data->start_token, -10, value1);
+	add_token(data, E_WORD, NULL);
 	ck_assert_ptr_null(data->start_token);
 } END_TEST
 
@@ -173,17 +174,19 @@ Suite *data_structures_test(void)
 	tcase_add_test(tc_core, test_count_token);
 	tcase_add_test(tc_core, test_add_left);
 	tcase_add_test(tc_core, test_add_right);
-	tcase_add_test_raise_signal(tc_core, test_del_ast,6);
+	tcase_add_test_raise_signal(tc_core, test_del_ast, 6);
 	tcase_add_test(tc_core, test_stack);
 	suite_add_tcase(s, tc_core);
-	return s;
+	return (s);
 }
 
 int main(void)
 {
-	int n_failed = 0;
-	Suite *s;
-	SRunner *sr;
+	int		n_failed;
+	Suite	*s;
+	SRunner	*sr;
+
+	n_failed = 0;
 	s = data_structures_test();
 	sr = srunner_create(s);
 	srunner_run_all(sr, CK_VERBOSE);
