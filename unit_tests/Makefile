@@ -3,7 +3,7 @@
 CC		= gcc
 RM		= rm -f
 
-CFLAGS	= -Wall -Wextra -g -fanalyzer
+CFLAGS	= -Wall -Wextra -g -Xanalyzer
 
 # Libraries
 LIBFT	= ../libft/libft.a
