@@ -6,7 +6,7 @@
 #    By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/04 12:18:46 by jgarcia           #+#    #+#              #
-#    Updated: 2022/12/10 13:38:54 by latahbah         ###   ########.fr        #
+#    Updated: 2022/12/13 09:14:54 by latahbah         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,13 +44,15 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
+	@echo '====>BUILDING LIBFT<===='
 	@make -C libft
 
 test: $(UNITTESTS)
-	@echo '====>UNIT TESTS<===='
+	@echo '====>RUNNING UNIT TESTS<===='
 	./unit_tests/data_structures_test
 
 $(UNITTESTS):
+	@echo '====>BUILDING UNIT TESTS<===='
 	@make -C unit_tests
 
 clean:

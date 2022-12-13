@@ -1,6 +1,38 @@
 #include "check.h"
 #include "../src/minishell.h"
 
+START_TEST(test_stack)
+{
+	t_stack *head;
+	int i;
+
+	head = push(E_COMMAND_LINE,NULL);
+	ck_assert_ptr_nonnull(head);
+	ck_assert_int_eq(head->type,E_COMMAND_LINE);
+	head = push(E_COMMAND,head);
+	ck_assert_ptr_nonnull(head);
+	ck_assert_ptr_nonnull(head->next);
+	ck_assert_ptr_null(head->next->next);
+	ck_assert_int_eq(head->type,E_COMMAND);
+	head = push(E_COMMAND_ARG,head);
+	ck_assert_ptr_nonnull(head);
+	ck_assert_ptr_nonnull(head->next);
+	ck_assert_ptr_nonnull(head->next->next);
+	ck_assert_ptr_null(head->next->next->next);
+	ck_assert_int_eq(E_COMMAND_ARG,head->type);
+	ck_assert_int_eq(E_COMMAND,head->next->type);
+	ck_assert_int_eq(E_COMMAND_LINE,head->next->next->type);
+	ck_assert_int_eq(pop(&head),E_COMMAND_ARG);
+	ck_assert_int_eq(pop(&head),E_COMMAND);
+	ck_assert_int_eq(pop(&head),E_COMMAND_LINE);
+	ck_assert_int_eq(pop(&head),E_END_OF_TOKEN);
+	i = 0;
+	while (i++ < 20)
+		head = push(i,head);
+	ck_assert_int_eq(peek(head),20);
+	del_stack(head);
+}END_TEST
+
 START_TEST(test_del_ast)
 {
 	t_ast	*node;
@@ -16,6 +48,8 @@ START_TEST(test_del_ast)
 	while (i++ < 100)
 	{
 		node = add_left(node,test_token);
+		if (node->parent)
+			add_right(node->parent,test_token);
 	}
 	del_ast(get_top(node));
 	del_token_list(test_token);
@@ -139,6 +173,7 @@ Suite *data_structures_test(void)
 	tcase_add_test(tc_core, test_add_left);
 	tcase_add_test(tc_core, test_add_right);
 	tcase_add_test_raise_signal(tc_core, test_del_ast,6);
+	tcase_add_test(tc_core, test_stack);
 	suite_add_tcase(s, tc_core);
 	return s;
 }

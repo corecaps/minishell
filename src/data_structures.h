@@ -21,7 +21,15 @@ typedef enum e_token_type {
 	E_INFILE,
 	E_OUTFILE,
 	E_SINGLE_QUOTED,
-	E_DOULE_QUOTED
+	E_DOULE_QUOTED,
+	E_NON_TERMINALS,
+	E_COMMAND_LINE,
+	E_COMPLETE_COMMAND,
+	E_PIPED_COMMAND,
+	E_REDIRECTION,
+	E_COMMAND,
+	E_COMMAND_ARG,
+	E_END_OF_TOKEN
 }	t_token_type;
 
 typedef struct s_token
@@ -38,6 +46,12 @@ typedef struct s_ast
 	struct s_ast	*left;
 	struct s_ast	*right;
 }	t_ast;
+
+typedef struct s_stack
+{
+	t_token_type	type;
+	struct s_stack	*next;
+}	t_stack;
 
 typedef struct s_data
 {
