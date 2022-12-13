@@ -13,20 +13,28 @@
 #ifndef DATA_STRUCTURES_H
 # define DATA_STRUCTURES_H
 
-typedef enum e_token {
-	word,
-	pipe,
-	heredoc,
-	append,
-	in,
-	out,
-	sinqle_qoute,
-	double_quote
-}	t_token;
+typedef enum e_token_type {
+	E_WORD,
+	E_PIPE,
+	E_HEREDOC,
+	E_APPEND,
+	E_INFILE,
+	E_OUTFILE,
+	E_SINGLE_QUOTED,
+	E_DOULE_QUOTED,
+	E_NON_TERMINALS,
+	E_COMMAND_LINE,
+	E_COMPLETE_COMMAND,
+	E_PIPED_COMMAND,
+	E_REDIRECTION,
+	E_COMMAND,
+	E_COMMAND_ARG,
+	E_END_OF_TOKEN
+}	t_token_type;
 
 typedef struct s_token
 {
-	t_token			token_type; // never used enums, maybe here is should be *token_type??
+	t_token_type	token_type;
 	char			*value;
 	struct s_token	*next_token;
 }	t_token;
@@ -34,9 +42,16 @@ typedef struct s_token
 typedef struct s_ast
 {
 	t_token			*token_node;
+	struct s_ast	*parent;
 	struct s_ast	*left;
 	struct s_ast	*right;
 }	t_ast;
+
+typedef struct s_stack
+{
+	t_token_type	type;
+	struct s_stack	*next;
+}	t_stack;
 
 typedef struct s_data
 {

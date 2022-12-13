@@ -53,19 +53,14 @@ CFLAGS = -c -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME): $(OBJECTS)
-		@echo "Linking \t\t $(NAME)"
 		@ar -rcs $@ $?
-		@echo "Indexing \t\t $(NAME)"
 		@ranlib $(NAME)
 
 bonus: $(OBJECTS) $(BONUS_OBJECTS)
-		@echo "Linking \t\t $(NAME) with bonuses $(BOBJECT)"
 		@ar -rcs $(NAME) $?
-		@echo "Indexing \t\t $(NAME) with bonuses"
 		@ranlib $(NAME)
 
 %.o: %.c
-		@echo "Compiling \t\t$@ with $(CC) $(CFLAGS)"
 		@$(CC) $(CFLAGS) -o $@ $<
 
 clean:
