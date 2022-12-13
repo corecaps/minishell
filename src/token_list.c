@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 12:50:43 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/12 17:13:40 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/13 09:43:48 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	add_token(t_data *data, t_token_type type, char *value)
 {
 	t_token	*new_node;
 
-	//printf("SEGA BELOW\n");
 	new_node = (t_token *)malloc(sizeof(t_token));
 	if (new_node == NULL)
 		exit(EXIT_FAILURE);
@@ -67,6 +66,8 @@ int	count_token(t_token *head)
 	int	i;
 
 	i = 0;
+	if (head == NULL)
+		return (0);
 	while (head)
 	{
 		head = head->next_token;

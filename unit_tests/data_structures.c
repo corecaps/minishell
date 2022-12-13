@@ -113,52 +113,53 @@ START_TEST(test_add_right)
 
 START_TEST(test_add_token)
 {
-	t_token *head;
-	char *value1;
-	char *value2;
+	t_data	*data;
+	char	*value1;
+	char	*value2;
 
-	head = NULL;
+	data = (t_data *)malloc(sizeof(t_data));
+	data->start_token = NULL;
 	value1 = "test";
 	value2 = "test2";
-	head = add_token(head,E_WORD,value1);
-	ck_assert_ptr_nonnull(head);
-	ck_assert_str_eq(head->value,value1);
-	ck_assert_int_eq(head->token_type,E_WORD);
-	head = add_token(head,E_WORD,value2);
-	ck_assert_ptr_nonnull(head);
-	ck_assert_ptr_nonnull(head->next_token);
-	ck_assert_str_eq(head->value,value1);
-	ck_assert_int_eq(head->token_type,E_WORD);
-	ck_assert_str_eq(head->next_token->value,value2);
-	ck_assert_int_eq(head->next_token->token_type,E_WORD);
-	free(head->next_token);
-	free(head);
-	head = NULL;
-	head = add_token(head,E_WORD,NULL);
-	ck_assert_ptr_null(head);
-	head = add_token(head,255,value1);
-	ck_assert_ptr_null(head);
-	head = add_token(head,-10,value1);
-	ck_assert_ptr_null(head);
+	add_token(data->start_token, E_WORD, value1);
+	ck_assert_ptr_nonnull(data->start_token);
+	ck_assert_str_eq(data->start_token->value, value1);
+	ck_assert_int_eq(data->start_token->token_type, E_WORD);
+	add_token(data->start_token, E_WORD, value2);
+	ck_assert_ptr_nonnull(data->start_token);
+	ck_assert_ptr_nonnull(data->start_token->next_token);
+	ck_assert_str_eq(data->start_token->value, value1);
+	ck_assert_int_eq(data->start_token->token_type, E_WORD);
+	ck_assert_str_eq(data->start_token->next_token->value, value2);
+	ck_assert_int_eq(data->start_token->next_token->token_type, E_WORD);
+	free(data->start_token->next_token);
+	free(data->start_token);
+	data->start_token = NULL;
+	dd_token(data->start_token, E_WORD, NULL);
+	ck_assert_ptr_null(data->start_token);
+	add_token(data->start_token, 255, value1);
+	ck_assert_ptr_null(data->start_token);
+	add_token(data->start_token, -10, value1);
+	ck_assert_ptr_null(data->start_token);
 } END_TEST
 
 START_TEST(test_count_token) {
-	t_token *head;
-	int result;
-	char *value1;
-	int i;
+	t_data	*data;
+	char	*value1;
+	int		result;
+	int		i;
 
+	i = 0;
 	value1 = "test";
-	head = NULL;
+	data = (t_data *)malloc(sizeof(t_data));
 	result = 0;
-	result = count_token(head);
-	ck_assert_int_eq(result,0);
-	i=0;
+	result = count_token(data->start_token);
+	ck_assert_int_eq(result, 0);
 	while (i++ < 100)
-		head = add_token(head,E_WORD,value1);
-	result = count_token(head);
-	ck_assert_int_eq(result,100);
-	del_token_list(head);
+		add_token(data, E_WORD, value1);
+	result = count_token(data->start_token);
+	ck_assert_int_eq(result, 100);
+	free_all(data);
 }END_TEST
 
 Suite *data_structures_test(void)
