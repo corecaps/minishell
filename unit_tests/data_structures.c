@@ -174,8 +174,8 @@ Suite *data_structures_test(void)
 	tcase_add_test(tc_core, test_count_token);
 	tcase_add_test(tc_core, test_add_left);
 	tcase_add_test(tc_core, test_add_right);
-	tcase_add_test_raise_signal(tc_core, test_del_ast, 6);
-	tcase_add_test(tc_core, test_stack);
+	tcase_add_test_raise_signal(tc_core, test_del_ast, 6); 	// - ok
+	tcase_add_test(tc_core, test_stack);					// - ok
 	suite_add_tcase(s, tc_core);
 	return (s);
 }
