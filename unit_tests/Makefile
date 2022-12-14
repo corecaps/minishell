@@ -13,7 +13,7 @@ LINK	= -L../libft -lft libcheck.a -lreadline -lm -lpthread #-lrt
 # Sources from Minishell
 MS_OBJDIR	= ../obj
 MS_SRCDIR	= ../src
-MS_SOURCE	= ../src/token_list.c ../src/ast.c ../src/lexer.c ../src/free_cmd.c ../src/stack.c
+MS_SOURCE	= ../src/token_list.c ../src/ast.c ../src/lexer.c ../src/data_utils.c ../src/stack.c
 MS_OBJ		= $(subst ../src/,../obj/,$(MS_SOURCE:.c=.o))
 
 # Sources for unit tests

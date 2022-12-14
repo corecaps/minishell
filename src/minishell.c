@@ -6,20 +6,12 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/14 09:05:31 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/14 09:57:56 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static	t_data	*data_init(void)
-{
-	t_data	*data;
-
-	data = (t_data *)malloc(sizeof(t_data));
-	data->open_quote = -1;
-	return (data);
-}
 
 int	main(int argc, char **argv, char **env)
 {
