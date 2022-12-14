@@ -9,5 +9,5 @@ URL: https://libcheck.github.io/check/
 Version: 0.15.2
 Requires.private: 
 Libs: -L${libdir} -lcheck
-Libs.private:   -lrt -lm 
-Cflags: -I${includedir} 
+Libs.private:   -lm 
+Cflags: -I${includedir} -D_THREAD_SAFE 

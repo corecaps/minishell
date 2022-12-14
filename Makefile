@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+         #
+#    By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/04 12:18:46 by jgarcia           #+#    #+#              #
-#    Updated: 2022/12/05 11:37:17 by jgarcia          ###   ########.fr        #
+#    Updated: 2022/12/13 12:36:09 by latahbah         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ RM = rm -f
 SRCDIR = src
 OBJDIR = obj
 BIN = bin
-SRC = minishell.c token_list.c ast.c stack.c
+SRC = minishell.c token_list.c ast.c lexer.c free_cmd.c stack.c
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h data_structures.h
 SOURCE = $(addprefix $(SRCDIR)/,$(SRC))
@@ -28,14 +28,14 @@ OBJECT = $(addprefix $(OBJDIR)/,$(OBJ))
 HEADERS = $(addprefix $(SRCDIR)/,$(HEADER))
 UNITTESTS = unit_tests/data_structures_test
 
-all: norme test $(BIN)/$(NAME)
+all: $(BIN)/$(NAME)
 
 $(BIN)/$(NAME): $(OBJECT) $(LIBFT)
 	@echo '====>LINK<===='
 	@mkdir -p $(BIN)
 	$(CC) $(OBJECT) $(LINK) -o $(BIN)/$(NAME)
 
-debug:	CFLAGS += -g3 -fanalyzer
+debug:	CFLAGS += -g3 
 debug: all
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c

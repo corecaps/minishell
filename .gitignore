@@ -52,3 +52,10 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# VS Code
+.vscode
+*.json
+dkms.conf
+
+.DS_Store

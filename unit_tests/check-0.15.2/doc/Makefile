@@ -86,8 +86,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_triplet = x86_64-unknown-linux-gnu
-host_triplet = x86_64-unknown-linux-gnu
+build_triplet = x86_64-apple-darwin20.5.0
+host_triplet = x86_64-apple-darwin20.5.0
 subdir = doc
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/acx_pthread.m4 \
@@ -198,16 +198,16 @@ am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 am__DIST_COMMON = $(check_TEXINFOS) $(srcdir)/Makefile.in mdate-sh \
 	texinfo.tex
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/missing aclocal-1.15
+ACLOCAL = ${SHELL} /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2/missing aclocal-1.15
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
 AR = ar
-AUTOCONF = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/missing autoconf
-AUTOHEADER = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/missing autoheader
-AUTOMAKE = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/missing automake-1.15
-AWK = gawk
+AUTOCONF = ${SHELL} /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2/missing autoconf
+AUTOHEADER = ${SHELL} /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2/missing autoheader
+AUTOMAKE = ${SHELL} /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2/missing automake-1.15
+AWK = awk
 AWK_GSUB_DBL_BSLASH = \\\\
-AWK_PATH = /usr/bin/gawk
+AWK_PATH = /usr/bin/awk
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2 -Wextra -Wstrict-prototypes -Wmissing-prototypes -Wwrite-strings -Wno-variadic-macros -Wimport -Wfatal-errors -Wformat=2 -Winit-self -Wmissing-include-dirs -Wswitch-default -Wunknown-pragmas
@@ -221,10 +221,10 @@ CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
 DLLTOOL = false
-DSYMUTIL = 
+DSYMUTIL = dsymutil
 DUMPBIN = 
-ECHO_C = 
-ECHO_N = -n
+ECHO_C = \c
+ECHO_N = 
 ECHO_T = 
 EGREP = /usr/bin/grep -E
 ENABLE_REGEX = 1
@@ -236,7 +236,7 @@ GCOV = gcov
 GCOV_CFLAGS = 
 GCOV_LIBS = 
 GENHTML = false
-GRAPHVIZ = dot
+GRAPHVIZ = false
 GREP = /usr/bin/grep
 HAVE_FORK = 1
 HAVE_INIT_ONCE_BEGIN_INITIALIZE = 0
@@ -249,27 +249,27 @@ INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LCOV = false
-LD = /usr/bin/ld -m elf_x86_64
+LD = /Library/Developer/CommandLineTools/usr/bin/ld
 LDFLAGS = 
-LIBOBJS = 
-LIBS = -lrt -lm 
+LIBOBJS =  ${LIBOBJDIR}timer_create$U.o ${LIBOBJDIR}timer_settime$U.o ${LIBOBJDIR}timer_delete$U.o
+LIBS = -lm 
 LIBSUBUNIT_CFLAGS = 
 LIBSUBUNIT_LIBS = 
 LIBSUBUNIT_PC = 
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
-LIPO = 
+LIPO = lipo
 LN_S = ln -s
-LTLIBOBJS = 
+LTLIBOBJS =  ${LIBOBJDIR}timer_create$U.lo ${LIBOBJDIR}timer_settime$U.lo ${LIBOBJDIR}timer_delete$U.lo
 LT_SYS_LIBRARY_PATH = 
-MAKEINFO = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/missing makeinfo
+MAKEINFO = ${SHELL} /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2/missing makeinfo
 MANIFEST_TOOL = :
-MKDIR_P = /usr/bin/mkdir -p
+MKDIR_P = .././install-sh -c -d
 NM = /usr/bin/nm -B
-NMEDIT = 
+NMEDIT = nmedit
 OBJDUMP = objdump
 OBJEXT = o
-OTOOL = 
-OTOOL64 = 
+OTOOL = otool
+OTOOL64 = :
 PACKAGE = check
 PACKAGE_BUGREPORT = check-devel at lists dot sourceforge dot net
 PACKAGE_NAME = Check
@@ -278,22 +278,22 @@ PACKAGE_TARNAME = check
 PACKAGE_URL = 
 PACKAGE_VERSION = 0.15.2
 PATH_SEPARATOR = :
-PKG_CONFIG = /usr/bin/pkg-config
+PKG_CONFIG = /usr/local/bin/pkg-config
 PKG_CONFIG_LIBDIR = 
 PKG_CONFIG_PATH = 
 PTHREAD_CC = gcc
-PTHREAD_CFLAGS = 
+PTHREAD_CFLAGS = -D_THREAD_SAFE 
 PTHREAD_LIBS = 
 RANLIB = ranlib
 SED = /usr/bin/sed
 SET_MAKE = 
-SHELL = /bin/bash
+SHELL = /bin/sh
 STRIP = strip
 VERSION = 0.15.2
-abs_builddir = /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc
-abs_srcdir = /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc
-abs_top_builddir = /home/corecaps/42/minishell/unit_tests/check-0.15.2
-abs_top_srcdir = /home/corecaps/42/minishell/unit_tests/check-0.15.2
+abs_builddir = /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2/doc
+abs_srcdir = /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2/doc
+abs_top_builddir = /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2
+abs_top_srcdir = /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_DUMPBIN = 
@@ -304,26 +304,26 @@ am__quote =
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
-build = x86_64-unknown-linux-gnu
+build = x86_64-apple-darwin20.5.0
 build_alias = 
 build_cpu = x86_64
-build_os = linux-gnu
-build_vendor = unknown
+build_os = darwin20.5.0
+build_vendor = apple
 builddir = .
 datadir = ${datarootdir}
 datarootdir = ${prefix}/share
 docdir = $(datadir)/doc/$(PACKAGE)
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-host = x86_64-unknown-linux-gnu
+host = x86_64-apple-darwin20.5.0
 host_alias = 
 host_cpu = x86_64
-host_os = linux-gnu
-host_vendor = unknown
+host_os = darwin20.5.0
+host_vendor = apple
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/install-sh
+install_sh = ${SHELL} /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -936,11 +936,11 @@ check_html: $(srcdir)/check.texi
 doxygen:
 	doxygen $(srcdir)/doxygen.conf
 
-doxygen-devel:
-	doxygen $(srcdir)/doxygen-devel.conf
 #doxygen-devel:
-#	( cat $(srcdir)/doxygen-devel.conf; echo "HAVE_DOT = NO" ) | doxygen -
-#	@ >&2 echo "graphviz not found, graphs will not be rendered."
+#	doxygen $(srcdir)/doxygen-devel.conf
+doxygen-devel:
+	( cat $(srcdir)/doxygen-devel.conf; echo "HAVE_DOT = NO" ) | doxygen -
+	@ >&2 echo "graphviz not found, graphs will not be rendered."
 
 $(srcdir)/check.texi: money.1-2.h.diff \
 	    money.1-3.c.diff \
@@ -956,47 +956,47 @@ $(srcdir)/check.texi: money.1-2.h.diff \
 # think that means there is an error
 money.1-2.h.diff: $(eg_src)/money.1.h $(eg_src)/money.2.h
 	cd $(eg_root); \
-	diff -U 100 src/money.1.h src/money.2.h ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 src/money.1.h src/money.2.h ${filter_timestapms} > /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 money.1-3.c.diff: $(eg_src)/money.1.c $(eg_src)/money.3.c
 	cd $(eg_root); \
-	diff -U 100 src/money.1.c src/money.3.c ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 src/money.1.c src/money.3.c ${filter_timestapms} > /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 money.3-4.c.diff: $(eg_src)/money.3.c $(eg_src)/money.4.c
 	cd $(eg_root); \
-	diff -U 100 src/money.3.c src/money.4.c ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 src/money.3.c src/money.4.c ${filter_timestapms} > /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 money.4-5.c.diff: $(eg_src)/money.4.c $(eg_src)/money.5.c
 	cd $(eg_root); \
-	diff -U 100 src/money.4.c src/money.5.c ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 src/money.4.c src/money.5.c ${filter_timestapms} > /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 money.5-6.c.diff: $(eg_src)/money.5.c $(eg_src)/money.6.c
 	cd $(eg_root); \
-	diff -U 100 src/money.5.c src/money.6.c ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 src/money.5.c src/money.6.c ${filter_timestapms} > /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 check_money.1-2.c.diff: $(eg_tests)/check_money.1.c $(eg_tests)/check_money.2.c
 	cd $(eg_root); \
-	diff -U 100 tests/check_money.1.c tests/check_money.2.c ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 tests/check_money.1.c tests/check_money.2.c ${filter_timestapms} > /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 check_money.2-3.c.diff: $(eg_tests)/check_money.2.c $(eg_tests)/check_money.3.c
 	cd $(eg_root); \
-	diff -U 100 tests/check_money.2.c tests/check_money.3.c ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 tests/check_money.2.c tests/check_money.3.c ${filter_timestapms} > /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 check_money.3-6.c.diff: $(eg_tests)/check_money.3.c $(eg_tests)/check_money.6.c
 	cd $(eg_root); \
-	diff -U 100 tests/check_money.3.c tests/check_money.6.c ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 tests/check_money.3.c tests/check_money.6.c ${filter_timestapms} > /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 check_money.6-7.c.diff: $(eg_tests)/check_money.6.c $(eg_tests)/check_money.7.c
 	cd $(eg_root); \
-	diff -U 100 tests/check_money.6.c tests/check_money.7.c ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 tests/check_money.6.c tests/check_money.7.c ${filter_timestapms} > /Users/pavelzironkin/Desktop/projects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 clean-local:

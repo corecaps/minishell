@@ -3,19 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: latahbah <latahbah@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/07 12:11:18 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/12 16:47:58 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static	t_data	*data_init(void)
+{
+	t_data	*data;
+
+	data = (t_data *)malloc(sizeof(t_data));
+	data->open_quote = -1;
+	return (data);
+}
+
 int	main(int argc, char **argv, char **env)
 {
-	char	*line;
 	int		running;
+	t_data	*data;
 
 	(void) argc;
 	(void) argv;
@@ -23,13 +32,25 @@ int	main(int argc, char **argv, char **env)
 	running = 1;
 	while (running)
 	{
-		line = readline(PS1);
-		if (!line)
+		data = data_init();
+		data->line = readline(PS1);
+		if (!data->line)
 			exit(EXIT_FAILURE);
-		if (ft_strlen(line))
-			add_history(line);
-		printf("Line read : \n\t >> %s\n", line);
-		free(line);
+		if (ft_strlen(data->line))
+			add_history(data->line);
+		lexer(data);
+		printf("Token count - %d\n", count_token(data->start_token));
+		while (data->start_token)
+		{
+			printf("Token value: [%s]\n", data->start_token->value);
+			data->start_token = data->start_token->next_token;
+		}
+		printf("Line read : \n\t >> %s\n", data->line);
+		//exit(0);
+		free_all(data);
 	}
 	return (0);
 }
+//need to handle add_token() in case NULL was returned
+
+
