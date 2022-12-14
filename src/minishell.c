@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/12 16:47:58 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/14 09:05:31 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,3 @@ int	main(int argc, char **argv, char **env)
 	return (0);
 }
 //need to handle add_token() in case NULL was returned
-
-

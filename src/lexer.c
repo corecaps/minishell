@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 09:34:48 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/12 17:24:40 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/14 09:30:25 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void	skip_whitespaces(t_data *data)
 		|| data->line[data->end] == '\n' || data->line[data->end] == '\v'
 		|| data->line[data->end] == '\f' || data->line[data->end] == '\r')
 		data->end++;
-	data->index = data->end;
 }
 
 static void	add_pipe_token(t_data *data)
@@ -97,8 +96,11 @@ static void	add_quoted_token(t_data *data)
 	//printf("\tqoute\n");
 	data->open_quote *= -1;
 	data->end++;
+	data->index = data->end;
 	//printf("\tSymbol after quote is [%c]\n", data->line[data->end]);
-	if (data->line[data->end] && data->open_quote > 0)
+	if (data->line[data->end] && data->open_quote > 0
+		&& data->line[data->end] != '\"'
+		&& data->line[data->end] != '\'')
 		add_word_token(data, sep);
 }
 
@@ -110,6 +112,7 @@ void	lexer(t_data *data)
 	{
 		//printf("\tdata.end before token init = %d\n", data->end);
 		skip_whitespaces(data);
+		data->index = data->end;
 		//printf("\tcur symbol is [%c]\n", data->line[data->end]);
 		if (data->line[data->end] == '|')
 			add_pipe_token(data);
