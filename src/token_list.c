@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 12:50:43 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/14 09:01:06 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/14 10:29:37 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	add_token(t_data *data, t_token_type type, char *value)
 	if (new_node == NULL)
 		exit(EXIT_FAILURE);
 	new_node->next_token = NULL;
+	if (type < E_WORD || type > E_END_OF_TOKEN)
+		exit(EXIT_FAILURE);
 	new_node->token_type = type;
 	if (value == NULL)
 		exit(EXIT_FAILURE);
