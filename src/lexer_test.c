@@ -1,7 +1,3 @@
-#include "minishell.h"
-#include <string.h>
-
-
 /* 
 	I'M SORRY FOR BAD CODING STILE IN ADVANCE HE HE ))
 	lexer_test() - func to test lexer. 
@@ -19,14 +15,18 @@
 		-p
 	
 	Where is command line: ls -la | grep -p 
-	And its tokens from the start each on the new line
+	And its tokens are from the start each on the new line
 
 	lexer_test just read file, creates t_data struct, then launch lexer() func from project
 	And then compare tokens from file with tokens lexer() func putted in data struct.
 	 
 
 */
-static void	lexer_test(char *filepath, int num)
+
+#include "minishell.h"
+#include <string.h>
+
+static void	lexer_test(char *filepath)
 {
 	FILE	*fp;
 	t_data	*data;
@@ -46,7 +46,7 @@ static void	lexer_test(char *filepath, int num)
 	data = data_init();
 	if (!filepath)
 	{
-		printf("No such filepath\n");
+		printf("Filepath = NULL\n");
 		return ;
 	}
 	fp = fopen(filepath, "r");
@@ -57,45 +57,36 @@ static void	lexer_test(char *filepath, int num)
 	}
 	if ((read = getline(&cmd_line, &len, fp)) == -1)
 	{
-		printf("Failure while getline() (getline returns \"-1\")\n");
+		printf("Failure while getline(): getline returns \"-1\" - [%s]\n", filepath);
 		return ;
 	}
 	data->line = cmd_line;
-	parsed_line = (char **)malloc(sizeof(char *));
+	parsed_line = (char **)malloc(sizeof(char *) * 20);
 	while (i < 20)
 	{
 		parsed_line[i] = (char *)malloc(sizeof(char) * 100);
 		i++;
 	}
-	i = 0;
 	while ((read = getline(&parsed_line[counter], &len, fp)) != -1)
 		counter++;
 	lexer(data);
-	printf("=============> LEXER TEST%d <=============\n", num);
-	if (counter == count_token(data->start_token))
-		printf("OK - Token count\n");
-	else
-	{
-		printf("[ERROR] Token count!!!\n");
-		printf("Given token count - %d\n", counter);
-		printf("Lexer token count - %d\n", count_token(data->start_token));
-	}
+	i = 0;
 	while (i < counter)
 	{
-		if (strcmp(parsed_line[i], data->start_token->value))
+		if (strncmp(parsed_line[i], data->start_token->value, ft_strlen(data->start_token->value)))
 		{
 			printf("Given token value - [%s] : ", parsed_line[i]);
-			printf("[%s] - Lexer token value \n", data->start_token->value);
+			printf("[%s] - Lexer token value in [%s]\n", data->start_token->value, filepath);
 			mistake_flag++;
 		}
 		data->start_token = data->start_token->next_token;
 		i++;
 	}
 	if (mistake_flag)
-		printf("[ERROR] Mistakes in lexer - %d!!!\n", mistake_flag);
+		printf("[ERROR] Mistakes in lexer - %d in [%s]!!!\n", mistake_flag, filepath);
 	else
-		printf("OK - Tokens\n");
-	printf("\n");
+		printf("OK - [%s]\n", filepath);
+	i = 0;
 	free_all(data);
 }
 
@@ -104,7 +95,16 @@ int	main(int argc, char **argv, char **env)
 	(void) argc;
 	(void) argv;
 	(void) env;
-
-	lexer_test("test1.txt", 1);
-	return (0);
+	printf("=============> LEXER TEST <=============\n\n");
+	lexer_test("./src/lexer_test/test1.txt");
+	lexer_test("./src/lexer_test/test2.txt");
+	lexer_test("./src/lexer_test/test3.txt");
+	lexer_test("./src/lexer_test/test4.txt");
+	lexer_test("./src/lexer_test/test5.txt");
+	lexer_test("./src/lexer_test/test6.txt");
+	lexer_test("./src/lexer_test/test7.txt");
+	lexer_test("./src/lexer_test/test8.txt");
+	lexer_test("./src/lexer_test/test9.txt");
+	lexer_test("./src/lexer_test/test10.txt");
+	exit(0);
 }

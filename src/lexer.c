@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 09:34:48 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/14 10:32:13 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/15 10:20:25 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static void	add_word_token(t_data *data, char sep)
 {
 	char	*value;
 
+	skip_whitespaces(data);
 	data->index = data->end;
 	if (sep == ' ')
 		while ((data->line[data->end] != ' ' && data->line[data->end] != '\t'
