@@ -3,17 +3,17 @@
 CC		= gcc
 RM		= rm -f
 
-CFLAGS	= -Wall -Wextra -g -fanalyzer
+CFLAGS	= -Wall -Wextra -g
 
 # Libraries
 LIBFT	= ../libft/libft.a
-LCHECK	= libcheck.a
-LINK	= -L../libft -lft -l:libcheck.a -lreadline -lm -lpthread -lrt
+LCHECK	= ./libcheck.a
+LINK	= -L../libft -lft libcheck.a -lreadline -lm -lpthread #-lrt
 
 # Sources from Minishell
 MS_OBJDIR	= ../obj
 MS_SRCDIR	= ../src
-MS_SOURCE	= ../src/ast.c ../src/stack.c ../src/token_list.c
+MS_SOURCE	= ../src/token_list.c ../src/ast.c ../src/lexer.c ../src/data_utils.c ../src/stack.c
 MS_OBJ		= $(subst ../src/,../obj/,$(MS_SOURCE:.c=.o))
 
 # Sources for unit tests

@@ -88,7 +88,7 @@
 #define HAVE_LIBM 1
 
 /* Define to 1 if you have the `rt' library (-lrt). */
-#define HAVE_LIBRT 1
+/* #undef HAVE_LIBRT */
 
 /* Define to 1 if you have the `localeconv' function. */
 /* #undef HAVE_LOCALECONV */
@@ -171,10 +171,10 @@
 #define HAVE_STRSIGNAL 1
 
 /* Define to 1 if `it_interval' is a member of `struct itimerspec'. */
-#define HAVE_STRUCT_ITIMERSPEC_IT_INTERVAL 1
+/* #undef HAVE_STRUCT_ITIMERSPEC_IT_INTERVAL */
 
 /* Define to 1 if `it_value' is a member of `struct itimerspec'. */
-#define HAVE_STRUCT_ITIMERSPEC_IT_VALUE 1
+/* #undef HAVE_STRUCT_ITIMERSPEC_IT_VALUE */
 
 /* Define to 1 if `decimal_point' is a member of `struct lconv'. */
 /* #undef HAVE_STRUCT_LCONV_DECIMAL_POINT */
@@ -277,7 +277,7 @@
 #define STDC_HEADERS 1
 
 /* "Need to define the itimerspec structure" */
-/* #undef STRUCT_ITIMERSPEC_DEFINITION_MISSING */
+#define STRUCT_ITIMERSPEC_DEFINITION_MISSING 1
 
 /* "Need to define the timespec structure" */
 /* #undef STRUCT_TIMESPEC_DEFINITION_MISSING */
@@ -354,7 +354,7 @@
 /* #undef snprintf */
 
 /* timer_t */
-/* #undef timer_t */
+#define timer_t int
 
 /* Define to the type of an unsigned integer type of width exactly 32 bits if
    such a type exists and the standard includes do not define it. */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_structures.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: latahbah <latahbah@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:13:13 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/07 12:46:43 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/12 16:39:42 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,11 @@ typedef struct s_stack
 
 typedef struct s_data
 {
+	int		index;
+	int		end;
+	int		open_quote;
 	char	*line;
-	t_token	*token;
+	t_token	*start_token;
 }	t_data;
 
 #endif

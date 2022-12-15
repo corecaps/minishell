@@ -1,0 +1,10 @@
+abc " def" | >"lol"
+abc
+"
+def
+"
+|
+>
+"
+lol
+"

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: latahbah <latahbah@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/07 12:11:18 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/15 10:44:31 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	main(int argc, char **argv, char **env)
 {
-	char	*line;
 	int		running;
+	t_data	*data;
 
 	(void) argc;
 	(void) argv;
@@ -23,13 +23,14 @@ int	main(int argc, char **argv, char **env)
 	running = 1;
 	while (running)
 	{
-		line = readline(PS1);
-		if (!line)
+		data = data_init();
+		data->line = readline(PS1);
+		if (!data->line)
 			exit(EXIT_FAILURE);
-		if (ft_strlen(line))
-			add_history(line);
-		printf("Line read : \n\t >> %s\n", line);
-		free(line);
+		if (ft_strlen(data->line))
+			add_history(data->line);
+		lexer(data);
+		free_all(data);
 	}
 	return (0);
 }
