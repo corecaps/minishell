@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "parser.h"
 
 /******************************************************************************
  * Apply grammar rules on non terminal token pushing the right production
@@ -71,6 +72,12 @@ static int	get_prod(t_token_type non_terminal, t_token **cursor, t_stack **stack
  *                 | SINGLE_QUOTE WORD DOUBLE_QUOTE REDIRECTION CMD_ARG
  *                 | DOUBLE_QUOTE WORD DOUBLE_QUOTE REDIRECTION CMD_ARG
  *                 | REDIRECTION
+ *                 ;
+ *REDIRECTION_OP
+ *                 : HEREDOC
+ *                 | APPEND
+ *                 | INFILE
+ *                 | OUTFILE
  *                 ;
  * @param data data structure pointing to the parsed string and the token list
  * @param data and the AST structure

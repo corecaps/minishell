@@ -34,11 +34,5 @@ void			del_ast(t_ast *top);
 void			free_all(t_data *data);
 void			del_stack(t_stack *head);
 int				count_stack(t_stack *head);
-int				cmd_line(t_token **cursor, t_stack **stack);
-int				piped_cmd(t_token **cursor, t_stack **stack);
-int				cpl_cmd(t_token **cursor, t_stack **stack);
-int				redir(t_token **cursor, t_stack **stack);
-int				cmd(t_token **cursor, t_stack **stack);
-int				cmd_arg(t_token **cursor, t_stack **stack);
-int				redir_op(t_token **cursor, t_stack **stack);
+int				parse(t_data *data);
 #endif

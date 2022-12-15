@@ -33,6 +33,22 @@ int	cmd(t_token **cursor, t_stack **stack)
 	return (1);
 }
 
+static void rule_nine(t_token *const *cursor, t_stack **stack)
+{
+	(*stack) = push(E_COMMAND_ARG, (*stack));
+	(*stack) = push(E_REDIRECTION,(*stack));
+	(*stack) = push((*cursor)->token_type,(*stack));
+	(*stack) = push(E_WORD,(*stack));
+	(*stack) = push((*cursor)->token_type,(*stack));
+}
+
+static void rule_eight(t_stack **stack)
+{
+	(*stack) = push(E_COMMAND_ARG, (*stack));
+	(*stack) = push(E_REDIRECTION,(*stack));
+	(*stack) = push(E_WORD,(*stack));
+}
+
 /*******************************************************************************
  *  Rule #8
  *  COMMAND_ARG -> WORD REDIRECTION COMMAND_ARG
@@ -50,31 +66,49 @@ int	cmd(t_token **cursor, t_stack **stack)
 
 int	cmd_arg(t_token **cursor, t_stack **stack)
 {
-	if ((*cursor)->token_type == E_REDIRECTION ||
-		(*cursor)->token_type == E_WORD)
-	{
-		// TODO Push instead of rules
-		(*stack) = push(E_PIPED_COMMAND,(*stack));
-		(*stack) = push(E_COMPLETE_COMMAND,(*stack));
-		(*stack) = push(E_END_OF_TOKEN,(*stack));
-	}
+	if ((*cursor)->token_type == E_WORD)
+		rule_eight(stack);
+	else if (((*cursor)->token_type == E_SINGLE_QUOTE)
+		||((*cursor)->token_type == E_DOULE_QUOTE))
+		rule_nine(cursor, stack);
+	else if ((*cursor)->token_type >= E_HEREDOC
+			 && (*cursor)->token_type <= E_OUTFILE)
+		(*stack) = push(E_REDIRECTION,(*stack));
+	else
+		return (-2);
 	if ((*stack) == NULL)
 		return (-1);
 	return (1);
 }
 
+
+/*******************************************************************************
+ *  Rule #12
+ *  REDIRECTION_OP -> HERE_DOC
+ *  Rule #12
+ *  REDIRECTION_OP -> APPEND
+ *  Rule #12
+ *  REDIRECTION_OP -> INFILE
+ *  Rule #12
+ *  REDIRECTION_OP -> OUTFILE
+ *
+ * @return -1 in case of mem error
+ * @return -2 in case of syntax error
+ * @return 1 in case of success
+ ******************************************************************************/
+
 int	redir_op(t_token **cursor, t_stack **stack)
 {
-	int	result;
-
-	if ((*cursor)->token_type == E_REDIRECTION ||
-		(*cursor)->token_type == E_WORD)
-	{
-		// TODO Push instead of rules
-		(*stack) = push(E_PIPED_COMMAND,(*stack));
-		(*stack) = push(E_COMPLETE_COMMAND,(*stack));
-		(*stack) = push(E_END_OF_TOKEN,(*stack));
-	}
+	if ((*cursor)->token_type == E_HEREDOC)
+		(*stack) = push(E_HEREDOC,(*stack));
+	else if ((*cursor)->token_type == E_APPEND)
+		(*stack) = push(E_APPEND,(*stack));
+	else if ((*cursor)->token_type == E_INFILE)
+		(*stack) = push(E_INFILE,(*stack));
+	else if ((*cursor)->token_type == E_OUTFILE)
+		(*stack) = push(E_OUTFILE,(*stack));
+	else
+		return (-2);
 	if ((*stack) == NULL)
 		return (-1);
 	return (1);

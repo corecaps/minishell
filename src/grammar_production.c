@@ -101,7 +101,6 @@ int	redir(t_token **cursor, t_stack **stack)
 	if ((*cursor)->token_type >= E_HEREDOC
 		&& (*cursor)->token_type <= E_OUTFILE)
 	{
-		// TODO Push instead of rules
 		(*stack) = push(E_WORD,(*stack));
 		(*stack) = push(E_REDIRECTION_OP,(*stack));
 	}
