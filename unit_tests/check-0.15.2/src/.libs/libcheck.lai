@@ -5,19 +5,19 @@
 # It is necessary for linking the library.
 
 # The name that we can dlopen(3).
-dlname='libcheck.0.dylib'
+dlname='libcheck.so.0'
 
 # Names of this library.
-library_names='libcheck.0.dylib libcheck.dylib'
+library_names='libcheck.so.0.0.0 libcheck.so.0 libcheck.so'
 
 # The name of the static archive.
 old_library='libcheck.a'
 
 # Linker flags that cannot go in dependency_libs.
-inherited_linker_flags=' '
+inherited_linker_flags=''
 
 # Libraries that this one depends upon.
-dependency_libs=' -lm'
+dependency_libs=' -lrt -lm'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''

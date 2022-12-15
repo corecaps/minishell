@@ -13,19 +13,23 @@ LINK	= -L../libft -lft libcheck.a -lreadline -lm -lpthread #-lrt
 # Sources from Minishell
 MS_OBJDIR	= ../obj
 MS_SRCDIR	= ../src
-MS_SOURCE	= ../src/minishell.c ../src/token_list.c ../src/ast.c ../src/lexer.c ../src/free_cmd.c ../src/stack.c
+MS_SOURCE	= ../src/token_list.c ../src/ast.c ../src/lexer.c ../src/free_cmd.c ../src/stack.c ../src/parser.c
+MS_SOURCE	+= ../src/grammar_production.c ../src/grammar_production_2.c
 MS_OBJ		= $(subst ../src/,../obj/,$(MS_SOURCE:.c=.o))
 
 # Sources for unit tests
-SOURCE		= data_structures.c
+SOURCE		= data_structures.c lexer_test.c
 OBJDIR		= obj
 OBJ			= $(addprefix $(OBJDIR)/,$(SOURCE:.c=.o))
-NAMES		= data_structures_test
+NAMES		= data_structures_test lexer_test
 
 all: $(NAMES)
 
 data_structures_test: $(OBJ) $(MS_OBJ) $(LIBFT) $(LCHECK)
 	@$(CC) $(OBJDIR)/data_structures.o $(MS_OBJ) $(LINK) -o data_structures_test
+
+lexer_test:  $(OBJ) $(MS_OBJ) $(LIBFT) $(LCHECK)
+	@$(CC) $(OBJDIR)/lexer_test.o $(MS_OBJ) $(LINK) -o lexer_test
 
 $(MS_OBJDIR)/%.o:$(MS_SRCDIR)/%.c
 	@mkdir -p ../obj

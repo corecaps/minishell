@@ -27,7 +27,7 @@
 #include <math.h>
 #include <float.h>
 
-#include "check_stdint.h"
+#include <check_stdint.h>
 
 /*
    Macros and functions starting with _ (underscore) are internal and

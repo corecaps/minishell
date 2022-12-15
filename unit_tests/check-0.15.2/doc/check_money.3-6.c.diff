@@ -1,5 +1,5 @@
---- tests/check_money.3.c	2022-12-13 09:26:38.000000000 +0100
-+++ tests/check_money.6.c	2022-12-13 09:26:38.000000000 +0100
+--- tests/check_money.3.c	2020-06-21 17:52:50.000000000 +0200
++++ tests/check_money.6.c	2020-06-21 17:52:50.000000000 +0200
 @@ -1,65 +1,94 @@
  /*
   * Check: a unit test framework for C
