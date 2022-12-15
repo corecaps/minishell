@@ -18,6 +18,7 @@ static	t_data	*data_init(void)
 
 	data = (t_data *)malloc(sizeof(t_data));
 	data->open_quote = -1;
+	data->start_token = NULL;
 	return (data);
 }
 
@@ -25,6 +26,8 @@ int	main(int argc, char **argv, char **env)
 {
 	int		running;
 	t_data	*data;
+	int		debug;
+	t_token *bottom;
 
 	(void) argc;
 	(void) argv;
@@ -39,18 +42,12 @@ int	main(int argc, char **argv, char **env)
 		if (ft_strlen(data->line))
 			add_history(data->line);
 		lexer(data);
-		printf("Token count - %d\n", count_token(data->start_token));
-		while (data->start_token)
-		{
-			printf("Token value: [%s]\n", data->start_token->value);
-			data->start_token = data->start_token->next_token;
-		}
 		printf("Line read : \n\t >> %s\n", data->line);
+		debug = parse(data);
+		printf("Parser return :%d\n",debug);
 		//exit(0);
-		free_all(data);
+//		free_all(data);
 	}
 	return (0);
 }
 //need to handle add_token() in case NULL was returned
-
-

@@ -86,12 +86,12 @@ static void	add_quoted_token(t_data *data)
 	//printf("\tadd_quoted_token()\n");
 	if (data->line[data->end] == '\'')
 	{
-		add_token(data, E_SINGLE_QUOTED, "\'");
+		add_token(data, E_SINGLE_QUOTE, "\'");
 		sep = '\'';
 	}
 	else
 	{
-		add_token(data, E_DOULE_QUOTED, "\"");
+		add_token(data, E_DOULE_QUOTE, "\"");
 		sep = '\"';
 	}
 	//printf("\tqoute\n");
@@ -123,4 +123,5 @@ void	lexer(t_data *data)
 			break ;
 		//printf("\tdata.end after token init = %d\n\n", data->end);
 	}
+	add_token(data,E_END_OF_TOKEN,"");
 }

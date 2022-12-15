@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	get_bottom(t_token *head, t_token *new_node)
+void	get_bottom(t_token *head, t_token *new_node)
 {
 	t_token	*tmp;
 

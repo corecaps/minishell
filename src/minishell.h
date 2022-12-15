@@ -23,6 +23,7 @@
 
 void			add_token(t_data *data, t_token_type type, char *value);
 int				count_token(t_token *head);
+void			get_bottom(t_token *head, t_token *new_node);
 void			del_token_list(t_token *head);
 t_ast			*add_left(t_ast *parent, t_token *token);
 t_ast			*add_right(t_ast *parent, t_token *token);
@@ -35,4 +36,5 @@ void			free_all(t_data *data);
 void			del_stack(t_stack *head);
 int				count_stack(t_stack *head);
 int				parse(t_data *data);
+void			print_debug(t_token_type type);
 #endif

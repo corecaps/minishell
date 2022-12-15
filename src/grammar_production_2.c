@@ -75,7 +75,7 @@ int	cmd_arg(t_token **cursor, t_stack **stack)
 			 && (*cursor)->token_type <= E_OUTFILE)
 		(*stack) = push(E_REDIRECTION,(*stack));
 	else
-		return (-2);
+		(*stack) = push(E_EPSILON,(*stack));
 	if ((*stack) == NULL)
 		return (-1);
 	return (1);

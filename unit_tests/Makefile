@@ -18,10 +18,10 @@ MS_SOURCE	+= ../src/grammar_production.c ../src/grammar_production_2.c
 MS_OBJ		= $(subst ../src/,../obj/,$(MS_SOURCE:.c=.o))
 
 # Sources for unit tests
-SOURCE		= data_structures.c lexer_test.c
+SOURCE		= data_structures.c lexer_test.c parser_test.c
 OBJDIR		= obj
 OBJ			= $(addprefix $(OBJDIR)/,$(SOURCE:.c=.o))
-NAMES		= data_structures_test lexer_test
+NAMES		= data_structures_test lexer_test parser_test
 
 all: $(NAMES)
 
@@ -30,6 +30,9 @@ data_structures_test: $(OBJ) $(MS_OBJ) $(LIBFT) $(LCHECK)
 
 lexer_test:  $(OBJ) $(MS_OBJ) $(LIBFT) $(LCHECK)
 	@$(CC) $(OBJDIR)/lexer_test.o $(MS_OBJ) $(LINK) -o lexer_test
+
+parser_test: $(OBJ) $(MS_OBJ) $(LIBFT) $(LCHECK)
+	@$(CC) $(OBJDIR)/parser_test.o $(MS_OBJ) $(LINK) -o parser_test
 
 $(MS_OBJDIR)/%.o:$(MS_SRCDIR)/%.c
 	@mkdir -p ../obj
