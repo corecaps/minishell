@@ -216,7 +216,6 @@ int	parse(t_data *data)
 				printf(" [%s]===========\n",cursor->value);
 				printf("==============================================\n\n");
 				cursor = cursor->next_token;
-
 				// TODO Create AST Node here
 			}
 			else
