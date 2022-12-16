@@ -6,7 +6,7 @@ START_TEST(test_parser) {
 	t_token *cursor;
 	int result;
 
-	test.line = "ls '-test ' > test | essai";
+	test.line = "ls | cat";
 	test.start_token = NULL;
 	lexer(&test);
 	cursor = test.start_token;

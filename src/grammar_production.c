@@ -80,8 +80,11 @@ int	cpl_cmd(t_token **cursor, t_stack **stack)
 		(*stack) = push(E_REDIRECTION,(*stack));
 		(*stack) = push(E_COMMAND,(*stack));
 		(*stack) = push(E_REDIRECTION,(*stack));
-	}
-	if ((*stack) == NULL)
+	} else
+	{
+		printf("non expected token");
+		return (-2);
+	}if ((*stack) == NULL)
 		return (-1);
 	return (1);
 }

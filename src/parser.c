@@ -205,14 +205,16 @@ int	parse(t_data *data)
 			state = pop(&parsing_stack);
 			if (state == E_EPSILON)
 			{
-				printf("\n\n[]\n");
+				printf("[]->Epsilonn -> Poped empty\n");
 				continue;
 			}
 			if (cursor->token_type == state)
 			{
-				printf("Validating ");
+				printf("\n==============================================\n");
+				printf("========Validating ");
 				print_debug(state);
-				printf(" %s\n\n",cursor->value);
+				printf(" [%s]===========\n",cursor->value);
+				printf("==============================================\n\n");
 				cursor = cursor->next_token;
 
 				// TODO Create AST Node here
