@@ -219,7 +219,12 @@ int	parse(t_data *data)
 				// TODO Create AST Node here
 			}
 			else
+			{
+				printf("Missing :\t");
+				print_debug(state);
+				printf(" token\n");
 				return (-2);
+			}
 		}
 	}
 	if (cursor && cursor->token_type != E_END_OF_TOKEN)

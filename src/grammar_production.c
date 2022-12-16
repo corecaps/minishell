@@ -21,12 +21,15 @@
  ******************************************************************************/
 int	cmd_line(t_token **cursor, t_stack **stack)
 {
-	if ((*cursor)->token_type == E_REDIRECTION ||
+	if (((*cursor)->token_type >= E_HEREDOC
+		 && (*cursor)->token_type <= E_OUTFILE) ||
 		(*cursor)->token_type == E_WORD)
 	{
 		(*stack) = push(E_PIPED_COMMAND,(*stack));
 		(*stack) = push(E_COMPLETE_COMMAND,(*stack));
 	}
+	else if ((*cursor)->token_type == E_END_OF_TOKEN)
+		return (1);
 	else
 		return (-2);
 	if ((*stack) == NULL)
@@ -51,6 +54,7 @@ int	piped_cmd(t_token **cursor, t_stack **stack)
 		(*stack) = push(E_PIPED_COMMAND,(*stack));
 		(*stack) = push(E_COMPLETE_COMMAND,(*stack));
 		(*stack) = push(E_PIPE,(*stack));
+		// TODO Create PIPE AST NODE as parent
 	}
 	else if ((*cursor)->token_type == E_END_OF_TOKEN)
 		(*stack) = push(E_EPSILON,(*stack));
@@ -80,6 +84,7 @@ int	cpl_cmd(t_token **cursor, t_stack **stack)
 		(*stack) = push(E_REDIRECTION,(*stack));
 		(*stack) = push(E_COMMAND,(*stack));
 		(*stack) = push(E_REDIRECTION,(*stack));
+		//TODO CREATE COMMAND NODE
 	} else
 	{
 		printf("non expected token");
