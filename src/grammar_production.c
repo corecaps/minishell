@@ -39,7 +39,7 @@ int	cmd_line(t_token **cursor, t_stack **stack)
 
 /*******************************************************************************
  *  Rule #2
- *  PIPED_COMMAND -> PIPE COMPLETE COMMAND
+ *  PIPED_COMMAND -> PIPE COMPLETE_COMMAND PIPED_COMMAND
  *  Rule #3
  *  PIPED_COMMAND -> ε
  * @return -1 in case of mem error
@@ -67,7 +67,7 @@ int	piped_cmd(t_token **cursor, t_stack **stack)
 
 /*******************************************************************************
  *  Rule #4
- *  COMPLETE_COMMAND -> REDIRECTION COMMAND REDIRECTION COMMAND_ARG REDIRECTION
+ *  COMPLETE_COMMAND -> COMMAND_PREFIX COMMAND COMMAND_SUFFIX
  * @return -1 in case of mem error
  * @return -2 in case of syntax error
  * @return 1 in case of success
@@ -79,26 +79,20 @@ int	cpl_cmd(t_token **cursor, t_stack **stack)
 		 && (*cursor)->token_type <= E_OUTFILE)
 		|| (*cursor)->token_type == E_WORD)
 	{
-		(*stack) = push(E_REDIRECTION,(*stack));
-		(*stack) = push(E_COMMAND_ARG,(*stack));
-		(*stack) = push(E_REDIRECTION,(*stack));
+		(*stack) = push(E_COMMAND_SUFFIX,(*stack));
 		(*stack) = push(E_COMMAND,(*stack));
-		(*stack) = push(E_REDIRECTION,(*stack));
+		(*stack) = push(E_COMMAND_PREFIX,(*stack));
 		//TODO CREATE COMMAND NODE
 	} else
-	{
-		printf("non expected token");
 		return (-2);
-	}if ((*stack) == NULL)
+	if ((*stack) == NULL)
 		return (-1);
 	return (1);
 }
 
 /*******************************************************************************
- *  Rule #5
+ *  Rule #10
  *  REDIRECTION -> REDIRECTION_OPERATOR WORD
- *  Rule #6
- *  REDIRECTION -> ε
  * @return -1 in case of mem error
  * @return -2 in case of syntax error
  * @return 1 in case of success
@@ -113,7 +107,7 @@ int	redir(t_token **cursor, t_stack **stack)
 		(*stack) = push(E_REDIRECTION_OP,(*stack));
 	}
 	else
-		(*stack) = push(E_EPSILON,(*stack));
+		return (-2);
 	if ((*stack) == NULL)
 		return (-1);
 	return (1);

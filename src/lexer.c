@@ -39,7 +39,7 @@ static void	add_redirect_token(t_data *data)
 			data->end += 1;
 		}
 		else
-			add_token(data, E_INFILE, ">");
+			add_token(data, E_OUTFILE, ">");
 	}
 	else
 	{
@@ -50,7 +50,7 @@ static void	add_redirect_token(t_data *data)
 			data->end += 1;
 		}
 		else
-			add_token(data, E_OUTFILE, "<");
+			add_token(data, E_INFILE, "<");
 	}
 	data->end++;
 }

@@ -26,6 +26,12 @@ void print_debug(t_token_type type)
 		case E_COMPLETE_COMMAND:
 			printf("[COMPLETE COMMAND]");
 			break;
+		case E_COMMAND_PREFIX:
+			printf("[COMMAND PREFIX]");
+			break;
+		case E_COMMAND_SUFFIX:
+			printf("[COMMAND SUFFIX]");
+			break;
 		case E_REDIRECTION:
 			printf("[REDIRECTION]");
 			break;
@@ -34,6 +40,7 @@ void print_debug(t_token_type type)
 			break;
 		case E_COMMAND_ARG:
 			printf("[COMMAND_ARG]");
+			break;
 		case E_PIPE:
 			printf("[PIPE]");
 			break;
@@ -85,7 +92,7 @@ void print_debug(t_token_type type)
 static int	get_prod(t_token_type non_terminal, t_token **cursor, t_stack **stack)
 {
 	int	result;
-	int (*prod[7])(t_token **,t_stack **stack);
+	int (*prod[9])(t_token **,t_stack **stack);
 
 	printf("Applying rules for ");
 	print_debug(non_terminal);
@@ -98,10 +105,12 @@ static int	get_prod(t_token_type non_terminal, t_token **cursor, t_stack **stack
 	prod[0] = cmd_line;
 	prod[1] = piped_cmd;
 	prod[2] = cpl_cmd;
-	prod[3] = redir;
-	prod[4] = cmd;
-	prod[5] = cmd_arg;
-	prod[6] = redir_op;
+	prod[3] = cmd_prefix;
+	prod[4] = cmd_suffix;
+	prod[5] = redir;
+	prod[6] = cmd;
+	prod[7] = cmd_arg;
+	prod[8] = redir_op;
 	result = prod[non_terminal-E_COMMAND_LINE](cursor,stack);
 	return (result);
 }
@@ -122,20 +131,27 @@ static int	get_prod(t_token_type non_terminal, t_token **cursor, t_stack **stack
  *                 |
  *                 ;
  *COMPLETE_COMMAND
- *                 : REDIRECTION CMD REDIRECTION CMD_ARG REDIRECTION
+ *                 : COMMAND_PREFIX COMMAND COMMAND_SUFFIX
+ *                 ;
+ *COMMAND_PREFIX
+ *                 : REDIRECTION COMMAND_PREFIX
+ *                 |
+ *                 ;
+ *COMMAND_SUFFIX
+ *                 : REDIRECTION COMMAND_SUFFIX
+ *                 | COMMAND_ARG COMMAND_SUFFIX
+ *                 |
  *                 ;
  *REDIRECTION
  *                 : REDIRECTION_OP WORD
- *                 |
  *                 ;
- *CMD
- *                  : WORD
+ *COMMAND
+ *                 : WORD
  *                 ;
- *CMD_ARG
- *                  : WORD REDIRECTION CMD_ARG
- *                 | SINGLE_QUOTE WORD DOUBLE_QUOTE REDIRECTION CMD_ARG
- *                 | DOUBLE_QUOTE WORD DOUBLE_QUOTE REDIRECTION CMD_ARG
- *                 | REDIRECTION
+ *COMMAND_ARG
+ *                 : WORD
+ *                 | SINGLE_QUOTE WORD DOUBLE_QUOTE
+ *                 | DOUBLE_QUOTE WORD DOUBLE_QUOTE
  *                 ;
  *REDIRECTION_OP
  *                 : HEREDOC
@@ -172,7 +188,7 @@ int	parse(t_data *data)
 		{
 			// TODO Extract method here
 			state = pop(&parsing_stack);
-			printf("current State :");
+			printf("\ncurrent State :");
 			print_debug(state);
 			printf("\n");
 			printf("Current Stack Size : %d\n", count_stack(parsing_stack));
@@ -182,15 +198,15 @@ int	parse(t_data *data)
 				print_debug(debug->type);
 				debug =debug->next;
 			}
-			printf("\n");
+			printf("\n===============================\n");
 			if (state >= E_END_OF_TOKEN)
 				return (-3);
 			result = get_prod(state, &cursor,
 								&parsing_stack);
 			if (result < 0)
 				return (result);
-			printf("===New Prod added====");
-			printf("Current Stack Size : %d\n", count_stack(parsing_stack));
+			printf("\n===New Prod added====");
+			printf("Current Stack Size : %d\n\n", count_stack(parsing_stack));
 			debug = parsing_stack;
 			while (debug)
 			{
