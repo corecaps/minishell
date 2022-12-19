@@ -17,8 +17,8 @@
 static void	skip_whitespaces(t_data *data)
 {
 	while (data->line[data->end] == ' ' || data->line[data->end] == '\t'
-		|| data->line[data->end] == '\n' || data->line[data->end] == '\v'
-		|| data->line[data->end] == '\f' || data->line[data->end] == '\r')
+		   || data->line[data->end] == '\n' || data->line[data->end] == '\v'
+		   || data->line[data->end] == '\f' || data->line[data->end] == '\r')
 		data->end++;
 }
 
@@ -39,7 +39,7 @@ static void	add_redirect_token(t_data *data)
 			data->end += 1;
 		}
 		else
-			add_token(data, E_INFILE, ">");
+			add_token(data, E_OUTFILE, ">");
 	}
 	else
 	{
@@ -50,7 +50,7 @@ static void	add_redirect_token(t_data *data)
 			data->end += 1;
 		}
 		else
-			add_token(data, E_OUTFILE, "<");
+			add_token(data, E_INFILE, "<");
 	}
 	data->end++;
 }
@@ -67,7 +67,7 @@ static void	add_word_token(t_data *data, char sep)
 				&& data->line[data->end] != '\v' && data->line[data->end] != '<'
 				&& data->line[data->end] != '\f' && data->line[data->end] != '|'
 				&& data->line[data->end] != '\r')
-			&& data->line[data->end] != 0)
+			   && data->line[data->end] != 0)
 			data->end++;
 	else
 		while (data->line[data->end] != sep && data->line != 0)
@@ -84,12 +84,12 @@ static void	add_quoted_token(t_data *data)
 
 	if (data->line[data->end] == '\'')
 	{
-		add_token(data, E_SINGLE_QUOTED, "\'");
+		add_token(data, E_SINGLE_QUOTE, "\'");
 		sep = '\'';
 	}
 	else
 	{
-		add_token(data, E_DOULE_QUOTED, "\"");
+		add_token(data, E_DOULE_QUOTE, "\"");
 		sep = '\"';
 	}
 	data->open_quote *= -1;
@@ -119,4 +119,5 @@ void	lexer(t_data *data)
 		else
 			break ;
 	}
+	add_token(data,E_END_OF_TOKEN,"");
 }

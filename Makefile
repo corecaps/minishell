@@ -12,7 +12,7 @@
 
 NAME = minishell
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra
 DEBUG = -g3 -fanalyzer
 LIBFT = libft/libft.a
 LINK = -Llibft -lft -lreadline
@@ -20,7 +20,11 @@ RM = rm -f
 SRCDIR = src
 OBJDIR = obj
 BIN = bin
+<<<<<<< HEAD
 SRC = minishell.c token_list.c ast.c lexer.c data_utils.c stack.c
+=======
+SRC = minishell.c token_list.c ast.c lexer.c free_cmd.c stack.c parser.c grammar_production.c grammar_production_2.c
+>>>>>>> bdd93b09747fc7c17825f293b1c634f067645655
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h data_structures.h
 SOURCE = $(addprefix $(SRCDIR)/,$(SRC))

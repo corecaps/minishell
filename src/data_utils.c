@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:20:07 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/14 10:04:12 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/19 10:21:07 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,16 @@ t_data	*data_init(void)
 void	free_all(t_data *data)
 {
 	//need to add ast_node_free part of func
-	if (data->line != NULL)
+	if (data->line)
+	{
 		free(data->line);
-	if (data->start_token != NULL)
+		data->line = NULL;
+	}
+	if (data->start_token)
+	{
 		del_token_list(data->start_token);
-	if (data != NULL)
+		data->start_token = NULL;
+	}
+	if (data)
 		free(data);
-	data->line = NULL;
-	data->start_token = NULL;
-	data = NULL;
 }

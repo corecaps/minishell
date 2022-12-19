@@ -8,18 +8,35 @@ PIPED_CMD
                  |
                  ;
 COMPLETE_COMMAND 
-                 : REDIRECTION CMD REDIRECTION CMD_ARG REDIRECTION
+                 : CMD_PREFIX CMD CMD_SUFFIX
                  ;
-REDIRECTION      
-                 : REDIRECTION_TOKEN
-                 | 
+
+CMD_PREFIX
+                 : REDIRECTION CMD_PREFIX
+                 |
                  ;
-CMD              
+
+CMD_SUFFIX
+                 : REDIRECTION CMD_SUFFIX
+                 | CMD_ARG CMD_SUFFIX
+                 |
+                 ;
+
+REDIRECTION
+                 : REDIRECTION_OP WORD
+                 ;
+
+CMD
                  : WORD
                  ;
-CMD_ARG          
-                 : WORD REDIRECTION CMD_ARG
-                 | SINGLE_QUOTED REDIRECTION CMD_ARG
-                 | DOUBLE_QUOTED REDIRECTION CMD_ARG
-                 | REDIRECTION
+CMD_ARG
+                 : WORD
+                 | SINGLE_QUOTE WORD DOUBLE_QUOTE
+                 | DOUBLE_QUOTE WORD DOUBLE_QUOTE
+                 ;
+REDIRECTION_OP
+                 : HERE_DOC
+                 | APPEND
+                 | INFILE
+                 | OUTFILE
                  ;
