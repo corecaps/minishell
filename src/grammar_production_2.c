@@ -90,7 +90,10 @@ int	cmd_suffix(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 int	cmd(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
 	if ((*cursor)->token_type == E_WORD)
+	{
 		(*stack) = push(E_WORD, (*stack));
+		create_cmd_node(ast,(*cursor));
+	}
 	else
 		return (-2);
 	if ((*stack) == NULL)
@@ -113,6 +116,9 @@ int	cmd(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 
 int	cmd_arg(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
+	t_token *token;
+
+	token = (*cursor);
 	if ((*cursor)->token_type == E_WORD)
 		(*stack) = push(E_WORD,(*stack));
 	else if (((*cursor)->token_type == E_SINGLE_QUOTE)
@@ -121,11 +127,13 @@ int	cmd_arg(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 		(*stack) = push((*cursor)->token_type,(*stack));
 		(*stack) = push(E_WORD,(*stack));
 		(*stack) = push((*cursor)->token_type,(*stack));
+		token = token->next_token;
 	}
 	else
 		return (-2);
 	if ((*stack) == NULL)
 		return (-1);
+	create_cmd_arg_node(ast,token);
 	return (1);
 }
 

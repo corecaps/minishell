@@ -15,4 +15,8 @@ int				cmd_arg(t_token **cursor, t_stack **stack,t_ast_builder *ast);
 int				redir_op(t_token **cursor, t_stack **stack,t_ast_builder *ast);
 int				cmd_suffix(t_token **cursor, t_stack **stack,t_ast_builder *ast);
 int				cmd_prefix(t_token **cursor, t_stack **stack,t_ast_builder *ast);
+int				create_redir_node(t_ast_builder *ast_builder, t_token *token);
+int				create_cmd_node(t_ast_builder *ast_builder,t_token *token);
+int				create_pipe_node(t_ast_builder *ast_builder,t_token *token);
+int				create_cmd_arg_node(t_ast_builder *ast_builder,t_token *token);
 #endif
