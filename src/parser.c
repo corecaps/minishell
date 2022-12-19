@@ -89,10 +89,10 @@ void print_debug(t_token_type type)
  * @return -1 in case of memory error
  ******************************************************************************/
 
-static int	get_prod(t_token_type non_terminal, t_token **cursor, t_stack **stack)
+static int	get_prod(t_token_type non_terminal, t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
 	int	result;
-	int (*prod[9])(t_token **,t_stack **stack);
+	int (*prod[9])(t_token **,t_stack **stack,t_ast_builder *ast);
 
 	printf("Applying rules for ");
 	print_debug(non_terminal);
@@ -174,6 +174,8 @@ int	parse(t_data *data)
 	t_token			*cursor;
 	int				result;
 	t_stack			*debug;
+	t_ast_builder	ast;
+
 	cursor = data->start_token;
 	parsing_stack = push(E_END_OF_TOKEN, NULL);
 	parsing_stack = push(E_COMMAND_LINE, parsing_stack);
@@ -202,7 +204,7 @@ int	parse(t_data *data)
 			if (state >= E_END_OF_TOKEN)
 				return (-3);
 			result = get_prod(state, &cursor,
-								&parsing_stack);
+								&parsing_stack,&ast);
 			if (result < 0)
 				return (result);
 			printf("\n===New Prod added====");

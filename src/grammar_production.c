@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "parser.h"
 
 /*******************************************************************************
  *  Rule #1
@@ -19,7 +20,7 @@
  * @return -2 in case of syntax error
  * @return 1 in case of success
  ******************************************************************************/
-int	cmd_line(t_token **cursor, t_stack **stack)
+int	cmd_line(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
 	if (((*cursor)->token_type >= E_HEREDOC
 		 && (*cursor)->token_type <= E_OUTFILE) ||
@@ -47,7 +48,7 @@ int	cmd_line(t_token **cursor, t_stack **stack)
  * @return 1 in case of success
  ******************************************************************************/
 
-int	piped_cmd(t_token **cursor, t_stack **stack)
+int	piped_cmd(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
 	if ((*cursor)->token_type == E_PIPE)
 	{
@@ -73,7 +74,7 @@ int	piped_cmd(t_token **cursor, t_stack **stack)
  * @return 1 in case of success
  ******************************************************************************/
 
-int	cpl_cmd(t_token **cursor, t_stack **stack)
+int	cpl_cmd(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
 	if (((*cursor)->token_type >= E_HEREDOC
 		 && (*cursor)->token_type <= E_OUTFILE)
@@ -98,7 +99,7 @@ int	cpl_cmd(t_token **cursor, t_stack **stack)
  * @return 1 in case of success
  ******************************************************************************/
 
-int	redir(t_token **cursor, t_stack **stack)
+int	redir(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
 	if ((*cursor)->token_type >= E_HEREDOC
 		&& (*cursor)->token_type <= E_OUTFILE)
