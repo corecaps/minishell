@@ -16,6 +16,7 @@
 int create_redir_node(t_ast_builder *ast_builder, t_token *token)
 {
 	t_ast *new_node;
+	t_ast *tmp;
 
 	new_node = malloc(sizeof (t_ast));
 	if (new_node == NULL)
@@ -30,12 +31,15 @@ int create_redir_node(t_ast_builder *ast_builder, t_token *token)
 		ast_builder->root = new_node;
 		ast_builder->current = new_node;
 	}
-	else if ((ast_builder->current->type == E_REDIRECTION && ast_builder->current->left == NULL)
-		|| (ast_builder->current->type == E_COMMAND && ast_builder->current->left == NULL))
+	else if ((ast_builder->current->type == E_REDIRECTION)
+		|| (ast_builder->current->type == E_COMMAND ))
 	{
-		new_node->parent =ast_builder->current;
-		ast_builder->current->left = new_node;
-	} // TODO Non empty redir list
+		tmp = ast_builder->current;
+		while (tmp->left)
+			tmp = tmp->left;
+		new_node->parent =tmp;
+		tmp->left = new_node;
+	}
 	else
 		return (-2);
 	return (1);
