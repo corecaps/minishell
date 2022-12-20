@@ -66,3 +66,4 @@ unit_tests/check-0.15.2/tests/
 unit_tests/lexer_test
 
 unit_tests/parser_test
+/unit_tests/check-0.15.2/src/.libs/libcheck.ver

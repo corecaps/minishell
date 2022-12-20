@@ -7,7 +7,7 @@ START_TEST(test_parser) {
 	int result;
 
 
-	test.line = "ls | cat";
+	test.line = "< test ls \"arg1 arg2 arg3\" < test2 arg4 | cat";
 	test.start_token = NULL;
 	lexer(&test);
 	cursor = test.start_token;

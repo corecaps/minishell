@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "parser.h"
 
 /*******************************************************************************
  *  Rule #1
@@ -19,8 +20,9 @@
  * @return -2 in case of syntax error
  * @return 1 in case of success
  ******************************************************************************/
-int	cmd_line(t_token **cursor, t_stack **stack)
+int	cmd_line(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
+	(void) ast;
 	if (((*cursor)->token_type >= E_HEREDOC
 		 && (*cursor)->token_type <= E_OUTFILE) ||
 		(*cursor)->token_type == E_WORD)
@@ -47,14 +49,14 @@ int	cmd_line(t_token **cursor, t_stack **stack)
  * @return 1 in case of success
  ******************************************************************************/
 
-int	piped_cmd(t_token **cursor, t_stack **stack)
+int	piped_cmd(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
 	if ((*cursor)->token_type == E_PIPE)
 	{
 		(*stack) = push(E_PIPED_COMMAND,(*stack));
 		(*stack) = push(E_COMPLETE_COMMAND,(*stack));
 		(*stack) = push(E_PIPE,(*stack));
-		// TODO Create PIPE AST NODE as parent
+		create_pipe_node(ast,(*cursor));
 	}
 	else if ((*cursor)->token_type == E_END_OF_TOKEN)
 		(*stack) = push(E_EPSILON,(*stack));
@@ -73,8 +75,9 @@ int	piped_cmd(t_token **cursor, t_stack **stack)
  * @return 1 in case of success
  ******************************************************************************/
 
-int	cpl_cmd(t_token **cursor, t_stack **stack)
+int	cpl_cmd(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
+	(void) ast;
 	if (((*cursor)->token_type >= E_HEREDOC
 		 && (*cursor)->token_type <= E_OUTFILE)
 		|| (*cursor)->token_type == E_WORD)
@@ -98,13 +101,14 @@ int	cpl_cmd(t_token **cursor, t_stack **stack)
  * @return 1 in case of success
  ******************************************************************************/
 
-int	redir(t_token **cursor, t_stack **stack)
+int	redir(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
 	if ((*cursor)->token_type >= E_HEREDOC
 		&& (*cursor)->token_type <= E_OUTFILE)
 	{
 		(*stack) = push(E_WORD,(*stack));
 		(*stack) = push(E_REDIRECTION_OP,(*stack));
+		create_redir_node(ast,(*cursor));
 	}
 	else
 		return (-2);

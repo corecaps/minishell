@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "parser.h"
 
 /*******************************************************************************
  *  Rule #5
@@ -22,7 +23,7 @@
  * @return 1 in case of success
  ******************************************************************************/
 
-int	cmd_prefix(t_token **cursor, t_stack **stack)
+int	cmd_prefix(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
 	if ((*cursor)->token_type == E_WORD)
 	{
@@ -53,13 +54,11 @@ int	cmd_prefix(t_token **cursor, t_stack **stack)
  * @return 1 in case of success
  ********** ********************************************************************/
 
-int	cmd_suffix(t_token **cursor, t_stack **stack)
+int	cmd_suffix(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
 	if ((*cursor)->token_type == E_PIPE
 		|| (*cursor)->token_type == E_END_OF_TOKEN)
-	{
 		(*stack) = push(E_EPSILON, (*stack));
-	}
 	else if ((*cursor)->token_type >= E_HEREDOC
 			 && (*cursor)->token_type <= E_OUTFILE)
 	{
@@ -88,11 +87,12 @@ int	cmd_suffix(t_token **cursor, t_stack **stack)
  * @return 1 in case of success
  ******************************************************************************/
 
-int	cmd(t_token **cursor, t_stack **stack)
+int	cmd(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
 	if ((*cursor)->token_type == E_WORD)
 	{
 		(*stack) = push(E_WORD, (*stack));
+		create_cmd_node(ast,(*cursor));
 	}
 	else
 		return (-2);
@@ -114,8 +114,11 @@ int	cmd(t_token **cursor, t_stack **stack)
  * @return 1 in case of success
  ******************************************************************************/
 
-int	cmd_arg(t_token **cursor, t_stack **stack)
+int	cmd_arg(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
+	t_token *token;
+
+	token = (*cursor);
 	if ((*cursor)->token_type == E_WORD)
 		(*stack) = push(E_WORD,(*stack));
 	else if (((*cursor)->token_type == E_SINGLE_QUOTE)
@@ -124,11 +127,13 @@ int	cmd_arg(t_token **cursor, t_stack **stack)
 		(*stack) = push((*cursor)->token_type,(*stack));
 		(*stack) = push(E_WORD,(*stack));
 		(*stack) = push((*cursor)->token_type,(*stack));
+		token = token->next_token;
 	}
 	else
 		return (-2);
 	if ((*stack) == NULL)
 		return (-1);
+	create_cmd_arg_node(ast,token);
 	return (1);
 }
 
@@ -148,7 +153,7 @@ int	cmd_arg(t_token **cursor, t_stack **stack)
  * @return 1 in case of success
  ******************************************************************************/
 
-int	redir_op(t_token **cursor, t_stack **stack)
+int	redir_op(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
 	if ((*cursor)->token_type == E_HEREDOC)
 		(*stack) = push(E_HEREDOC,(*stack));

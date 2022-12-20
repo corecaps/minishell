@@ -78,6 +78,28 @@ void print_debug(t_token_type type)
 			printf("[[?]]");
 	}
 }
+
+void print_ast_debug(t_ast *node)
+{
+	if (!node)
+		return;
+	printf("Node type :\t");
+	print_debug(node->type);
+	printf("\t\tcontent\t[%s]",node->token_node->value);
+	printf("\n");
+	if (node->left)
+	{
+		printf("----------------------->\n");
+		printf("[left] ->\n");
+		print_ast_debug(node->left);
+	}
+	if (node->right)
+	{
+		printf("----------------------->\n");
+		printf("[right] ->\n");
+		print_ast_debug(node->right);
+	}
+}
 /******************************************************************************
  * Apply grammar rules on non terminal token pushing the right production
  * on parsing stack for the ll(1) predictive descent parser
@@ -89,10 +111,10 @@ void print_debug(t_token_type type)
  * @return -1 in case of memory error
  ******************************************************************************/
 
-static int	get_prod(t_token_type non_terminal, t_token **cursor, t_stack **stack)
+static int	get_prod(t_token_type non_terminal, t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
 	int	result;
-	int (*prod[9])(t_token **,t_stack **stack);
+	int (*prod[9])(t_token **,t_stack **stack,t_ast_builder *ast);
 
 	printf("Applying rules for ");
 	print_debug(non_terminal);
@@ -111,7 +133,7 @@ static int	get_prod(t_token_type non_terminal, t_token **cursor, t_stack **stack
 	prod[6] = cmd;
 	prod[7] = cmd_arg;
 	prod[8] = redir_op;
-	result = prod[non_terminal-E_COMMAND_LINE](cursor,stack);
+	result = prod[non_terminal-E_COMMAND_LINE](cursor,stack,ast);
 	return (result);
 }
 
@@ -174,7 +196,11 @@ int	parse(t_data *data)
 	t_token			*cursor;
 	int				result;
 	t_stack			*debug;
+	t_ast_builder	ast;
+
 	cursor = data->start_token;
+	ast.root = NULL;
+	ast.current = NULL;
 	parsing_stack = push(E_END_OF_TOKEN, NULL);
 	parsing_stack = push(E_COMMAND_LINE, parsing_stack);
 	printf("Parsing token list size : [%d]\n", count_token(data->start_token));
@@ -202,7 +228,7 @@ int	parse(t_data *data)
 			if (state >= E_END_OF_TOKEN)
 				return (-3);
 			result = get_prod(state, &cursor,
-								&parsing_stack);
+								&parsing_stack,&ast);
 			if (result < 0)
 				return (result);
 			printf("\n===New Prod added====");
@@ -245,5 +271,7 @@ int	parse(t_data *data)
 	}
 	if (cursor && cursor->token_type != E_END_OF_TOKEN)
 		return (-2);
+	printf("==========================AST==========================\n");
+	print_ast_debug(ast.root);
 	return (1);
 }
