@@ -13,93 +13,6 @@
 #include "minishell.h"
 #include "parser.h"
 
-void print_debug(t_token_type type)
-{
-	switch (type)
-	{
-		case E_COMMAND_LINE:
-			printf("[COMMAND_LINE]");
-			break;
-		case E_PIPED_COMMAND:
-			printf("[PIPED_COMMAND]");
-			break;
-		case E_COMPLETE_COMMAND:
-			printf("[COMPLETE COMMAND]");
-			break;
-		case E_COMMAND_PREFIX:
-			printf("[COMMAND PREFIX]");
-			break;
-		case E_COMMAND_SUFFIX:
-			printf("[COMMAND SUFFIX]");
-			break;
-		case E_REDIRECTION:
-			printf("[REDIRECTION]");
-			break;
-		case E_COMMAND:
-			printf("[COMMAND]");
-			break;
-		case E_COMMAND_ARG:
-			printf("[COMMAND_ARG]");
-			break;
-		case E_PIPE:
-			printf("[PIPE]");
-			break;
-		case E_REDIRECTION_OP:
-			printf("[REDIR OP]");
-			break;
-		case E_WORD:
-			printf("[WORD]");
-			break;
-		case E_SINGLE_QUOTE:
-			printf("[SQUOTE]");
-			break;
-		case E_DOULE_QUOTE:
-			printf("[DQUOTE]");
-			break;
-		case E_HEREDOC:
-			printf("[<<]");
-			break;
-		case E_APPEND:
-			printf("[>>]");
-			break;
-		case E_INFILE:
-			printf("[<]");
-			break;
-		case E_OUTFILE:
-			printf("[>]");
-			break;
-		case E_EPSILON:
-			printf("[]");
-			break;
-		case E_END_OF_TOKEN:
-			printf("[END]");
-			break;
-		default:
-			printf("[[?]]");
-	}
-}
-
-void print_ast_debug(t_ast *node)
-{
-	if (!node)
-		return;
-	printf("Node type :\t");
-	print_debug(node->type);
-	printf("\t\tcontent\t[%s]",node->token_node->value);
-	printf("\n");
-	if (node->left)
-	{
-		printf("----------------------->\n");
-		printf("[left] ->\n");
-		print_ast_debug(node->left);
-	}
-	if (node->right)
-	{
-		printf("----------------------->\n");
-		printf("[right] ->\n");
-		print_ast_debug(node->right);
-	}
-}
 /******************************************************************************
  * Apply grammar rules on non terminal token pushing the right production
  * on parsing stack for the ll(1) predictive descent parser
@@ -111,17 +24,11 @@ void print_ast_debug(t_ast *node)
  * @return -1 in case of memory error
  ******************************************************************************/
 
-static int	get_prod(t_token_type non_terminal, t_token **cursor, t_stack **stack,t_ast_builder *ast)
+static int	get_prod(t_token_type non_terminal, t_token **cursor, t_data *data)
 {
 	int	result;
-	int (*prod[9])(t_token **,t_stack **stack,t_ast_builder *ast);
+	int (*prod[9])(t_token **,t_data *data);
 
-	printf("Applying rules for ");
-	print_debug(non_terminal);
-	printf("non terminal\n");
-	printf("cursor token type :");
-	print_debug((*cursor)->token_type);
-	printf("  value %s\n",(*cursor)->value);
 	if (non_terminal > E_REDIRECTION_OP || non_terminal < E_COMMAND_LINE)
 		return (-3);
 	prod[0] = cmd_line;
@@ -133,7 +40,7 @@ static int	get_prod(t_token_type non_terminal, t_token **cursor, t_stack **stack
 	prod[6] = cmd;
 	prod[7] = cmd_arg;
 	prod[8] = redir_op;
-	result = prod[non_terminal-E_COMMAND_LINE](cursor,stack,ast);
+	result = prod[non_terminal-E_COMMAND_LINE](cursor,data);
 	return (result);
 }
 
@@ -191,87 +98,44 @@ static int	get_prod(t_token_type non_terminal, t_token **cursor, t_stack **stack
 
 int	parse(t_data *data)
 {
-	t_stack			*parsing_stack;
 	t_token_type	state;
 	t_token			*cursor;
 	int				result;
-	t_stack			*debug;
-	t_ast_builder	ast;
 
 	cursor = data->start_token;
-	ast.root = NULL;
-	ast.current = NULL;
-	parsing_stack = push(E_END_OF_TOKEN, NULL);
-	parsing_stack = push(E_COMMAND_LINE, parsing_stack);
-	printf("Parsing token list size : [%d]\n", count_token(data->start_token));
-	if (parsing_stack == NULL)
+	data->root = NULL;
+	data->current = NULL;
+	data->parsing_stack = push(E_END_OF_TOKEN, NULL);
+	data->parsing_stack = push(E_COMMAND_LINE, data->parsing_stack);
+	if (data->parsing_stack == NULL)
 		return (-1);
-	while (count_stack(parsing_stack))
+	while (count_stack(data->parsing_stack))
 	{
-		if (parsing_stack->type == E_END_OF_TOKEN)
+		if (data->parsing_stack->type == E_END_OF_TOKEN)
 			break;
-		if (parsing_stack->type > E_NON_TERMINALS)
+		if (data->parsing_stack->type > E_NON_TERMINALS)
 		{
 			// TODO Extract method here
-			state = pop(&parsing_stack);
-			printf("\ncurrent State :");
-			print_debug(state);
-			printf("\n");
-			printf("Current Stack Size : %d\n", count_stack(parsing_stack));
-			debug = parsing_stack;
-			while (debug)
-			{
-				print_debug(debug->type);
-				debug =debug->next;
-			}
-			printf("\n===============================\n");
+			state = pop(&data->parsing_stack);
 			if (state >= E_END_OF_TOKEN)
 				return (-3);
-			result = get_prod(state, &cursor,
-								&parsing_stack,&ast);
+			result = get_prod(state, &cursor, data);
 			if (result < 0)
 				return (result);
-			printf("\n===New Prod added====");
-			printf("Current Stack Size : %d\n\n", count_stack(parsing_stack));
-			debug = parsing_stack;
-			while (debug)
-			{
-				print_debug(debug->type);
-				debug =debug->next;
-			}
-			printf("\n");
 		}
 		else
 		{
 			// TODO extract method here
-			state = pop(&parsing_stack);
+			state = pop(&data->parsing_stack);
 			if (state == E_EPSILON)
-			{
-				printf("[]->Epsilonn -> Poped empty\n");
 				continue;
-			}
 			if (cursor->token_type == state)
-			{
-				printf("\n==============================================\n");
-				printf("========Validating ");
-				print_debug(state);
-				printf(" [%s]===========\n",cursor->value);
-				printf("==============================================\n\n");
 				cursor = cursor->next_token;
-				// TODO Create AST Node here
-			}
 			else
-			{
-				printf("Missing :\t");
-				print_debug(state);
-				printf(" token\n");
 				return (-2);
-			}
 		}
 	}
 	if (cursor && cursor->token_type != E_END_OF_TOKEN)
 		return (-2);
-	printf("==========================AST==========================\n");
-	print_ast_debug(ast.root);
 	return (1);
 }

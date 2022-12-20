@@ -20,23 +20,22 @@
  * @return -2 in case of syntax error
  * @return 1 in case of success
  ******************************************************************************/
-int	cmd_line(t_token **cursor, t_stack **stack,t_ast_builder *ast)
+int	cmd_line(t_token **cursor, t_data *data)
 {
-	(void) ast;
 	if (((*cursor)->token_type >= E_HEREDOC
 		 && (*cursor)->token_type <= E_OUTFILE) ||
 		(*cursor)->token_type == E_WORD
 		|| (*cursor)->token_type == E_DOULE_QUOTE
 		|| (*cursor)->token_type == E_SINGLE_QUOTE)
 	{
-		(*stack) = push(E_PIPED_COMMAND,(*stack));
-		(*stack) = push(E_COMPLETE_COMMAND,(*stack));
+		data->parsing_stack = push(E_PIPED_COMMAND,data->parsing_stack);
+		data->parsing_stack = push(E_COMPLETE_COMMAND,data->parsing_stack);
 	}
 	else if ((*cursor)->token_type == E_END_OF_TOKEN)
 		return (1);
 	else
 		return (-2);
-	if ((*stack) == NULL)
+	if (data->parsing_stack == NULL)
 		return (-1);
 	return (1);
 }
@@ -51,20 +50,20 @@ int	cmd_line(t_token **cursor, t_stack **stack,t_ast_builder *ast)
  * @return 1 in case of success
  ******************************************************************************/
 
-int	piped_cmd(t_token **cursor, t_stack **stack,t_ast_builder *ast)
+int	piped_cmd(t_token **cursor, t_data *data)
 {
 	if ((*cursor)->token_type == E_PIPE)
 	{
-		(*stack) = push(E_PIPED_COMMAND,(*stack));
-		(*stack) = push(E_COMPLETE_COMMAND,(*stack));
-		(*stack) = push(E_PIPE,(*stack));
-		create_pipe_node(ast,(*cursor));
+		data->parsing_stack = push(E_PIPED_COMMAND,data->parsing_stack);
+		data->parsing_stack = push(E_COMPLETE_COMMAND,data->parsing_stack);
+		data->parsing_stack = push(E_PIPE,data->parsing_stack);
+		create_pipe_node(data,(*cursor));
 	}
 	else if ((*cursor)->token_type == E_END_OF_TOKEN)
-		(*stack) = push(E_EPSILON,(*stack));
+		data->parsing_stack = push(E_EPSILON,data->parsing_stack);
 	else
 		return (-2);
-	if ((*stack) == NULL)
+	if (data->parsing_stack == NULL)
 		return (-1);
 	return (1);
 }
@@ -77,22 +76,21 @@ int	piped_cmd(t_token **cursor, t_stack **stack,t_ast_builder *ast)
  * @return 1 in case of success
  ******************************************************************************/
 
-int	cpl_cmd(t_token **cursor, t_stack **stack,t_ast_builder *ast)
+int	cpl_cmd(t_token **cursor, t_data *data)
 {
-	(void) ast;
 	if (((*cursor)->token_type >= E_HEREDOC
 		 && (*cursor)->token_type <= E_OUTFILE)
 		|| (*cursor)->token_type == E_WORD
 		|| (*cursor)->token_type == E_DOULE_QUOTE
 		|| (*cursor)->token_type == E_SINGLE_QUOTE)
 	{
-		(*stack) = push(E_COMMAND_SUFFIX,(*stack));
-		(*stack) = push(E_COMMAND,(*stack));
-		(*stack) = push(E_COMMAND_PREFIX,(*stack));
+		data->parsing_stack = push(E_COMMAND_SUFFIX,data->parsing_stack);
+		data->parsing_stack = push(E_COMMAND,data->parsing_stack);
+		data->parsing_stack = push(E_COMMAND_PREFIX,data->parsing_stack);
 		//TODO CREATE COMMAND NODE
 	} else
 		return (-2);
-	if ((*stack) == NULL)
+	if (data->parsing_stack == NULL)
 		return (-1);
 	return (1);
 }
@@ -105,18 +103,18 @@ int	cpl_cmd(t_token **cursor, t_stack **stack,t_ast_builder *ast)
  * @return 1 in case of success
  ******************************************************************************/
 
-int	redir(t_token **cursor, t_stack **stack,t_ast_builder *ast)
+int	redir(t_token **cursor, t_data *data)
 {
 	if ((*cursor)->token_type >= E_HEREDOC
 		&& (*cursor)->token_type <= E_OUTFILE)
 	{
-		(*stack) = push(E_WORD,(*stack));
-		(*stack) = push(E_REDIRECTION_OP,(*stack));
-		create_redir_node(ast,(*cursor));
+		data->parsing_stack = push(E_WORD,data->parsing_stack);
+		data->parsing_stack = push(E_REDIRECTION_OP,data->parsing_stack);
+		create_redir_node(data,(*cursor));
 	}
 	else
 		return (-2);
-	if ((*stack) == NULL)
+	if (data->parsing_stack == NULL)
 		return (-1);
 	return (1);
 }

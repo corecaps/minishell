@@ -65,6 +65,9 @@ typedef struct s_data
 	int		open_quote;
 	char	*line;
 	t_token	*start_token;
+	t_ast	*root;
+	t_ast	*current;
+	t_stack	*parsing_stack;
 }	t_data;
 
 #endif
