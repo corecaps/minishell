@@ -28,6 +28,8 @@ REDIRECTION
 
 CMD
                  : WORD
+                 | SINGLE_QUOTE WORD DOUBLE_QUOTE
+                 | DOUBLE_QUOTE WORD DOUBLE_QUOTE
                  ;
 CMD_ARG
                  : WORD
