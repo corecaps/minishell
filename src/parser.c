@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 11:03:27 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/14 11:03:38 by jgarcia          ###   ########.fr       */
+/*   Updated: 2022/12/20 11:59:38 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,14 +114,14 @@ void print_ast_debug(t_ast *node)
 static int	get_prod(t_token_type non_terminal, t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
 	int	result;
-	int (*prod[9])(t_token **,t_stack **stack,t_ast_builder *ast);
+	int	(*prod[9])(t_token **, t_stack **stack, t_ast_builder *ast);
 
 	printf("Applying rules for ");
 	print_debug(non_terminal);
-	printf("non terminal\n");
+	printf(" non terminal\n");
 	printf("cursor token type :");
 	print_debug((*cursor)->token_type);
-	printf("  value %s\n",(*cursor)->value);
+	printf("  value %s\n", (*cursor)->value);
 	if (non_terminal > E_REDIRECTION_OP || non_terminal < E_COMMAND_LINE)
 		return (-3);
 	prod[0] = cmd_line;
@@ -133,9 +133,11 @@ static int	get_prod(t_token_type non_terminal, t_token **cursor, t_stack **stack
 	prod[6] = cmd;
 	prod[7] = cmd_arg;
 	prod[8] = redir_op;
-	result = prod[non_terminal-E_COMMAND_LINE](cursor,stack,ast);
+	result = prod[non_terminal - E_COMMAND_LINE](cursor, stack, ast);
 	return (result);
 }
+
+// int get_prod(state,&cursor,&parsing_stack,&ast);
 
 /*******************************************************************************
  * Recursive descent ll(1) parsing algorithm
@@ -214,7 +216,7 @@ int	parse(t_data *data)
 		{
 			// TODO Extract method here
 			state = pop(&parsing_stack);
-			printf("\ncurrent State :");
+			printf("\ncurrent State : ");
 			print_debug(state);
 			printf("\n");
 			printf("Current Stack Size : %d\n", count_stack(parsing_stack));
@@ -222,7 +224,7 @@ int	parse(t_data *data)
 			while (debug)
 			{
 				print_debug(debug->type);
-				debug =debug->next;
+				debug = debug->next;
 			}
 			printf("\n===============================\n");
 			if (state >= E_END_OF_TOKEN)

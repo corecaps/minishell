@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/19 10:20:43 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/20 11:25:01 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	main(int argc, char **argv, char **env)
 	int		running;
 	t_data	*data;
 	int		debug;
-	t_token *bottom;
 
 	(void) argc;
 	(void) argv;
@@ -42,7 +41,17 @@ int	main(int argc, char **argv, char **env)
 		if (ft_strlen(data->line))
 			add_history(data->line);
 		lexer(data);
-		printf("Line read : \n\t >> %s\n", data->line);
+		// printf("===========> Lexer tokens check: <===========\n");
+		// while (data->start_token)
+		// {
+		// 	printf("Token type: %u\n", data->start_token->token_type);
+		// 	printf("Token value: [%s]\n\n", data->start_token->value);
+		// 	data->start_token = data->start_token->next_token;
+		// }
+		// printf("===========> Lexer token check ends <========\n");
+		// printf("Line read : \n\t >> %s\n", data->line);
+		// continue ;
+		// exit(0);
 		debug = parse(data);
 		printf("Parser return :%d\n",debug);
 		//exit(0);

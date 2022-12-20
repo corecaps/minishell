@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grammar_production.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:24:12 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/15 13:24:18 by jgarcia          ###   ########.fr       */
+/*   Updated: 2022/12/20 11:57:57 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ int	cmd_line(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 	else if ((*cursor)->token_type == E_END_OF_TOKEN)
 		return (1);
 	else
+	{
+		printf("DDDDDDDDDDDDDDDroping here\n");
 		return (-2);
+	}
 	if ((*stack) == NULL)
 		return (-1);
 	return (1);
