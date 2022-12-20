@@ -25,7 +25,10 @@
 
 int	cmd_prefix(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
-	if ((*cursor)->token_type == E_WORD)
+	(void) ast;
+	if ((*cursor)->token_type == E_WORD
+		|| (*cursor)->token_type == E_DOULE_QUOTE
+		|| (*cursor)->token_type == E_SINGLE_QUOTE)
 	{
 		(*stack) = push(E_EPSILON, (*stack));
 	}
@@ -56,6 +59,7 @@ int	cmd_prefix(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 
 int	cmd_suffix(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
+	(void) ast;
 	if ((*cursor)->token_type == E_PIPE
 		|| (*cursor)->token_type == E_END_OF_TOKEN)
 		(*stack) = push(E_EPSILON, (*stack));
@@ -93,6 +97,14 @@ int	cmd(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 	{
 		(*stack) = push(E_WORD, (*stack));
 		create_cmd_node(ast,(*cursor));
+	}
+	else if (((*cursor)->token_type == E_SINGLE_QUOTE)
+			 ||((*cursor)->token_type == E_DOULE_QUOTE))
+	{
+		(*stack) = push((*cursor)->token_type,(*stack));
+		(*stack) = push(E_WORD,(*stack));
+		(*stack) = push((*cursor)->token_type,(*stack));
+		create_cmd_node(ast,(*cursor)->next_token);
 	}
 	else
 		return (-2);
@@ -155,6 +167,7 @@ int	cmd_arg(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 
 int	redir_op(t_token **cursor, t_stack **stack,t_ast_builder *ast)
 {
+	(void) ast;
 	if ((*cursor)->token_type == E_HEREDOC)
 		(*stack) = push(E_HEREDOC,(*stack));
 	else if ((*cursor)->token_type == E_APPEND)
