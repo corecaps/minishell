@@ -34,8 +34,6 @@ int	cmd_line(t_token **cursor, t_data *data)
 	else if ((*cursor)->token_type == E_END_OF_TOKEN)
 		return (1);
 	else
-	{
-		printf("DDDDDDDDDDDDDDDroping here\n");
 		return (-2);
 	if (data->parsing_stack == NULL)
 		return (-1);

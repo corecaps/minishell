@@ -92,9 +92,6 @@ void print_ast_debug(t_ast *node,int depth)
 		printf("\t");
 	printf("Node type :\t");
 	print_debug(node->type);
-	i = 0;
-	while (i++ < depth)
-		printf("\t");
 	if (node->type == E_REDIRECTION)
 		printf("\t\tredir op[%s] redir file [%s]",node->token_node->value,node->token_node->next_token->value);
 	else
@@ -188,6 +185,7 @@ int	main(int argc, char **argv, char **env)
 			printf("Invalid Syntax\n");
 		else
 			printf("internal error\n");
+		del_ast(data->root);
 		//exit(0);
 //		free_all(data);
 	}
