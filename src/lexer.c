@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 09:34:48 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/20 11:16:56 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/22 16:35:20 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 static void	skip_whitespaces(t_data *data)
 {
 	while (data->line[data->end] == ' ' || data->line[data->end] == '\t'
-		   || data->line[data->end] == '\n' || data->line[data->end] == '\v'
-		   || data->line[data->end] == '\f' || data->line[data->end] == '\r')
+		|| data->line[data->end] == '\n' || data->line[data->end] == '\v'
+		|| data->line[data->end] == '\f' || data->line[data->end] == '\r')
 		data->end++;
 }
 
@@ -57,6 +57,7 @@ static void	add_redirect_token(t_data *data)
 
 static void	add_word_token(t_data *data, char sep)
 {
+	char	*rawvalue;
 	char	*value;
 
 	skip_whitespaces(data);
@@ -67,14 +68,16 @@ static void	add_word_token(t_data *data, char sep)
 				&& data->line[data->end] != '\v' && data->line[data->end] != '<'
 				&& data->line[data->end] != '\f' && data->line[data->end] != '|'
 				&& data->line[data->end] != '\r')
-			   && data->line[data->end] != 0)
+			&& data->line[data->end] != 0)
 			data->end++;
 	else
 		while (data->line[data->end] != sep && data->line != 0)
 			data->end++;
-	value = ft_substr(data->line, data->index, data->end - data->index);
-	if (!value)
+	rawvalue = ft_substr(data->line, data->index, data->end - data->index);
+	if (!rawvalue)
 		exit(EXIT_FAILURE);
+	value = expand(rawvalue);
+	free(rawvalue);
 	add_token(data, E_WORD, value);
 }
 
@@ -118,5 +121,5 @@ void	lexer(t_data *data)
 		else
 			break ;
 	}
-	add_token(data,E_END_OF_TOKEN,"");
+	add_token(data, E_END_OF_TOKEN, "");
 }
