@@ -6,7 +6,7 @@
 #    By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/04 12:18:46 by jgarcia           #+#    #+#              #
-#    Updated: 2022/12/20 10:47:03 by latahbah         ###   ########.fr        #
+#    Updated: 2022/12/22 16:37:03 by latahbah         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,10 @@ RM = rm -f
 SRCDIR = src
 OBJDIR = obj
 BIN = bin
-SRC = minishell.c token_list.c ast.c lexer.c free_cmd.c stack.c parser.c grammar_production.c grammar_production_2.c
+SRC =	minishell.c			token_list.c			ast.c\
+		lexer.c				free_cmd.c				stack.c\
+		parser.c			grammar_production.c	grammar_production_2.c\
+		expand.c
 SRC += ast_builder.c
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h data_structures.h
