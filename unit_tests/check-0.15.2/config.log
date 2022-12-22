@@ -1115,7 +1115,7 @@ conftest.c:68:1: warning: function declaration isn't a prototype [-Wstrict-proto
 conftest.c:77:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
    77 | main ()
       | ^~~~
-/usr/bin/ld: /tmp/cciCOuq5.o: in function `main':
+/usr/bin/ld: /tmp/ccd4uP5g.o: in function `main':
 /home/corecaps/42/minishell/unit_tests/check-0.15.2/conftest.c:79: undefined reference to `InitOnceBeginInitialize'
 collect2: error: ld returned 1 exit status
 configure:16433: $? = 1
@@ -1211,7 +1211,7 @@ conftest.c:68:1: warning: function declaration isn't a prototype [-Wstrict-proto
 conftest.c:77:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
    77 | main ()
       | ^~~~
-/usr/bin/ld: /tmp/ccmGFtcJ.o: in function `main':
+/usr/bin/ld: /tmp/ccvkHZMA.o: in function `main':
 /home/corecaps/42/minishell/unit_tests/check-0.15.2/conftest.c:79: undefined reference to `InitOnceComplete'
 collect2: error: ld returned 1 exit status
 configure:16446: $? = 1

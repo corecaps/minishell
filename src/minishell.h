@@ -38,4 +38,6 @@ void			del_stack(t_stack *head);
 int				count_stack(t_stack *head);
 int				parse(t_data *data);
 void			print_debug(t_token_type type);
+char			**get_path();
+char			*find_binary(char *name);
 #endif
