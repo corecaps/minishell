@@ -12,6 +12,130 @@
 
 #include "minishell.h"
 
+void print_debug(t_token_type type)
+{
+	switch (type)
+	{
+		case E_COMMAND_LINE:
+			printf("[COMMAND_LINE]");
+			break;
+		case E_PIPED_COMMAND:
+			printf("[PIPED_COMMAND]");
+			break;
+		case E_COMPLETE_COMMAND:
+			printf("[COMPLETE COMMAND]");
+			break;
+		case E_COMMAND_PREFIX:
+			printf("[COMMAND PREFIX]");
+			break;
+		case E_COMMAND_SUFFIX:
+			printf("[COMMAND SUFFIX]");
+			break;
+		case E_REDIRECTION:
+			printf("[REDIRECTION]");
+			break;
+		case E_COMMAND:
+			printf("[COMMAND]");
+			break;
+		case E_COMMAND_ARG:
+			printf("[COMMAND_ARG]");
+			break;
+		case E_PIPE:
+			printf("[PIPE]");
+			break;
+		case E_REDIRECTION_OP:
+			printf("[REDIR OP]");
+			break;
+		case E_WORD:
+			printf("[WORD]");
+			break;
+		case E_SINGLE_QUOTE:
+			printf("[SQUOTE]");
+			break;
+		case E_DOULE_QUOTE:
+			printf("[DQUOTE]");
+			break;
+		case E_HEREDOC:
+			printf("[<<]");
+			break;
+		case E_APPEND:
+			printf("[>>]");
+			break;
+		case E_INFILE:
+			printf("[<]");
+			break;
+		case E_OUTFILE:
+			printf("[>]");
+			break;
+		case E_EPSILON:
+			printf("[]");
+			break;
+		case E_END_OF_TOKEN:
+			printf("[END]");
+			break;
+		default:
+			printf("[[?]]");
+	}
+}
+
+void print_ast_debug(t_ast *node,int depth)
+{
+	int i;
+	if (!node)
+		return;
+	i = 0;
+	while (i++ < depth)
+		printf("\t");
+	printf("----------------------->\n");
+	i = 0;
+	while (i++ < depth)
+		printf("\t");
+	printf("Node type :\t");
+	print_debug(node->type);
+	i = 0;
+	while (i++ < depth)
+		printf("\t");
+	if (node->type == E_REDIRECTION)
+		printf("\t\tredir op[%s] redir file [%s]",node->token_node->value,node->token_node->next_token->value);
+	else
+		printf("\t\tcontent\t[%s]",node->token_node->value);
+	printf("\n");
+	if (node->left)
+	{
+		i = 0;
+		while (i++ < depth)
+			printf("\t");
+		printf("[left] ->\n");
+		print_ast_debug(node->left,depth+1);
+	}
+	else
+	{
+		i = 0;
+		while (i++ < depth)
+			printf("\t");
+		printf("[left] -> [NULL]\n");
+	}
+	if (node->right)
+	{
+		i = 0;
+		while (i++ < depth)
+			printf("\t");
+		printf("[right] ->\n");
+		print_ast_debug(node->right,depth+1);
+	}
+	else
+	{
+		i = 0;
+		while (i++ < depth)
+			printf("\t");
+		printf("[right] -> [NULL]\n");
+	}
+	i = 0;
+	while (i++ < depth)
+		printf("\t");
+	printf("<-----------------------\n");
+}
+
 static	t_data	*data_init(void)
 {
 	t_data	*data;
@@ -53,7 +177,17 @@ int	main(int argc, char **argv, char **env)
 		// continue ;
 		// exit(0);
 		debug = parse(data);
-		printf("Parser return :%d\n",debug);
+		if (debug == 1)
+		{
+			printf("Syntax Valid, AST built\n");
+			print_ast_debug(data->root,0);
+		}
+		else if (debug == -1)
+			printf("Memory error\n");
+		else if (debug == -2)
+			printf("Invalid Syntax\n");
+		else
+			printf("internal error\n");
 		//exit(0);
 //		free_all(data);
 	}
