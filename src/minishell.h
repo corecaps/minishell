@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:55 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/22 14:09:42 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/22 14:47:21 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <readline/history.h>
 # include "data_structures.h"
 # include "lexer.h"
-# include "envs.h"
 # define PS1 "\033[0;32mMinishell\t\033[0m$"
 
 void			add_token(t_data *data, t_token_type type, char *value);

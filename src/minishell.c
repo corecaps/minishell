@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/22 14:01:51 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/22 14:48:36 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,19 +133,11 @@ void print_ast_debug(t_ast *node,int depth)
 	printf("<-----------------------\n");
 }
 
-static	t_data	*data_init(char **env)
+static	t_data	*data_init(void)
 {
 	t_data	*data;
 
 	data = (t_data *)malloc(sizeof(t_data));
-	data->env_array = get_env_array(env);
-	//test_get_env()
-	int i = 0;
-	while (data->env_array[i])
-	{
-		printf("%s=%s\n", data->env_array[i]->key, data->env_array[i]->value);
-		i++;
-	}
 	data->open_quote = -1;
 	data->start_token = NULL;
 	return (data);
@@ -163,7 +155,7 @@ int	main(int argc, char **argv, char **env)
 	running = 1;
 	while (running)
 	{
-		data = data_init(env);
+		data = data_init();
 		data->line = readline(PS1);
 		if (!data->line)
 			exit(EXIT_FAILURE);

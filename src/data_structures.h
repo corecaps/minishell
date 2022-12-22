@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:13:13 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/22 13:41:16 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/22 14:47:17 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,12 @@ typedef struct s_stack
 	struct s_stack	*next;
 }	t_stack;
 
-typedef struct s_env
-{
-	char	*key;
-	char	*value;
-}	t_env;
-
 typedef struct s_data
 {
 	int		index;
 	int		end;
 	int		open_quote;
 	char	*line;
-	t_env	**env_array;
 	t_token	*start_token;
 	t_ast	*root;
 	t_ast	*current;
