@@ -1,16 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_cmd.c                                         :+:      :+:    :+:   */
+/*   data_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:20:07 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/12 17:15:26 by latahbah         ###   ########.fr       */
+/*   Updated: 2022/12/19 10:21:07 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_data	*data_init(void)
+{
+	t_data	*data;
+
+	data = (t_data *)malloc(sizeof(t_data));
+	data->start_token = NULL;
+	data->line = NULL;
+	data->end = 0;
+	data->index = 0;
+	data->open_quote = -1;
+	return (data);
+}
 
 void	free_all(t_data *data)
 {

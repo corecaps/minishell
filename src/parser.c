@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 11:03:27 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/14 11:03:38 by jgarcia          ###   ########.fr       */
+/*   Updated: 2022/12/22 11:52:17 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ static int	get_prod(t_token_type non_terminal, t_token **cursor, t_data *data)
 	result = prod[non_terminal-E_COMMAND_LINE](cursor,data);
 	return (result);
 }
+
+// int get_prod(state,&cursor,&parsing_stack,&ast);
 
 /*******************************************************************************
  * Recursive descent ll(1) parsing algorithm
