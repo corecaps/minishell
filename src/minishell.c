@@ -148,6 +148,9 @@ int	main(int argc, char **argv, char **env)
 	int		running;
 	t_data	*data;
 	int		debug;
+	char **args;
+	char *full_path;
+	int i;
 
 	(void) argc;
 	(void) argv;
@@ -185,6 +188,8 @@ int	main(int argc, char **argv, char **env)
 			printf("Invalid Syntax\n");
 		else
 			printf("internal error\n");
+		runner(data,env);
+
 		del_ast(data->root);
 		//exit(0);
 //		free_all(data);

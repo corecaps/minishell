@@ -20,7 +20,7 @@ RM = rm -f
 SRCDIR = src
 OBJDIR = obj
 BIN = bin
-SRC = minishell.c token_list.c ast.c lexer.c free_cmd.c stack.c parser.c grammar_production.c grammar_production_2.c
+SRC = minishell.c token_list.c ast.c lexer.c stack.c parser.c grammar_production.c grammar_production_2.c
 SRC += ast_builder.c exec.c
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h data_structures.h

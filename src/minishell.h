@@ -17,6 +17,9 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <dirent.h>
+# include <unistd.h>
+# include <sys/wait.h>
 # include "data_structures.h"
 # include "lexer.h"
 # define PS1 "\033[0;32mMinishell\t\033[0m$"
@@ -40,4 +43,6 @@ int				parse(t_data *data);
 void			print_debug(t_token_type type);
 char			**get_path();
 char			*find_binary(char *name);
+char			**get_args(t_ast *command_node);
+int				runner(t_data *data,char **env);
 #endif
