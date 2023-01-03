@@ -44,5 +44,5 @@ void			print_debug(t_token_type type);
 char			**get_path();
 char			*find_binary(char *name);
 char			**get_args(t_ast *command_node);
-int runner(t_ast *current_node, char **env);
+int traverse_ast(t_ast *current_node, char **env);
 #endif

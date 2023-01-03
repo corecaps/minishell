@@ -939,7 +939,7 @@ PLEASE MAKE SURE TO LEAVE A GOOD SVN COMMIT MESSAGE.
 	tests/check_check_main.c, tests/check_check_master.c,
 	tests/check_check_msg.c, tests/check_check_sub.c,
 	tests/check_list.c: Completed test for initial logging feature, and
-	added feature to run multiple suites through an SRunner
+	added feature to exec_command_node multiple suites through an SRunner
 
 2001-06-30 03:27  amalec
 
@@ -1173,4 +1173,3 @@ PLEASE MAKE SURE TO LEAVE A GOOD SVN COMMIT MESSAGE.
 	tests/check_check_msg.c, tests/check_list.c, tests/check_stress.c:
 	Import into Sourceforge. Previous CVS version information resides
 	on Arien's local machine
-

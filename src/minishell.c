@@ -176,7 +176,7 @@ int	main(int argc, char **argv, char **env)
 				perror("fork error\n");
 			else if (pid == 0)
 			{
-				debug = runner(data->root, env);
+				debug = traverse_ast(data->root, env);
 				printf("\n[Status:%d]\n", debug);
 			}
 			else

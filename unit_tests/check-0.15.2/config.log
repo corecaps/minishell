@@ -137,7 +137,7 @@ configure:4202: $? = 0
 configure:4214: result: yes
 configure:4233: checking dependency style of gcc
 configure:4344: result: gcc3
-configure:4365: checking how to run the C preprocessor
+configure:4365: checking how to exec_command_node the C preprocessor
 configure:4396: gcc -E  conftest.c
 configure:4396: $? = 0
 configure:4410: gcc -E  conftest.c

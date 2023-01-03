@@ -101,7 +101,7 @@ Contributors:
     Michał Dębski
         (Use mkstemp() if available instead of tmpfile() or tempnam())
     Sebastian Dröge
-        (Kill running tests if SIGTERM or SIGINT are caught in test runner)
+        (Kill running tests if SIGTERM or SIGINT are caught in test traverse_ast)
     Matt Clarkson
         (Fix CMake checks using time.h for MinGW and MSVC)
     Mario Sanchez Prada

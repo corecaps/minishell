@@ -107,7 +107,7 @@ char **get_args(t_ast *command_node)
 	return (argv);
 }
 
-int run(t_ast *node, char **env)
+int exec_command_node(t_ast *node, char **env)
 {
 	char	*full_path;
 	char	**args;
@@ -132,24 +132,29 @@ int run(t_ast *node, char **env)
 	if (node->left)
 	{
 		printf("Redirecting stdin to %s\n",node->left->token_node->next_token->value);
-		redirections(node->left);
-
+		if (apply_redirections(node->left) == -1)
+			return (-2);
 	}
 		// TODO : handle heredoc
 	execve(full_path, args, env);
 	return (0);
 }
 
-void redirections(t_ast *node)
+int apply_redirections(t_ast *node)
 {
 	int fd;
-	if (node->type == E_REDIRECTION)
+	if (node->type == E_REDIRECTION && strcmp(node->token_node->value,"<<") != 0)
 	{
 		if (strcmp(node->token_node->value, "<") == 0)
 		{
 			fd = open(node->token_node->next_token->value, O_RDONLY);
-			dup2(fd,STDIN_FILENO);
-			close(fd);
+			if (fd == -1)
+				return (-1);//break execution
+			else
+			{
+				dup2(fd,STDIN_FILENO);
+				close(fd);
+			}
 		}
 		else if (strcmp(node->token_node->value, ">") == 0)
 		{
@@ -165,19 +170,21 @@ void redirections(t_ast *node)
 		}
 	}
 	if (node->left)
-		redirections(node->left);
+		if (apply_redirections(node->left) == -1)
+			return (-1);
 	if (node->right)
-		redirections(node->right);
+		if (apply_redirections(node->right) == -1)
+			return (-1);
 }
 
-int runner(t_ast *current_node, char **env)
+int traverse_ast(t_ast *current_node, char **env)
 {
 	int	status;
 	int	pipe_fd[2];
 	int	pid;
 
 	if (current_node->type == E_COMMAND)
-		return (run(current_node, env));
+		return (exec_command_node(current_node, env));
 	else if (current_node->type == E_PIPE)
 	{
 		status = pipe(pipe_fd);
@@ -195,7 +202,7 @@ int runner(t_ast *current_node, char **env)
 		{
 			close(pipe_fd[0]);
 			current_node->left->out_pipe = pipe_fd[1];
-			if (runner(current_node->left, env) < 0)
+			if (traverse_ast(current_node->left, env) < 0)
 				return (-4);
 			close (pipe_fd[1]);
 		}
@@ -207,7 +214,7 @@ int runner(t_ast *current_node, char **env)
 				current_node->right->in_pipe = pipe_fd[0];
 			else
 				current_node->right->left->in_pipe = pipe_fd[0];
-			if (runner(current_node->right, env) < 0)
+			if (traverse_ast(current_node->right, env) < 0)
 				return (-4);
 			close(pipe_fd[0]);
 			status = waitpid(pid,&status,0);

@@ -1326,7 +1326,7 @@ _AM_SUBST_NOTMAKE([AM_BACKSLASH])dnl
 AC_DEFUN([AM_PROG_INSTALL_STRIP],
 [AC_REQUIRE([AM_PROG_INSTALL_SH])dnl
 # Installed binaries are usually stripped using 'strip' when the user
-# run "make install-strip".  However 'strip' might not be the right
+# exec_command_node "make install-strip".  However 'strip' might not be the right
 # tool to use in cross-compilation environments, therefore Automake
 # will honor the 'STRIP' environment variable to overrule this program.
 dnl Don't test for $cross_compiling = yes, because it might be 'maybe'.
