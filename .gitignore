@@ -1,5 +1,11 @@
 minishell
 unit_tests/data_structures_test
+unit_tests/execution_test
+unit_tests/lexer_test
+unit_tests/parser_test
+unit_tests/pipe_test
+unit_tests/redirection_test
+
 # Prerequisites
 *.d
 
