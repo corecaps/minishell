@@ -50,6 +50,8 @@ typedef struct s_ast
 	struct s_ast	*parent;
 	struct s_ast	*left;
 	struct s_ast	*right;
+	int				in_pipe;
+	int				out_pipe;
 }	t_ast;
 
 typedef struct s_stack

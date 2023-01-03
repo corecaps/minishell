@@ -66,7 +66,8 @@ static void	add_word_token(t_data *data, char sep)
 				&& data->line[data->end] != '\n' && data->line[data->end] != '>'
 				&& data->line[data->end] != '\v' && data->line[data->end] != '<'
 				&& data->line[data->end] != '\f' && data->line[data->end] != '|'
-				&& data->line[data->end] != '\r')
+				&& data->line[data->end] != '\r' && data->line[data->end] != '\''
+				&& data->line[data->end] != '"')
 			   && data->line[data->end] != 0)
 			data->end++;
 	else

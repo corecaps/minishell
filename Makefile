@@ -27,9 +27,9 @@ HEADER = minishell.h data_structures.h
 SOURCE = $(addprefix $(SRCDIR)/,$(SRC))
 OBJECT = $(addprefix $(OBJDIR)/,$(OBJ))
 HEADERS = $(addprefix $(SRCDIR)/,$(HEADER))
-UNITTESTS = unit_tests/data_structures_test
+UNITTESTS = unit_tests/data_structures_test unit_tests/lexer_test unit_tests/parser_test unit_tests/exec_test
 
-all: $(BIN)/$(NAME)
+all: test $(BIN)/$(NAME)
 
 $(BIN)/$(NAME): $(OBJECT) $(LIBFT)
 	@echo '====>LINK<===='
@@ -42,7 +42,7 @@ debug: all
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@echo '====>COMPILATION<===='
 	@mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ | pv -L 10k -N "Compiling $@"
 
 $(LIBFT):
 	@echo '====>BUILDING LIBFT<===='
@@ -50,7 +50,14 @@ $(LIBFT):
 
 test: $(UNITTESTS)
 	@echo '====>RUNNING UNIT TESTS<===='
+	@echo '====>Testing : Data Structures<===='
 	./unit_tests/data_structures_test
+	@echo '====>Testing : Lexer<===='
+	./unit_tests/lexer_test
+	@echo '====>Testing : Parser<===='
+	./unit_tests/parser_test
+	@echo '====>Testing : Exec<===='
+	./unit_tests/exec_test
 
 $(UNITTESTS):
 	@echo '====>BUILDING UNIT TESTS<===='

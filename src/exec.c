@@ -12,8 +12,12 @@
 
 #include "minishell.h"
 #include "exec.h"
+#include <errno.h>
 
 
+//TODO: exec function
+//TODO: redirection handling function
+// TODO move to path_expander.c
 char	**get_path()
 {
 	char	*env_path;
@@ -23,7 +27,7 @@ char	**get_path()
 	path_array = ft_split(env_path,':');
 	return (path_array);
 }
-
+//TODO: move to path_expander.c
 char 	*find_binary(char *name)
 {
 	char			**path;
@@ -31,6 +35,10 @@ char 	*find_binary(char *name)
 	DIR				*dp;
 	int				i,result;
 	char			*final_path;
+
+	// TODO handle relative path
+	// TODO extract methods
+	// TODO norm
 	i = 0;
 	path = get_path();
 	while (path[i] != 0)
@@ -57,17 +65,12 @@ char 	*find_binary(char *name)
 	}
 	return (NULL);
 }
-
-char **get_args(t_ast *command_node)
+// TODO move to arguments.c
+static int count_args(t_ast *command_node)
 {
-	char	**argv;
-	int		argc;
-	int		i;
-	t_ast	*cursor;
+	int argc;
+	t_ast *cursor;
 
-	if (command_node == NULL || command_node->type != E_COMMAND
-		||command_node->right==NULL)
-		return (NULL);
 	argc = 0;
 	cursor = command_node->right;
 	while(cursor)
@@ -75,53 +78,115 @@ char **get_args(t_ast *command_node)
 		argc ++;
 		cursor = cursor->left;
 	}
-	argv = malloc(sizeof(char *)*(argc + 1));
+	return argc;
+}
+// TODO move to arguments.c
+char **get_args(t_ast *command_node)
+{
+	char	**argv;
+	int		argc;
+	int		i;
+	t_ast	*cursor;
+
+	if (command_node == NULL || command_node->type != E_COMMAND )
+		return (NULL);
+	argc = count_args(command_node);
+	argv = malloc(sizeof(char *)*(argc + 2));
 	if (argv == NULL)
 		return (NULL);
-	if (argc == 1) {
-		argv[0] = malloc(sizeof(char));
-		argv[0][0] = 0;
-		return (argv);
-	}
+	argv[0] = command_node->token_node->value;
 	i = 0;
 	cursor = command_node->right;
 	while (i < argc)
 	{
-//		argv[i] = malloc(sizeof(char) * strlen(cursor->token_node->value));
-//		if (argv[i] == NULL)
-//			return NULL;
-		argv[i] = cursor->token_node->value;
+		argv[i+1] = cursor->token_node->value;
 		cursor = cursor->left;
 		i++;
 	}
-	argv[i] = 0;
+	argv[i+1] = 0;
 	return (argv);
 }
 
-int	runner(t_data *data,char **env)
+int run(t_ast *node, char **env)
 {
 	char	*full_path;
 	char	**args;
 	int		pid;
-	int 	*wstat;
+	int		status;
 
-	if (data->root->type == E_COMMAND) {
-		full_path = find_binary(data->root->token_node->value);
-		args = get_args(data->root);
+	full_path = find_binary(node->token_node->value);
+	if (!full_path)
+	{
+		perror("command not found\n");
+		return (-1);
+	}
+	args = get_args(node);
+	if (node->in_pipe > 0)
+	{
+		dup2(node->in_pipe,STDIN_FILENO);
+		close(node->in_pipe);
+	}
+	if (node->out_pipe > 0)
+	{
+		dup2(node->out_pipe,STDOUT_FILENO);
+		close(node->out_pipe);
+	}
+	// TODO : create redirection using recursive function
+	// TODO : handle heredoc
+	pid = fork();
+	if (pid == 0)
+		execve(full_path, args, env);
+	else if (pid > 0)
+	{
+		status = 0;
+		waitpid(pid, &status, 0);
+		if (status != 0)
+			fprintf(stderr,"Error :[%d] \n", status);
+	}
+	else
+	{
+		perror("fork error\n");
+		return (-2);
+	}
+	return (0);
+}
+
+int runner(t_ast *current_node, char **env)
+{
+	int	status;
+	int	pipe_fd[2];
+	int	pid;
+
+	if (current_node->type == E_COMMAND)
+		return (run(current_node, env));
+	else if (current_node->type == E_PIPE)
+	{
+		status = pipe(pipe_fd);
+		if (status  < 0)
+		{
+			perror("pipe error\n");
+			return (-2);
+		}
 		pid = fork();
 		if (pid == 0)
 		{
-			printf("\n\n================child here===============\n\n");
-			execve(full_path, args, env);
-
-
-		}
-		else if (pid > 0)
-		{
-			waitpid(pid,wstat,0);
-			printf("\n\n================END OF CHILD===============\n\n");
+			close(pipe_fd[0]);
+			current_node->left->out_pipe = pipe_fd[1];
+			runner(current_node->left, env);
 		}
 		else
-			printf("fork error\n");
+		{
+
+			close(pipe_fd[1]);
+			if (current_node->right->type == E_COMMAND)
+				current_node->right->in_pipe = pipe_fd[0];
+			else
+				current_node->right->left->in_pipe = pipe_fd[0];
+			runner(current_node->right, env);
+			status = waitpid(pid,&status,0);
+			if (status != 0)
+				return (status);
+		}
 	}
+	return (0);
 }

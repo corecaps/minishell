@@ -53,7 +53,6 @@ START_TEST(test_del_ast)
 			add_right(node->parent, data->start_token);
 	}
 	del_ast(get_top(node));
-	free_all(data);
 	free(node);
 	ck_assert_int_eq(1, 1);
 }END_TEST

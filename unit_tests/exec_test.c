@@ -1,5 +1,6 @@
 #include "check.h"
 #include "../src/minishell.h"
+#include <string.h>
 
 START_TEST(test_get_path)
 {
@@ -8,12 +9,13 @@ START_TEST(test_get_path)
 
 	path = get_path();
 	pos = 0;
+	ck_assert_ptr_nonnull(path);
 	while (path[pos] != 0)
 	{
-		printf("[%d]-[%s]\n",pos,path[pos]);
+		ck_assert_ptr_nonnull(path[pos]);
 		pos ++;
 	}
-	ck_assert_int_eq(1,1);
+	ck_assert_int_gt(pos,0);
 } END_TEST
 
 START_TEST(test_find_binary)
@@ -21,12 +23,15 @@ START_TEST(test_find_binary)
 	char	*result;
 
 	result = find_binary("ls");
-	if (result)
-		printf("%s\n",result);
-	else
-		printf("binary not found\n");
-	ck_assert_int_eq(1,1);
+	ck_assert_int_eq(strcmp(result,"/usr/bin/ls"),0);
+	ck_assert_ptr_nonnull(result);
+	result = find_binary("cat");
+	ck_assert_int_eq(strcmp(result,"/usr/bin/cat"),0);
+	ck_assert_ptr_nonnull(result);
+	result = find_binary("i_do_not_exist");
+	ck_assert_ptr_null(result);
 } END_TEST
+
 Suite *exec_test(void)
 {
 	Suite *s;

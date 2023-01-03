@@ -142,15 +142,15 @@ static	t_data	*data_init(void)
 	data->start_token = NULL;
 	return (data);
 }
-
+// TODO : signal handling
+// TODO : prompt function
+// TODO : proper exit
+// TODO : leak fixing
 int	main(int argc, char **argv, char **env)
 {
 	int		running;
 	t_data	*data;
 	int		debug;
-	char **args;
-	char *full_path;
-	int i;
 
 	(void) argc;
 	(void) argv;
@@ -177,20 +177,25 @@ int	main(int argc, char **argv, char **env)
 		// continue ;
 		// exit(0);
 		debug = parse(data);
-		if (debug == 1)
+//		if (debug == 1)
+//		{
+//			printf("Syntax Valid, AST built\n");
+//			print_ast_debug(data->root,0);
+//		}
+//		else if (debug == -1)
+//			printf("Memory error\n");
+//		else if (debug == -2)
+//			printf("Invalid Syntax\n");
+//		else
+//			printf("internal error\n");
+		if (data->root && debug == 1)
 		{
-			printf("Syntax Valid, AST built\n");
-			print_ast_debug(data->root,0);
+			if (data->root->type == E_PIPE)
+				data->root->left->in_pipe = dup(0);
+			debug = runner(data->root, env);
+			printf("\n[Status:%d]\n",debug);
+			del_ast(data->root);
 		}
-		else if (debug == -1)
-			printf("Memory error\n");
-		else if (debug == -2)
-			printf("Invalid Syntax\n");
-		else
-			printf("internal error\n");
-		runner(data,env);
-
-		del_ast(data->root);
 		//exit(0);
 //		free_all(data);
 	}
