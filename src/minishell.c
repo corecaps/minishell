@@ -151,6 +151,8 @@ int	main(int argc, char **argv, char **env)
 	int		running;
 	t_data	*data;
 	int		debug;
+	int		pid;
+	int		status;
 
 	(void) argc;
 	(void) argv;
@@ -165,40 +167,25 @@ int	main(int argc, char **argv, char **env)
 		if (ft_strlen(data->line))
 			add_history(data->line);
 		lexer(data);
-		// printf("===========> Lexer tokens check: <===========\n");
-		// while (data->start_token)
-		// {
-		// 	printf("Token type: %u\n", data->start_token->token_type);
-		// 	printf("Token value: [%s]\n\n", data->start_token->value);
-		// 	data->start_token = data->start_token->next_token;
-		// }
-		// printf("===========> Lexer token check ends <========\n");
-		// printf("Line read : \n\t >> %s\n", data->line);
-		// continue ;
-		// exit(0);
 		debug = parse(data);
-//		if (debug == 1)
-//		{
-//			printf("Syntax Valid, AST built\n");
-//			print_ast_debug(data->root,0);
-//		}
-//		else if (debug == -1)
-//			printf("Memory error\n");
-//		else if (debug == -2)
-//			printf("Invalid Syntax\n");
-//		else
-//			printf("internal error\n");
 		if (data->root && debug == 1)
 		{
-			if (data->root->type == E_PIPE)
-				data->root->left->in_pipe = dup(0);
-			debug = runner(data->root, env);
-			printf("\n[Status:%d]\n",debug);
+			pid = fork();
+			if (pid < 0)
+				perror("fork error\n");
+			else if (pid == 0)
+			{
+				debug = runner(data->root, env);
+				printf("\n[Status:%d]\n", debug);
+			}
+			else
+			{
+				waitpid(pid,status,0);
+				if (status != 0)
+					fprintf(stderr,"Error :[%d] \n", status);
+			}
 			del_ast(data->root);
 		}
-		//exit(0);
-//		free_all(data);
 	}
 	return (0);
 }
-//need to handle add_token() in case NULL was returned

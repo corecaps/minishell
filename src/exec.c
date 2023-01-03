@@ -111,8 +111,6 @@ int run(t_ast *node, char **env)
 {
 	char	*full_path;
 	char	**args;
-	int		pid;
-	int		status;
 
 	full_path = find_binary(node->token_node->value);
 	if (!full_path)
@@ -121,33 +119,19 @@ int run(t_ast *node, char **env)
 		return (-1);
 	}
 	args = get_args(node);
-	if (node->in_pipe > 0)
+	if (node->in_pipe > -1)
 	{
 		dup2(node->in_pipe,STDIN_FILENO);
 		close(node->in_pipe);
 	}
-	if (node->out_pipe > 0)
+	if (node->out_pipe > -1)
 	{
 		dup2(node->out_pipe,STDOUT_FILENO);
 		close(node->out_pipe);
 	}
 	// TODO : create redirection using recursive function
 	// TODO : handle heredoc
-	pid = fork();
-	if (pid == 0)
-		execve(full_path, args, env);
-	else if (pid > 0)
-	{
-		status = 0;
-		waitpid(pid, &status, 0);
-		if (status != 0)
-			fprintf(stderr,"Error :[%d] \n", status);
-	}
-	else
-	{
-		perror("fork error\n");
-		return (-2);
-	}
+	execve(full_path, args, env);
 	return (0);
 }
 
@@ -168,11 +152,17 @@ int runner(t_ast *current_node, char **env)
 			return (-2);
 		}
 		pid = fork();
-		if (pid == 0)
+		if (pid < 0)
+		{
+			return (-3);
+		}
+		else if (pid == 0)
 		{
 			close(pipe_fd[0]);
 			current_node->left->out_pipe = pipe_fd[1];
-			runner(current_node->left, env);
+			if (runner(current_node->left, env) < 0)
+				return (-4);
+			close (pipe_fd[1]);
 		}
 		else
 		{
@@ -182,7 +172,9 @@ int runner(t_ast *current_node, char **env)
 				current_node->right->in_pipe = pipe_fd[0];
 			else
 				current_node->right->left->in_pipe = pipe_fd[0];
-			runner(current_node->right, env);
+			if (runner(current_node->right, env) < 0)
+				return (-4);
+			close(pipe_fd[0]);
 			status = waitpid(pid,&status,0);
 			if (status != 0)
 				return (status);
