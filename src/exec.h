@@ -12,5 +12,5 @@
 
 #ifndef EXEC_H
 # define EXEC_H
+void	redirections(t_ast *node);
 #endif
-

@@ -146,6 +146,7 @@ static	t_data	*data_init(void)
 // TODO : prompt function
 // TODO : proper exit
 // TODO : leak fixing
+
 int	main(int argc, char **argv, char **env)
 {
 	int		running;

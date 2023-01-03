@@ -13,7 +13,7 @@
 #include "minishell.h"
 #include "exec.h"
 #include <errno.h>
-
+#include <fcntl.h>
 
 //TODO: exec function
 //TODO: redirection handling function
@@ -129,10 +129,45 @@ int run(t_ast *node, char **env)
 		dup2(node->out_pipe,STDOUT_FILENO);
 		close(node->out_pipe);
 	}
-	// TODO : create redirection using recursive function
-	// TODO : handle heredoc
+	if (node->left)
+	{
+		printf("Redirecting stdin to %s\n",node->left->token_node->next_token->value);
+		redirections(node->left);
+
+	}
+		// TODO : handle heredoc
 	execve(full_path, args, env);
 	return (0);
+}
+
+void redirections(t_ast *node)
+{
+	int fd;
+	if (node->type == E_REDIRECTION)
+	{
+		if (strcmp(node->token_node->value, "<") == 0)
+		{
+			fd = open(node->token_node->next_token->value, O_RDONLY);
+			dup2(fd,STDIN_FILENO);
+			close(fd);
+		}
+		else if (strcmp(node->token_node->value, ">") == 0)
+		{
+			fd = open(node->token_node->next_token->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			dup2(fd,STDOUT_FILENO);
+			close(fd);
+		}
+		else if (strcmp(node->token_node->value, ">>") == 0)
+		{
+			fd = open(node->token_node->next_token->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			dup2(fd,STDOUT_FILENO);
+			close(fd);
+		}
+	}
+	if (node->left)
+		redirections(node->left);
+	if (node->right)
+		redirections(node->right);
 }
 
 int runner(t_ast *current_node, char **env)
