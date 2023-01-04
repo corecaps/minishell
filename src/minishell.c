@@ -181,7 +181,7 @@ int	main(int argc, char **argv, char **env)
 			}
 			else
 			{
-				waitpid(pid,status,0);
+				waitpid(pid,&status,0);
 				if (status != 0)
 					fprintf(stderr,"Error :[%d] \n", status);
 			}

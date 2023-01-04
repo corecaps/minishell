@@ -36,6 +36,11 @@ typedef enum e_token_type {
 	E_END_OF_TOKEN
 }	t_token_type;
 
+typedef struct s_here_doc {
+	char	*line;
+	struct s_here_doc	*next;
+}	t_here_doc;
+
 typedef struct s_token
 {
 	t_token_type	token_type;
@@ -52,6 +57,8 @@ typedef struct s_ast
 	struct s_ast	*right;
 	int				in_pipe;
 	int				out_pipe;
+	int				here_doc;
+	t_here_doc		*here_doc_list;
 }	t_ast;
 
 typedef struct s_stack

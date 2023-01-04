@@ -12,105 +12,14 @@
 
 #include "minishell.h"
 #include "exec.h"
-#include <errno.h>
-#include <fcntl.h>
-
-//TODO: exec function
-//TODO: redirection handling function
-// TODO move to path_expander.c
-char	**get_path()
-{
-	char	*env_path;
-	char	**path_array;
-
-	env_path = getenv("PATH");
-	path_array = ft_split(env_path,':');
-	return (path_array);
-}
-//TODO: move to path_expander.c
-char 	*find_binary(char *name)
-{
-	char			**path;
-	struct dirent	*entry;
-	DIR				*dp;
-	int				i,result;
-	char			*final_path;
-
-	// TODO handle relative path
-	// TODO extract methods
-	// TODO norm
-	i = 0;
-	path = get_path();
-	while (path[i] != 0)
-	{
-		dp = opendir(path[i]);
-		if (dp != NULL)
-		{
-			entry = readdir(dp);
-			while (entry)
-			{
-				result = ft_strncmp(name,entry->d_name, strlen(name)+1);
-				if (result == 0) { // TODO Refactor to prevent leak on the double join
-					final_path =ft_strjoin(ft_strjoin(path[i],"/"),name);
-					if (access(final_path,X_OK) != -1)
-						return (final_path);
-					else
-						return (NULL);
-				}
-				entry = readdir(dp);
-			}
-		}
-		closedir(dp);
-		i ++;
-	}
-	return (NULL);
-}
-// TODO move to arguments.c
-static int count_args(t_ast *command_node)
-{
-	int argc;
-	t_ast *cursor;
-
-	argc = 0;
-	cursor = command_node->right;
-	while(cursor)
-	{
-		argc ++;
-		cursor = cursor->left;
-	}
-	return argc;
-}
-// TODO move to arguments.c
-char **get_args(t_ast *command_node)
-{
-	char	**argv;
-	int		argc;
-	int		i;
-	t_ast	*cursor;
-
-	if (command_node == NULL || command_node->type != E_COMMAND )
-		return (NULL);
-	argc = count_args(command_node);
-	argv = malloc(sizeof(char *)*(argc + 2));
-	if (argv == NULL)
-		return (NULL);
-	argv[0] = command_node->token_node->value;
-	i = 0;
-	cursor = command_node->right;
-	while (i < argc)
-	{
-		argv[i+1] = cursor->token_node->value;
-		cursor = cursor->left;
-		i++;
-	}
-	argv[i+1] = 0;
-	return (argv);
-}
 
 int exec_command_node(t_ast *node, char **env)
 {
 	char	*full_path;
 	char	**args;
+	int		pid;
+	int		pipe_fd[2];
+	t_here_doc	*cursor;
 
 	full_path = find_binary(node->token_node->value);
 	if (!full_path)
@@ -134,18 +43,109 @@ int exec_command_node(t_ast *node, char **env)
 		printf("Redirecting stdin to %s\n",node->left->token_node->next_token->value);
 		if (apply_redirections(node->left) == -1)
 			return (-2);
+		if (node->here_doc == 1)
+		{
+			parse_here_doc(node);
+		}
 	}
-		// TODO : handle heredoc
+	if (node->here_doc_list)
+	{
+		if (pipe(pipe_fd) == -1)
+			return (-2);
+		pid = fork();
+		if (pid < 0)
+		{
+			perror("fork error\n");
+			return (-1);
+		}
+		if (pid == 0)
+		{
+			close(pipe_fd[0]);
+			cursor = node->here_doc_list;
+			while (cursor)
+			{
+				write(pipe_fd[1],cursor->line,ft_strlen(cursor->line));
+				write(pipe_fd[1],"\n",1);
+				cursor = cursor->next;
+			}
+			close(pipe_fd[1]);
+		}
+		else
+		{
+			close(pipe_fd[1]);
+			dup2(pipe_fd[0],STDIN_FILENO);
+			close(pipe_fd[0]);
+			waitpid(pid,NULL,0);
+		}
+	}
 	execve(full_path, args, env);
+	return (0);
+}
+int parse_here_doc(t_ast *node)
+{
+	t_here_doc	*current_line;
+	t_here_doc	*cursor;
+	t_here_doc	*prev;
+	t_ast		*cursor_node;
+
+	cursor_node = node;
+	node = node->left;
+	while (node->type != E_REDIRECTION)
+	{
+		node = node->left;
+	}
+	prev = NULL;
+	while (1)
+	{
+		current_line = malloc(sizeof(t_here_doc));
+		if (!current_line)
+			return (-1);
+		current_line->line = readline("heredoc> ");
+		current_line->next = NULL;
+		if (cursor_node->here_doc_list == NULL)
+			cursor_node->here_doc_list = current_line;
+		else
+		{
+			cursor = cursor_node->here_doc_list;
+			while (cursor->next)
+				cursor = cursor->next;
+			cursor->next = current_line;
+		}
+		if (ft_strncmp(current_line->line,node->token_node->next_token->value,ft_strlen(node->token_node->next_token->value)) == 0)
+		{
+			if (prev)
+				prev->next = NULL;
+			else
+				cursor_node->here_doc_list = NULL;
+			free(current_line->line);
+			free(current_line);
+			break;
+		}
+	}
 	return (0);
 }
 
 int apply_redirections(t_ast *node)
 {
 	int fd;
-	if (node->type == E_REDIRECTION && strcmp(node->token_node->value,"<<") != 0)
+	t_ast *cursor;
+
+	if (node->type == E_REDIRECTION)
 	{
-		if (strcmp(node->token_node->value, "<") == 0)
+		if (ft_strncmp(node->token_node->value, ">>",2) == 0)
+		{
+			fd = open(node->token_node->next_token->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			dup2(fd,STDOUT_FILENO);
+			close(fd);
+		}
+		else if (ft_strncmp(node->token_node->value, "<<",2) == 0)
+		{
+			cursor = node;
+			while (cursor->parent && cursor->type != E_COMMAND)
+				cursor = cursor->parent;
+			cursor->here_doc = 1;
+		}
+		else if (ft_strncmp(node->token_node->value, "<",1) == 0)
 		{
 			fd = open(node->token_node->next_token->value, O_RDONLY);
 			if (fd == -1)
@@ -156,18 +156,13 @@ int apply_redirections(t_ast *node)
 				close(fd);
 			}
 		}
-		else if (strcmp(node->token_node->value, ">") == 0)
+		else if (ft_strncmp(node->token_node->value, ">",1) == 0)
 		{
 			fd = open(node->token_node->next_token->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			dup2(fd,STDOUT_FILENO);
 			close(fd);
 		}
-		else if (strcmp(node->token_node->value, ">>") == 0)
-		{
-			fd = open(node->token_node->next_token->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			dup2(fd,STDOUT_FILENO);
-			close(fd);
-		}
+
 	}
 	if (node->left)
 		if (apply_redirections(node->left) == -1)
@@ -175,6 +170,7 @@ int apply_redirections(t_ast *node)
 	if (node->right)
 		if (apply_redirections(node->right) == -1)
 			return (-1);
+	return (0);
 }
 
 int traverse_ast(t_ast *current_node, char **env)
