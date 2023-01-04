@@ -40,13 +40,10 @@ int exec_command_node(t_ast *node, char **env)
 	}
 	if (node->left)
 	{
-		printf("Redirecting stdin to %s\n",node->left->token_node->next_token->value);
 		if (apply_redirections(node->left) == -1)
 			return (-2);
 		if (node->here_doc == 1)
-		{
 			parse_here_doc(node);
-		}
 	}
 	if (node->here_doc_list)
 	{
@@ -66,6 +63,7 @@ int exec_command_node(t_ast *node, char **env)
 			{
 				write(pipe_fd[1],cursor->line,ft_strlen(cursor->line));
 				write(pipe_fd[1],"\n",1);
+				//TODO free cursor->line and cursor
 				cursor = cursor->next;
 			}
 			close(pipe_fd[1]);
@@ -75,7 +73,9 @@ int exec_command_node(t_ast *node, char **env)
 			close(pipe_fd[1]);
 			dup2(pipe_fd[0],STDIN_FILENO);
 			close(pipe_fd[0]);
+			execve(full_path, args, env);
 			waitpid(pid,NULL,0);
+			return (0);
 		}
 	}
 	execve(full_path, args, env);
@@ -121,14 +121,15 @@ int parse_here_doc(t_ast *node)
 			free(current_line);
 			break;
 		}
+		prev = current_line;
 	}
 	return (0);
 }
 
-int apply_redirections(t_ast *node)
+int	apply_redirections(t_ast *node)
 {
-	int fd;
-	t_ast *cursor;
+	int		fd;
+	t_ast	*cursor;
 
 	if (node->type == E_REDIRECTION)
 	{
