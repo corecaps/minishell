@@ -1,8 +1,23 @@
-//
-// Created by corecaps on 04/01/23.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   arguments.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/05 10:36:36 by jgarcia           #+#    #+#             */
+/*   Updated: 2023/01/05 10:36:41 by jgarcia          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "exec.h"
+
+/*******************************************************************************
+ * Count the number of arguments childs of a E_COMMAND node
+ * @param command_node Node of type E_COMMAND
+ * @return number of arguments
+ ******************************************************************************/
 
 int count_args(t_ast *command_node)
 {
@@ -18,6 +33,12 @@ int count_args(t_ast *command_node)
 	}
 	return argc;
 }
+
+/******************************************************************************
+ * Create an array of arguments from a E_COMMAND node
+ * @param command_node Node of type E_COMMAND
+ * @return argv array
+ ******************************************************************************/
 
 char **get_args(t_ast *command_node)
 {
