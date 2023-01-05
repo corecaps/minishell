@@ -34,6 +34,7 @@ int exec_command_node(t_ast *node, char ***env)
 	full_path = find_binary(node->token_node->value);
 	if (!full_path)
 		return (-3);
+	printf("full path: %s\n", full_path);
 	args = get_args(node);
 	if (node->in_pipe > -1)
 	{

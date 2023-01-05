@@ -56,6 +56,8 @@ int	main(int argc, char **argv, char **env)
 			{
 				status = traverse_ast(data->root, &env);
 				printf("\n[Status:%d]\n", status);
+				if (status == -3)
+					printf("Command [%s] not found\n", data->root->token_node->value);
 			}
 			else
 			{

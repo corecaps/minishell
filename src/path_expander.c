@@ -33,6 +33,18 @@ char	**get_path()
  * @return the full path of the binary
  * @param name the name of the binary
  *****************************************************************************/
+char *get_parent(char *path)
+{
+	char *parent;
+
+	parent = ft_strrchr(path,'/');
+	if (parent)
+	{
+		*parent = '\0';
+	}
+
+	return (path);
+}
 
 char 	*find_binary(char *name)
 {
@@ -46,6 +58,8 @@ char 	*find_binary(char *name)
 		return (name);
 	if (name[0] == '.' && name[1] == '/')
 		return (ft_strjoin(getcwd(NULL,0),name+1));
+	if (name[0] == '.' && name[1] == '.' && name[2] == '/')
+		return(ft_strjoin(get_parent(getcwd(NULL,0)),name+2));
 	// TODO: add support for  ../
 	// TODO : add support for builtins (cd, echo, exit, export, pwd, unset, env, exit)
 	i = 0;
