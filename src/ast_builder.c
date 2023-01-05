@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 #include "parser.h"
-
+// TODO: add an init_node function
 int create_redir_node(t_data *data, t_token *token)
 {
 	t_ast *new_node;

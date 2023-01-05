@@ -42,6 +42,10 @@ char 	*find_binary(char *name)
 	int				i,result;
 	char			*final_path;
 
+	if (name[0] == '/')
+		return (name);
+	if (name[0] == '.' && name[1] == '/')
+		return (ft_strjoin(getcwd(NULL,0),name+1));
 	i = 0;
 	path = get_path();
 	while (path[i] != 0)
