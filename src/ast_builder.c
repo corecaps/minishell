@@ -25,6 +25,8 @@ int create_redir_node(t_data *data, t_token *token)
 	new_node->type = E_REDIRECTION;
 	new_node->right = NULL;
 	new_node->left = NULL;
+	new_node->here_doc = -1;
+	new_node->here_doc_list = NULL;
 	if (data->root == NULL)
 	{
 		new_node->parent = NULL;
@@ -56,6 +58,10 @@ int create_cmd_node(t_data *data,t_token *token)
 	new_node->type = E_COMMAND;
 	new_node->left = NULL;
 	new_node->right = NULL;
+	new_node->in_pipe = -1;
+	new_node->out_pipe = -1;
+	new_node->here_doc = -1;
+	new_node->here_doc_list = NULL;
 	if (data->root == NULL)
 	{
 		new_node->parent = NULL;
@@ -100,6 +106,10 @@ int create_pipe_node(t_data *data,t_token *token)
 	new_node->type = E_PIPE;
 	new_node->token_node = token;
 	new_node->right = NULL;
+	new_node->in_pipe = -1;
+	new_node->out_pipe = -1;
+	new_node->here_doc = -1;
+	new_node->here_doc_list = NULL;
 	if (data->current->type == E_COMMAND
 		&& data->current->parent == NULL)
 	{
@@ -131,7 +141,9 @@ int create_cmd_arg_node(t_data *data,t_token *token)
 	new_node->left = NULL;
 	new_node->right = NULL;
 	new_node->type = E_COMMAND_ARG;
+	new_node->here_doc = -1;
 	new_node->token_node = token;
+	new_node->here_doc_list = NULL;
 	if (data->current->type == E_COMMAND
 		&& data->current->right == NULL)
 	{

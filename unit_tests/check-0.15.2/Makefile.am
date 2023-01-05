@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-## run tests after everything else
+## exec_command_node tests after everything else
 
 if MAKE_DOCS
 OPTIONAL_DOC_TARGET = doc

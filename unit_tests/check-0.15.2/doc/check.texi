@@ -1469,7 +1469,7 @@ error will be created and reported to the @code{SRunner}.
 In a large program, it will be convenient to create multiple suites,
 each testing a module of the program.  While one can create several
 test programs, each running one @code{Suite}, it may be convenient to
-create one main test program, and use it to run multiple suites.  The
+create one main test program, and use it to exec_command_node multiple suites.  The
 Check test suite provides an example of how to do this. The main
 testing program is called @code{check_check}, and has a header file
 that declares suite creation functions for all the module tests:
@@ -2130,7 +2130,7 @@ class ShellTests(subunit.ExecTestCase):
 @end example
 
 In this example, running the test suite ShellTests in python (using any test
-runner - unittest.py, tribunal, trial, nose or others) will run
+traverse_ast - unittest.py, tribunal, trial, nose or others) will run
 ./foo/check_driver and ./foo/other_driver and report on their result.
 
 Subunit is hosted on launchpad - the @uref{https://launchpad.net/subunit/,

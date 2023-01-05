@@ -12,13 +12,24 @@
 
 #include "minishell.h"
 
+/***************************************************************************
+ * Get the top of the Abstract Syntax Tree
+ * @param node any node of the Abstract Syntax Tree
+ * @return the top of the Abstract Syntax Tree
+ ****************************************************************************/
+
 t_ast	*get_top(t_ast *node)
 {
 	while (node && node->parent)
 		node = node->parent;
 	return (node);
 }
-
+/*****************************************************************************
+ * Add a child to node and set the parent of the child to node
+ * @param parent the parent node
+ * @param token the token to add to the node
+ * @return the leftmost node of the Abstract Syntax Tree
+ ****************************************************************************/
 t_ast	*add_left(t_ast *parent, t_token *token)
 {
 	t_ast	*new_node;
@@ -29,11 +40,22 @@ t_ast	*add_left(t_ast *parent, t_token *token)
 	new_node->token_node = token;
 	new_node->left = NULL;
 	new_node->right = NULL;
+	new_node->in_pipe = -1;
+	new_node->out_pipe = -1;
+	new_node->here_doc = -1;
+	new_node->here_doc_list = NULL;
 	new_node->parent = parent;
 	if (parent)
 		parent->left = new_node;
 	return (new_node);
 }
+
+/*****************************************************************************
+ * Add a child to node and set the parent of the child to node
+ * @param parent the parent node
+ * @param token the token to add to the node
+ * @return the rightmost node of the Abstract Syntax Tree
+ *****************************************************************************/
 
 t_ast	*add_right(t_ast *parent, t_token *token)
 {
@@ -45,11 +67,20 @@ t_ast	*add_right(t_ast *parent, t_token *token)
 	new_node->token_node = token;
 	new_node->left = NULL;
 	new_node->right = NULL;
+	new_node->in_pipe = -1;
+	new_node->out_pipe = -1;
+	new_node->here_doc = -1;
+	new_node->here_doc_list = NULL;
 	new_node->parent = parent;
 	if (parent)
 		parent->right = new_node;
 	return (new_node);
 }
+
+/*****************************************************************************
+ * Free the entire Abstract Syntax Tree from memory
+ * @param node The top of the Abstract Syntax Tree
+ ****************************************************************************/
 
 void	del_ast(t_ast *top)
 {

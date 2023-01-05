@@ -44,8 +44,6 @@ static int	get_prod(t_token_type non_terminal, t_token **cursor, t_data *data)
 	return (result);
 }
 
-// int get_prod(state,&cursor,&parsing_stack,&ast);
-
 /*******************************************************************************
  * Recursive descent ll(1) parsing algorithm
  * token are define in t_token_type enum

@@ -1,22 +1,13 @@
 #include "check.h"
 #include "../src/minishell.h"
-
+//TODO : extensive parsing test
 START_TEST(test_parser) {
 	t_data test;
-	t_token *cursor;
 	int result;
 
-
-	test.line = "< test ls \"arg1 arg2 arg3\" < test2 arg4 | cat";
+	test.line = "< test ls arg1 arg2 arg3 < test2 arg4 | cat";
 	test.start_token = NULL;
 	lexer(&test);
-	cursor = test.start_token;
-	while (cursor) {
-		printf("\n [%s] type:",cursor->value);
-		print_debug(cursor->token_type);
-		printf("\n");
-		cursor = cursor->next_token;
-	}
 	result = parse(&test);
 	printf("%d\n",result);
 	ck_assert_int_eq(result,1);

@@ -17,6 +17,11 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <dirent.h>
+# include <unistd.h>
+# include <sys/wait.h>
+# include <errno.h>
+# include <fcntl.h>
 # include "data_structures.h"
 # include "lexer.h"
 # define PS1 "\033[0;32mMinishell\t\033[0m$"
@@ -39,4 +44,8 @@ void			del_stack(t_stack *head);
 int				count_stack(t_stack *head);
 int				parse(t_data *data);
 void			print_debug(t_token_type type);
+char			**get_path();
+char			*find_binary(char *name);
+char			**get_args(t_ast *command_node);
+int				traverse_ast(t_ast *current_node, char **env);
 #endif
