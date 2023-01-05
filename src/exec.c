@@ -22,7 +22,7 @@
  * -6 if exec error, -7 if readline error (here_doc)
  *****************************************************************************/
 
-int exec_command_node(t_ast *node, char **env)
+int exec_command_node(t_ast *node, char ***env)
 {
 	char	*full_path;
 	char	**args;
@@ -78,12 +78,12 @@ int exec_command_node(t_ast *node, char **env)
 			close(pipe_fd[1]);
 			dup2(pipe_fd[0],STDIN_FILENO);
 			close(pipe_fd[0]);
-			execve(full_path, args, env);
+			execve(full_path, args, *env);
 			waitpid(pid,NULL,0);
 			return (0);
 		}
 	}
-	execve(full_path, args, env);
+	execve(full_path, args, *env);
 	return (0);
 }
 
@@ -211,7 +211,7 @@ int	apply_redirections(t_ast *node)
  * -7 if a readline error occurs, -8 incorrect AST structure
  *****************************************************************************/
 
-int write_pipe(t_ast *current_node, char **env, const int *pipe_fd)
+int write_pipe(t_ast *current_node, char ***env, const int *pipe_fd)
 {
 	int status;
 
@@ -233,7 +233,7 @@ int write_pipe(t_ast *current_node, char **env, const int *pipe_fd)
  * -7 if a readline error occurs, -8 incorrect AST structure
  *****************************************************************************/
 
-int read_pipe(t_ast *current_node, char **env, const int *pipe_fd, int pid)
+int read_pipe(t_ast *current_node, char ***env, const int *pipe_fd, int pid)
 {
 	int status;
 
@@ -259,7 +259,7 @@ int read_pipe(t_ast *current_node, char **env, const int *pipe_fd, int pid)
  * -5 if a fork error occurs, -6 if a exec error occurs,
  * -7 if a readline error occurs, -8 incorrect AST structure
  *****************************************************************************/
-int exec_pipe(t_ast *current_node, char **env)
+int exec_pipe(t_ast *current_node, char ***env)
 {
 	int status;
 	int pipe_fd[2];
@@ -289,7 +289,7 @@ int exec_pipe(t_ast *current_node, char **env)
  * -7 if a readline error occurs, -8 incorrect AST structure
  *****************************************************************************/
 
-int traverse_ast(t_ast *current_node, char **env)
+int traverse_ast(t_ast *current_node, char ***env)
 {
 	if (current_node->type == E_COMMAND)
 		return (exec_command_node(current_node, env));

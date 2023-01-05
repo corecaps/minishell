@@ -54,7 +54,7 @@ int	main(int argc, char **argv, char **env)
 				perror("fork error\n");
 			else if (pid == 0)
 			{
-				status = traverse_ast(data->root, env);
+				status = traverse_ast(data->root, &env);
 				printf("\n[Status:%d]\n", status);
 			}
 			else

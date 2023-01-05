@@ -15,7 +15,7 @@
 
 int		apply_redirections(t_ast *node);
 int		parse_here_doc(t_ast *node);
-int		exec_command_node(t_ast *node, char **env);
+int		exec_command_node(t_ast *node, char ***env);
 char	**get_args(t_ast *command_node);
 int		count_args(t_ast *command_node);
 char	*find_binary(char *name);
