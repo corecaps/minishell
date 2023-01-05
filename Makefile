@@ -29,7 +29,7 @@ OBJECT = $(addprefix $(OBJDIR)/,$(OBJ))
 HEADERS = $(addprefix $(SRCDIR)/,$(HEADER))
 UNITTESTS = unit_tests/data_structures_test unit_tests/lexer_test unit_tests/parser_test unit_tests/exec_test
 
-all: test $(BIN)/$(NAME)
+all: $(BIN)/$(NAME)
 
 $(BIN)/$(NAME): $(OBJECT) $(LIBFT)
 	@echo '====>LINK<===='
@@ -42,7 +42,7 @@ debug: all
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@echo '====>COMPILATION<===='
 	@mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@ | pv -L 10k -N "Compiling $@"
+	$(CC) $(CFLAGS) -c $< -o $@ 
 
 $(LIBFT):
 	@echo '====>BUILDING LIBFT<===='

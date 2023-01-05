@@ -122,10 +122,5 @@ void	lexer(t_data *data)
 		else
 			break ;
 	}
-<<<<<<< HEAD
-	add_token(data, E_END_OF_TOKEN, "");
-}
-=======
 	add_token(data,E_END_OF_TOKEN,"");
 }
->>>>>>> 82005f05330fd878c9afc97abe0256e5d5429f80
