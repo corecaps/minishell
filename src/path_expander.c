@@ -29,10 +29,11 @@ char	**get_path()
 }
 
 /******************************************************************************
- * Find the binary in the path
- * @return the full path of the binary
- * @param name the name of the binary
+ * return the path of the parent directory of *path
+ * @param path directory from which we re looking parent
+ * @return null terminated string of the parent path
  *****************************************************************************/
+
 char *get_parent(char *path)
 {
 	char *parent;
@@ -46,24 +47,20 @@ char *get_parent(char *path)
 	return (path);
 }
 
-char 	*find_binary(char *name)
-{
-	char			**path;
-	struct dirent	*entry;
-	DIR				*dp;
-	int				i,result;
-	char			*final_path;
+/*****************************************************************************
+ * look into the path environement variable for the path of the command name
+ * @param name null terminated string of the name of the command
+ * @param path array of string built from the environement variable
+ * @return full_path or NULL if binary not found in path
+ ****************************************************************************/
 
-	if (name[0] == '/')
-		return (name);
-	if (name[0] == '.' && name[1] == '/')
-		return (ft_strjoin(getcwd(NULL,0),name+1));
-	if (name[0] == '.' && name[1] == '.' && name[2] == '/')
-		return(ft_strjoin(get_parent(getcwd(NULL,0)),name+2));
-	// TODO: add support for  ../
-	// TODO : add support for builtins (cd, echo, exit, export, pwd, unset, env, exit)
+char	*get_full_path(char *name,char **path)
+{
+	int				i;
+	DIR				*dp;
+	struct dirent	*entry;
+
 	i = 0;
-	path = get_path();
 	while (path[i] != 0)
 	{
 		dp = opendir(path[i]);
@@ -72,14 +69,8 @@ char 	*find_binary(char *name)
 			entry = readdir(dp);
 			while (entry)
 			{
-				result = ft_strncmp(name,entry->d_name, strlen(name)+1);
-				if (result == 0) { // TODO Refactor to prevent leak on the double join
-					final_path =ft_strjoin(ft_strjoin(path[i],"/"),name);
-					if (access(final_path,X_OK) != -1)
-						return (final_path);
-					else
-						return (NULL);
-				}
+				if (ft_strncmp(name,entry->d_name, strlen(name)+1) == 0) // TODO Refactor to prevent leak on the double join
+					return (ft_strjoin(ft_strjoin(path[i],"/"),name));
 				entry = readdir(dp);
 			}
 		}
@@ -87,4 +78,45 @@ char 	*find_binary(char *name)
 		i ++;
 	}
 	return (NULL);
+}
+
+/******************************************************************************
+ * if name start with "/" "../" or "./" it's an absolute or relative path
+ * return the full path
+ * @param name null terminated string of the name of the command
+ * @return full path or NULL if not absolute or relative path
+ *****************************************************************************/
+
+char	*check_absolute_relative_path(char *name)
+{
+	if (name[0] == '/')
+		return (name);
+	else if (name[0] == '.' && name[1] == '/')
+		return (ft_strjoin(getcwd(NULL,0),name+1));
+	else if (name[0] == '.' && name[1] == '.' && name[2] == '/')
+		return(ft_strjoin(get_parent(getcwd(NULL,0)),name+2));
+	else
+		return (NULL);
+}
+
+/******************************************************************************
+ * Find the binary in the path
+ * @return the full path of the binary
+ * @param name null terminated string of the name of the command
+ *****************************************************************************/
+
+char	*find_binary(char *name)
+{
+	char	*final_path;
+	char	**path;
+
+	final_path = check_absolute_relative_path(name);
+	if (final_path)
+		return (final_path);
+	path = get_path();
+	final_path = get_full_path(name, path);
+	if (final_path && access(final_path,X_OK) != -1)
+		return (final_path);
+	else
+		return (NULL);
 }

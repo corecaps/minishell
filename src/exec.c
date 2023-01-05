@@ -32,9 +32,9 @@ int exec_command_node(t_ast *node, char ***env)
 	t_here_doc	*cursor;
 
 	full_path = find_binary(node->token_node->value);
+	// TODO : add support for builtins (cd, echo, exit, export, pwd, unset, env, exit)
 	if (!full_path)
 		return (-3);
-	printf("full path: %s\n", full_path);
 	args = get_args(node);
 	if (node->in_pipe > -1)
 	{
