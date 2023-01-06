@@ -11,19 +11,19 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_data	*data_init(void)
-{
-	t_data	*data;
-
-	data = (t_data *)malloc(sizeof(t_data));
-	data->start_token = NULL;
-	data->line = NULL;
-	data->end = 0;
-	data->index = 0;
-	data->open_quote = -1;
-	return (data);
-}
+//
+//t_data	*data_init(void)
+//{
+//	t_data	*data;
+//
+//	data = (t_data *)malloc(sizeof(t_data));
+//	data->start_token = NULL;
+//	data->line = NULL;
+//	data->end = 0;
+//	data->index = 0;
+//	data->open_quote = -1;
+//	return (data);
+//}
 
 void	free_all(t_data *data)
 {

@@ -18,6 +18,8 @@
  * @param cmd name of the command
  * @return pointer to the builtin function if found, else NULL
  *****************************************************************************/
+// TODO : move in builtin.c
+// TODO : code builtins functions
 
 t_f_builtin check_builtins(char *cmd)
 {
@@ -45,7 +47,8 @@ t_f_builtin check_builtins(char *cmd)
  * -3 if binary not found, -4 if pipe error, -5 if fork error,
  * -6 if exec error, -7 if readline error (here_doc)
  *****************************************************************************/
-
+// TODO : extract methods from this function
+// TODO : Leak in here_doc
 int	exec_command_node(t_ast *node, char ***env)
 {
 	char	*full_path;
@@ -63,7 +66,6 @@ int	exec_command_node(t_ast *node, char ***env)
 		if (!full_path)
 			return (-3);
 	}
-	// TODO : add support for builtins (cd, echo, exit, export, pwd, unset, env, exit)
 	args = get_args(node);
 	if (node->in_pipe > -1)
 	{
@@ -128,7 +130,7 @@ int	exec_command_node(t_ast *node, char ***env)
  * @param node The node containing the heredoc
  * @return 0 on success, -1 on malloc error, -7 on readline error
  **************************************************************************/
-
+// TODO : extract methods from this function
 int	parse_here_doc(t_ast *node)
 {
 	t_here_doc	*current_line;
@@ -182,7 +184,7 @@ int	parse_here_doc(t_ast *node)
  * @param node an E_COMMAND node
  * @return 0 in case of success, -2 in case of file error
  *****************************************************************************/
-
+//TODO: extract methods from this function
 int	apply_redirections(t_ast *node)
 {
 	int		fd;
