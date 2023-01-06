@@ -31,7 +31,8 @@ SRC =	minishell.c \
 		ast_builder.c \
 		exec.c \
 		path_expander.c \
-		arguments.c
+		arguments.c \
+		environ.c
 
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h data_structures.h

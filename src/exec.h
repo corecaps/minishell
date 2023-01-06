@@ -20,4 +20,7 @@ char	**get_args(t_ast *command_node);
 int		count_args(t_ast *command_node);
 char	*find_binary(char *name);
 char	**get_path();
+size_t	count_env(char ***env);
+void	del_environ(char ***env);
+int		realloc_environ(char ***env,size_t size);
 #endif
