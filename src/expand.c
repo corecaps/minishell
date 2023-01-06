@@ -65,5 +65,6 @@ char	*expand(char *str)
 	result = ft_strjoin(result, value);
 	free(tmp);
 	free(value);
+	free(str);
 	return (result);
 }

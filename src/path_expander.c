@@ -66,5 +66,6 @@ char 	*find_binary(char *name)
 		closedir(dp);
 		i ++;
 	}
+	printf("heheh\n");
 	return (NULL);
 }

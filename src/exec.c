@@ -31,9 +31,13 @@ int exec_command_node(t_ast *node, char **env)
 	int		status;
 	t_here_doc	*cursor;
 
+	// printf("node->token_node->value: [%s]\n", node->token_node->value);
 	full_path = find_binary(node->token_node->value);
 	if (!full_path)
+	{
+		printf("HEllo\n");
 		return (-3);
+	}
 	args = get_args(node);
 	if (node->in_pipe > -1)
 	{

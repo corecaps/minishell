@@ -78,7 +78,6 @@ static void	add_word_token(t_data *data, char sep)
 	if (!rawvalue)
 		exit(EXIT_FAILURE);
 	value = expand(rawvalue);
-	free(rawvalue);
 	add_token(data, E_WORD, value);
 }
 
