@@ -23,10 +23,10 @@
 
 t_f_builtin check_builtins(char *cmd)
 {
-//	if (ft_strcmp(cmd, "echo") == 0)
-//		return (ft_echo);
-//	else if (ft_strcmp(cmd, "cd") == 0)
-//		return (ft_cd);
+	if (ft_strncmp(cmd, "echo",5) == 0)
+		return (ft_echo);
+	else if (ft_strncmp(cmd, "cd",3) == 0)
+		return (ft_cd);
 //	else if (ft_strcmp(cmd, "pwd") == 0)
 //		return (ft_pwd);
 //	else if (ft_strcmp(cmd, "export") == 0)
@@ -111,7 +111,10 @@ int	exec_command_node(t_ast *node, char ***env)
 			dup2(pipe_fd[0],STDIN_FILENO);
 			close(pipe_fd[0]);
 			if (builtin)
-				builtin(args,*env);
+			{
+				builtin(args, *env);
+				exit(EXIT_SUCCESS);
+			}
 			else
 				execve(full_path,args,*env);
 			waitpid(pid,NULL,0);
@@ -119,7 +122,10 @@ int	exec_command_node(t_ast *node, char ***env)
 		}
 	}
 	if (builtin)
-		builtin(args,*env);
+	{
+		builtin(args, *env);
+		exit(EXIT_SUCCESS);
+	}
 	else
 		execve(full_path,args,*env);
 	return (0);
