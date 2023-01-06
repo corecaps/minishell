@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "exec.h"
 static	t_data	*data_init(void)
 {
 	t_data	*data;
@@ -34,24 +33,8 @@ int	main(int argc, char **argv, char **env)
 	int		status;
 	char	**new_env;
 
-	(void) argc;
-	(void) argv;
-	(void) env;
 	running = 1;
-	new_env = create_env(env);
-	int i = 0;
-	while (new_env[i])
-	{
-		printf("%s\n", new_env[i]);
-		i++;
-	}
-	set_env(&new_env,"TEST","test");
-	i = 0;
-	while (new_env[i])
-	{
-		printf("%s\n", new_env[i]);
-		i++;
-	}
+	new_env = create_env(env, argc, argv);
 	while (running)
 	{
 		data = data_init();

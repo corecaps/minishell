@@ -42,11 +42,13 @@ void	free_all(t_data *data)
 		free(data);
 }
 
-char	**create_env(char **env)
+char	**create_env(char **env, int argc,char **argv)
 {
 	char **new_env;
 	int i;
 
+	(void) argc;
+	(void) argv;
 	new_env = malloc(sizeof(char *) * (count_env(&env) + 1));
 	i = 0;
 	while (env[i])

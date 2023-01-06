@@ -48,5 +48,6 @@ char			*find_binary(char *name);
 char			**get_args(t_ast *command_node);
 int				traverse_ast(t_ast *current_node, char ***env);
 size_t			count_env(char ***env);
-char			**create_env(char **env);
+char			**create_env(char **env, int argc, char **argv);
+char			*get_env(char *key,char **env);
 #endif

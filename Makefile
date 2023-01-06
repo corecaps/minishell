@@ -55,7 +55,7 @@ debug: all
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@echo '====>COMPILATION<===='
 	@mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@ | pv -L 10k -N "Compiling $@"
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
 	@echo '====>BUILDING LIBFT<===='

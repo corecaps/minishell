@@ -118,3 +118,27 @@ int	set_env(char ***env,char *key,char *value)
 	free(tmp);
 	return (0);
 }
+
+char	*get_env(char *key,char **env)
+{
+	size_t	i;
+	char	*tmp;
+	char	*ret;
+
+	if (key == NULL || env == NULL)
+		return (NULL);
+	i = 0;
+	while (env[i])
+	{
+		tmp = ft_strjoin(key,"=");
+		if (ft_strncmp(tmp,env[i],ft_strlen(tmp)) == 0)
+		{
+			ret = ft_substr(env[i],ft_strlen(tmp),ft_strlen(env[i]));
+			free(tmp);
+			return (ret);
+		}
+		i ++;
+		free(tmp);
+	}
+	return (NULL);
+}

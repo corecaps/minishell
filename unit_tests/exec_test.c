@@ -37,14 +37,19 @@ START_TEST(test_set_env)
 {
 	char	*result;
 	extern char **environ;
+	char **new_env;
 
-	set_env(&environ,"TEST","test");
-	result = getenv("TEST");
+	new_env = create_env(environ);
+	set_env(&new_env,"TEST","test");
+	result = get_env("TEST",new_env);
 	ck_assert_int_eq(strcmp(result,"test"),0);
 	ck_assert_ptr_nonnull(result);
-	set_env(&environ, "TEST","test2");
-	result = getenv("TEST");
+	set_env(&new_env, "TEST","test2");
+	result = get_env("TEST",new_env);
 	ck_assert_int_eq(strcmp(result,"test2"),0);
+	ck_assert_ptr_nonnull(result);
+	set_env(&new_env, "PATH","/bin");
+	ck_assert_int_eq(strcmp(get_env("PATH",new_env),"/bin"),0);
 	ck_assert_ptr_nonnull(result);
 } END_TEST
 
