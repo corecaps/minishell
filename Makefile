@@ -32,7 +32,8 @@ SRC =	minishell.c \
 		exec.c \
 		path_expander.c \
 		arguments.c \
-		environ.c
+		environ.c \
+		data_utils.c
 
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h data_structures.h
@@ -41,7 +42,7 @@ OBJECT = $(addprefix $(OBJDIR)/,$(OBJ))
 HEADERS = $(addprefix $(SRCDIR)/,$(HEADER))
 UNITTESTS = unit_tests/data_structures_test unit_tests/lexer_test unit_tests/parser_test unit_tests/exec_test
 
-all: test $(BIN)/$(NAME)
+all: $(BIN)/$(NAME)
 
 $(BIN)/$(NAME): $(OBJECT) $(LIBFT)
 	@echo '====>LINK<===='

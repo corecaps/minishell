@@ -1,5 +1,6 @@
 #include "check.h"
 #include "../src/minishell.h"
+#include "../src/exec.h"
 #include <string.h>
 
 START_TEST(test_get_path)
@@ -32,6 +33,21 @@ START_TEST(test_find_binary)
 	ck_assert_ptr_null(result);
 } END_TEST
 
+START_TEST(test_set_env)
+{
+	char	*result;
+	extern char **environ;
+
+	set_env(&environ,"TEST","test");
+	result = getenv("TEST");
+	ck_assert_int_eq(strcmp(result,"test"),0);
+	ck_assert_ptr_nonnull(result);
+	set_env(&environ, "TEST","test2");
+	result = getenv("TEST");
+	ck_assert_int_eq(strcmp(result,"test2"),0);
+	ck_assert_ptr_nonnull(result);
+} END_TEST
+
 Suite *exec_test(void)
 {
 	Suite *s;
@@ -41,6 +57,7 @@ Suite *exec_test(void)
 	tc_core = tcase_create("Core");
 	tcase_add_test(tc_core, test_get_path);
 	tcase_add_test(tc_core,test_find_binary);
+	tcase_add_test(tc_core,test_set_env);
 	suite_add_tcase(s, tc_core);
 	return (s);
 }

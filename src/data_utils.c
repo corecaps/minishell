@@ -41,3 +41,19 @@ void	free_all(t_data *data)
 	if (data)
 		free(data);
 }
+
+char	**create_env(char **env)
+{
+	char **new_env;
+	int i;
+
+	new_env = malloc(sizeof(char *) * (count_env(&env) + 1));
+	i = 0;
+	while (env[i])
+	{
+		new_env[i] = ft_strdup(env[i]);
+		i++;
+	}
+	new_env[i] = NULL;
+	return (new_env);
+}

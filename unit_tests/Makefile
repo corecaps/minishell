@@ -15,7 +15,7 @@ MS_OBJDIR	= ../obj
 MS_SRCDIR	= ../src
 MS_SOURCE	= ../src/token_list.c ../src/ast.c ../src/lexer.c ../src/stack.c ../src/parser.c
 MS_SOURCE	+= ../src/grammar_production.c ../src/grammar_production_2.c ../src/exec.c
-MS_SOURCE	+= ../src/ast_builder.c ../src/path_expander.c ../src/arguments.c
+MS_SOURCE	+= ../src/ast_builder.c ../src/path_expander.c ../src/arguments.c ../src/environ.c
 MS_OBJ		= $(subst ../src/,../obj/,$(MS_SOURCE:.c=.o))
 
 # Sources for unit tests
