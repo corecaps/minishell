@@ -22,7 +22,7 @@
  * -6 if exec error, -7 if readline error (here_doc)
  *****************************************************************************/
 
-int exec_command_node(t_ast *node, char ***env)
+int	exec_command_node(t_ast *node, char ***env)
 {
 	char	*full_path;
 	char	**args;
@@ -94,7 +94,7 @@ int exec_command_node(t_ast *node, char ***env)
  * @return 0 on success, -1 on malloc error, -7 on readline error
  **************************************************************************/
 
-int parse_here_doc(t_ast *node)
+int	parse_here_doc(t_ast *node)
 {
 	t_here_doc	*current_line;
 	t_here_doc	*cursor;
@@ -103,7 +103,7 @@ int parse_here_doc(t_ast *node)
 
 	cursor_node = node;
 	node = node->left;
-	while (node->type != E_REDIRECTION)
+	while (ft_strncmp(node->token_node->value,"<<",2) != 0)
 	{
 		node = node->left;
 	}
@@ -189,7 +189,6 @@ int	apply_redirections(t_ast *node)
 			dup2(fd,STDOUT_FILENO);
 			close(fd);
 		}
-
 	}
 	if (node->left)
 		if (apply_redirections(node->left) < 0)
@@ -199,7 +198,6 @@ int	apply_redirections(t_ast *node)
 			return (-2);
 	return (0);
 }
-
 
 /***************************************************************************
  * Prepare the writing part of the pipe and recursively call traverse_ast
@@ -222,6 +220,7 @@ int write_pipe(t_ast *current_node, char ***env, const int *pipe_fd)
 	close(pipe_fd[1]);
 	return (status);
 }
+
 /***************************************************************************
  * Prepare the writing part of the pipe and recursively call traverse_ast
  * @param current_node The current node
@@ -260,6 +259,7 @@ int read_pipe(t_ast *current_node, char ***env, const int *pipe_fd, int pid)
  * -5 if a fork error occurs, -6 if a exec error occurs,
  * -7 if a readline error occurs, -8 incorrect AST structure
  *****************************************************************************/
+
 int exec_pipe(t_ast *current_node, char ***env)
 {
 	int status;
@@ -277,8 +277,6 @@ int exec_pipe(t_ast *current_node, char ***env)
 	else
 		return read_pipe(current_node, env, pipe_fd, pid);
 }
-
-
 
 /******************************************************************************
  * Traverse the AST from current node and execute the commands

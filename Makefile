@@ -32,6 +32,7 @@ SRC =	minishell.c \
 		exec.c \
 		path_expander.c \
 		arguments.c
+
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h data_structures.h
 SOURCE = $(addprefix $(SRCDIR)/,$(SRC))
