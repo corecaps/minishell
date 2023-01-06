@@ -14,6 +14,30 @@
 #include "exec.h"
 
 /******************************************************************************
+ * check if cmd is a builtin
+ * @param cmd name of the command
+ * @return pointer to the builtin function if found, else NULL
+ *****************************************************************************/
+
+t_f_builtin check_builtins(char *cmd)
+{
+//	if (ft_strcmp(cmd, "echo") == 0)
+//		return (ft_echo);
+//	else if (ft_strcmp(cmd, "cd") == 0)
+//		return (ft_cd);
+//	else if (ft_strcmp(cmd, "pwd") == 0)
+//		return (ft_pwd);
+//	else if (ft_strcmp(cmd, "export") == 0)
+//		return (ft_export);
+//	else if (ft_strcmp(cmd, "unset") == 0)
+//		return (ft_unset);
+//	else if (ft_strcmp(cmd, "env") == 0)
+//		return (ft_env);
+//	else if (ft_strcmp(cmd, "exit") == 0)
+//		return (ft_exit);
+	return (NULL);
+}
+/******************************************************************************
  * execute the comnand in an E_COMMAND node applying redirections if needed
  * @param node an E_COMMAND node
  * @param env the environment
@@ -29,12 +53,17 @@ int	exec_command_node(t_ast *node, char ***env)
 	int		pid;
 	int		pipe_fd[2];
 	int		status;
+	t_f_builtin builtin;
 	t_here_doc	*cursor;
 
-	full_path = find_binary(node->token_node->value);
+	builtin = check_builtins(node->token_node->value);
+	if (!builtin)
+	{
+		full_path = find_binary(node->token_node->value);
+		if (!full_path)
+			return (-3);
+	}
 	// TODO : add support for builtins (cd, echo, exit, export, pwd, unset, env, exit)
-	if (!full_path)
-		return (-3);
 	args = get_args(node);
 	if (node->in_pipe > -1)
 	{
@@ -79,12 +108,18 @@ int	exec_command_node(t_ast *node, char ***env)
 			close(pipe_fd[1]);
 			dup2(pipe_fd[0],STDIN_FILENO);
 			close(pipe_fd[0]);
-			execve(full_path, args, *env);
+			if (builtin)
+				builtin(args,*env);
+			else
+				execve(full_path,args,*env);
 			waitpid(pid,NULL,0);
 			return (0);
 		}
 	}
-	execve(full_path, args, *env);
+	if (builtin)
+		builtin(args,*env);
+	else
+		execve(full_path,args,*env);
 	return (0);
 }
 

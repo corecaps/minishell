@@ -42,6 +42,12 @@ void	free_all(t_data *data)
 		free(data);
 }
 
+/******************************************************************************
+ * copy environment array into a new array
+ * @param env original environment array
+ * @return a freshly allocated array of environment variables
+ *****************************************************************************/
+
 char	**create_env(char **env, int argc,char **argv)
 {
 	char **new_env;
