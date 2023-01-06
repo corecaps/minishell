@@ -3,7 +3,9 @@ unit_tests/data_structures_test
 unit_tests/exec_test
 unit_tests/lexer_test
 unit_tests/parser_test
-
+doxygen_cfg
+doc/*
+doc/*/*
 # Prerequisites
 *.d
 

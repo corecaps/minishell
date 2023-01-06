@@ -14,6 +14,32 @@
 #include "exec.h"
 
 /******************************************************************************
+ * check if cmd is a builtin
+ * @param cmd name of the command
+ * @return pointer to the builtin function if found, else NULL
+ *****************************************************************************/
+// TODO : move in builtin.c
+// TODO : code builtins functions
+
+t_f_builtin check_builtins(char *cmd)
+{
+//	if (ft_strcmp(cmd, "echo") == 0)
+//		return (ft_echo);
+//	else if (ft_strcmp(cmd, "cd") == 0)
+//		return (ft_cd);
+//	else if (ft_strcmp(cmd, "pwd") == 0)
+//		return (ft_pwd);
+//	else if (ft_strcmp(cmd, "export") == 0)
+//		return (ft_export);
+//	else if (ft_strcmp(cmd, "unset") == 0)
+//		return (ft_unset);
+//	else if (ft_strcmp(cmd, "env") == 0)
+//		return (ft_env);
+//	else if (ft_strcmp(cmd, "exit") == 0)
+//		return (ft_exit);
+	return (NULL);
+}
+/******************************************************************************
  * execute the comnand in an E_COMMAND node applying redirections if needed
  * @param node an E_COMMAND node
  * @param env the environment
@@ -21,22 +47,24 @@
  * -3 if binary not found, -4 if pipe error, -5 if fork error,
  * -6 if exec error, -7 if readline error (here_doc)
  *****************************************************************************/
-
-int exec_command_node(t_ast *node, char **env)
+// TODO : extract methods from this function
+// TODO : Leak in here_doc
+int	exec_command_node(t_ast *node, char ***env)
 {
 	char	*full_path;
 	char	**args;
 	int		pid;
 	int		pipe_fd[2];
 	int		status;
+	t_f_builtin builtin;
 	t_here_doc	*cursor;
 
-	// printf("node->token_node->value: [%s]\n", node->token_node->value);
-	full_path = find_binary(node->token_node->value);
-	if (!full_path)
+	builtin = check_builtins(node->token_node->value);
+	if (!builtin)
 	{
-		printf("HEllo\n");
-		return (-3);
+		full_path = find_binary(node->token_node->value);
+		if (!full_path)
+			return (-3);
 	}
 	args = get_args(node);
 	if (node->in_pipe > -1)
@@ -82,12 +110,18 @@ int exec_command_node(t_ast *node, char **env)
 			close(pipe_fd[1]);
 			dup2(pipe_fd[0],STDIN_FILENO);
 			close(pipe_fd[0]);
-			execve(full_path, args, env);
+			if (builtin)
+				builtin(args,*env);
+			else
+				execve(full_path,args,*env);
 			waitpid(pid,NULL,0);
 			return (0);
 		}
 	}
-	execve(full_path, args, env);
+	if (builtin)
+		builtin(args,*env);
+	else
+		execve(full_path,args,*env);
 	return (0);
 }
 
@@ -96,8 +130,8 @@ int exec_command_node(t_ast *node, char **env)
  * @param node The node containing the heredoc
  * @return 0 on success, -1 on malloc error, -7 on readline error
  **************************************************************************/
-
-int parse_here_doc(t_ast *node)
+// TODO : extract methods from this function
+int	parse_here_doc(t_ast *node)
 {
 	t_here_doc	*current_line;
 	t_here_doc	*cursor;
@@ -106,7 +140,7 @@ int parse_here_doc(t_ast *node)
 
 	cursor_node = node;
 	node = node->left;
-	while (node->type != E_REDIRECTION)
+	while (ft_strncmp(node->token_node->value,"<<",2) != 0)
 	{
 		node = node->left;
 	}
@@ -150,7 +184,7 @@ int parse_here_doc(t_ast *node)
  * @param node an E_COMMAND node
  * @return 0 in case of success, -2 in case of file error
  *****************************************************************************/
-
+//TODO: extract methods from this function
 int	apply_redirections(t_ast *node)
 {
 	int		fd;
@@ -192,7 +226,6 @@ int	apply_redirections(t_ast *node)
 			dup2(fd,STDOUT_FILENO);
 			close(fd);
 		}
-
 	}
 	if (node->left)
 		if (apply_redirections(node->left) < 0)
@@ -203,6 +236,85 @@ int	apply_redirections(t_ast *node)
 	return (0);
 }
 
+/***************************************************************************
+ * Prepare the writing part of the pipe and recursively call traverse_ast
+ * @param current_node The current node
+ * @param env The environment variables
+ * @param pipe_fd The pipe file descriptors
+ * @return 0 on success, -1 on malloc error, -2 if a open error occurs,
+ * -3 if binary is not found, -4 if a pipe error occurs,
+ * -5 if a fork error occurs, -6 if a exec error occurs,
+ * -7 if a readline error occurs, -8 incorrect AST structure
+ *****************************************************************************/
+
+int write_pipe(t_ast *current_node, char ***env, const int *pipe_fd)
+{
+	int status;
+
+	close(pipe_fd[0]);
+	current_node->left->out_pipe = pipe_fd[1];
+	status = traverse_ast(current_node->left, env);
+	close(pipe_fd[1]);
+	return (status);
+}
+
+/***************************************************************************
+ * Prepare the writing part of the pipe and recursively call traverse_ast
+ * @param current_node The current node
+ * @param env The environment variables
+ * @param pipe_fd The pipe file descriptors
+ * @param pid The pid of the child process
+ * @return 0 on success, -1 on malloc error, -2 if a open error occurs,
+ * -3 if binary is not found, -4 if a pipe error occurs,
+ * -5 if a fork error occurs, -6 if a exec error occurs,
+ * -7 if a readline error occurs, -8 incorrect AST structure
+ *****************************************************************************/
+
+int read_pipe(t_ast *current_node, char ***env, const int *pipe_fd, int pid)
+{
+	int status;
+
+	close(pipe_fd[1]);
+	if (current_node->right->type == E_COMMAND)
+		current_node->right->in_pipe = pipe_fd[0];
+	else
+		current_node->right->left->in_pipe = pipe_fd[0];
+	status = traverse_ast(current_node->right, env);
+	if (status < 0)
+		return (status);
+	close(pipe_fd[0]);
+	status = waitpid(pid, &status, 0);
+	return (status);
+}
+
+/******************************************************************************
+ * execute an E_PIPE node
+ * @param current_node The current node
+ * @param env The environment variables
+ * @return -1 if an memory allocation error occurs,-2 if a open error occurs,
+ * -3 if binary is not found, -4 if a pipe error occurs,
+ * -5 if a fork error occurs, -6 if a exec error occurs,
+ * -7 if a readline error occurs, -8 incorrect AST structure
+ *****************************************************************************/
+
+int exec_pipe(t_ast *current_node, char ***env)
+{
+	int status;
+	int pipe_fd[2];
+	int pid;
+
+	status = pipe(pipe_fd);
+	if (status < 0)
+		return (-4);
+	pid = fork();
+	if (pid < 0)
+		return (-5);
+	else if (pid == 0)
+		return write_pipe(current_node, env, pipe_fd);
+	else
+		return read_pipe(current_node, env, pipe_fd, pid);
+}
+
 /******************************************************************************
  * Traverse the AST from current node and execute the commands
  * @param current_node starting point in the Abstract Syntax Tree
@@ -210,50 +322,15 @@ int	apply_redirections(t_ast *node)
  * @return -1 if an memory allocation error occurs,-2 if a open error occurs,
  * -3 if binary is not found, -4 if a pipe error occurs,
  * -5 if a fork error occurs, -6 if a exec error occurs,
- * -7 if a readline error occurs
+ * -7 if a readline error occurs, -8 incorrect AST structure
  *****************************************************************************/
 
-int traverse_ast(t_ast *current_node, char **env)
+int traverse_ast(t_ast *current_node, char ***env)
 {
-	int	status;
-	int	pipe_fd[2];
-	int	pid;
-
 	if (current_node->type == E_COMMAND)
 		return (exec_command_node(current_node, env));
 	else if (current_node->type == E_PIPE)
-	{
-		status = pipe(pipe_fd);
-		if (status  < 0)
-			return (-4);
-		pid = fork();
-		if (pid < 0)
-			return (-5);
-		else if (pid == 0)
-		{
-			close(pipe_fd[0]);
-			current_node->left->out_pipe = pipe_fd[1];
-			status = traverse_ast(current_node->left, env);
-			if (status < 0)
-				return (status);
-			close (pipe_fd[1]);
-		}
-		else
-		{
-
-			close(pipe_fd[1]);
-			if (current_node->right->type == E_COMMAND)
-				current_node->right->in_pipe = pipe_fd[0];
-			else
-				current_node->right->left->in_pipe = pipe_fd[0];
-			status = traverse_ast(current_node->right, env);
-			if (status < 0)
-				return (status);
-			close(pipe_fd[0]);
-			status = waitpid(pid,&status,0);
-			if (status != 0)
-				return (status);
-		}
-	}
-	return (0);
+		return (exec_pipe(current_node,env));
+	else
+		return (-8);
 }

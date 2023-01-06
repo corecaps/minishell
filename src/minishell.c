@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 static	t_data	*data_init(void)
 {
 	t_data	*data;
@@ -32,11 +31,10 @@ int	main(int argc, char **argv, char **env)
 	t_data	*data;
 	int		pid;
 	int		status;
+	char	**new_env;
 
-	(void) argc;
-	(void) argv;
-	(void) env;
 	running = 1;
+	new_env = create_env(env, argc, argv);
 	while (running)
 	{
 		data = data_init();
@@ -54,8 +52,10 @@ int	main(int argc, char **argv, char **env)
 				perror("fork error\n");
 			else if (pid == 0)
 			{
-				status = traverse_ast(data->root, env);
+				status = traverse_ast(data->root, &new_env);
 				printf("\n[Status:%d]\n", status);
+				if (status == -3)
+					printf("Command [%s] not found\n", data->root->token_node->value);
 			}
 			else
 			{
