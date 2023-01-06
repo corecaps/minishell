@@ -77,6 +77,7 @@ char	*get_full_path(char *name,char **path)
 		closedir(dp);
 		i ++;
 	}
+	printf("heheh\n");
 	return (NULL);
 }
 
