@@ -47,7 +47,7 @@ int	main(int argc, char **argv, char **env)
 		status = parse(data);
 		if (data->root && status == 1)
 		{
-			pid = fork();
+			pid = fork(); // TODO Move the fork to the exec function
 			if (pid < 0)
 				perror("fork error\n");
 			else if (pid == 0)
