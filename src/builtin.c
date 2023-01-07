@@ -31,8 +31,6 @@ int	ft_cd(char **args,char **env)
 	}
 	if (set_env(&env,"PWD", getcwd(NULL,0)) == -1)
 		return (-2);
-	printf("PWD = %s",get_env("PWD",env));
-	printf("cwd = %s",getcwd(NULL,0));
 	free(path);
 	return (0);
 }
@@ -67,5 +65,13 @@ int	ft_pwd(char **args,char **env)
 	(void) args;
 
 	printf("%s\n", get_env("PWD", env));
+	return (0);
+}
+
+int ft_exit(char **args,char **env)
+{
+	(void) args;
+	(void) env;
+	exit(EXIT_SUCCESS);
 	return (0);
 }

@@ -35,8 +35,8 @@ t_f_builtin check_builtins(char *cmd)
 //		return (ft_unset);
 //	else if (ft_strcmp(cmd, "env") == 0)
 //		return (ft_env);
-//	else if (ft_strcmp(cmd, "exit") == 0)
-//		return (ft_exit);
+	else if (ft_strncmp(cmd, "exit",5) == 0)
+		return (ft_exit);
 	return (NULL);
 }
 /******************************************************************************
@@ -54,6 +54,7 @@ int	exec_command_node(t_ast *node, char ***env)
 	char	*full_path;
 	char	**args;
 	int		pid;
+	int		pid2;
 	int		pipe_fd[2];
 	int		status;
 	t_f_builtin builtin;
@@ -113,14 +114,20 @@ int	exec_command_node(t_ast *node, char ***env)
 			if (builtin)
 			{
 				builtin(args, *env);
-				exit(EXIT_SUCCESS);
 			}
 			else
 			{
-				printf("CWD: %s",getcwd(NULL,0));
-				printf("PWD : %s",getenv("PWD"));
-				printf("PWD n_env %s",get_env("PWD",*env));
-				execve(full_path, args, *env);
+				pid2 = fork();
+				if (pid2 < 0)
+					return (-5);
+				if (pid2 == 0)
+				{
+					execve(full_path, args, *env);
+				}
+				else
+				{
+					waitpid(pid2,&status,0);
+				}
 			}
 			waitpid(pid,NULL,0);
 			return (0);
@@ -129,14 +136,20 @@ int	exec_command_node(t_ast *node, char ***env)
 	if (builtin)
 	{
 		builtin(args, *env);
-		exit(EXIT_SUCCESS);
 	}
 	else
 	{
-		printf("CWD: %s",getcwd(NULL,0));
-		printf("PWD : %s",getenv("PWD"));
-		printf("PWD n_env %s",get_env("PWD",*env));
-		execve(full_path, args, *env);
+		pid2 = fork();
+		if (pid2 < 0)
+			return (-5);
+		if (pid2 == 0)
+		{
+			execve(full_path, args, *env);
+		}
+		else
+		{
+			waitpid(pid2,&status,0);
+		}
 	}
 	return (0);
 }

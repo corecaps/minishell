@@ -41,7 +41,7 @@ $(BIN)/$(NAME): $(OBJECT) $(LIBFT)
 	@mkdir -p $(BIN)
 	$(CC) $(OBJECT) $(LINK) -o $(BIN)/$(NAME)
 
-debug:	CFLAGS += -g3 
+debug:	CFLAGS += -g
 debug: all
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c

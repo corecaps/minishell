@@ -29,7 +29,7 @@ int	main(int argc, char **argv, char **env)
 {
 	int		running;
 	t_data	*data;
-	int		pid;
+//	int		pid;
 	int		status;
 	char	**new_env;
 
@@ -47,22 +47,22 @@ int	main(int argc, char **argv, char **env)
 		status = parse(data);
 		if (data->root && status == 1)
 		{
-			pid = fork(); // TODO Move the fork to the exec function
-			if (pid < 0)
-				perror("fork error\n");
-			else if (pid == 0)
-			{
+//			pid = fork(); // TODO Move the fork to the exec function
+//			if (pid < 0)
+//				perror("fork error\n");
+//			else if (pid == 0)
+//			{
 				status = traverse_ast(data->root, &new_env);
 				printf("\n[Status:%d]\n", status);
 				if (status == -3)
 					printf("Command [%s] not found\n", data->root->token_node->value);
-			}
-			else
-			{
-				waitpid(pid,&status,0);
-				if (status != 0)
-					fprintf(stderr,"Error :[%d] \n", status);
-			}
+//			}
+//			else
+//			{
+//				waitpid(pid,&status,0);
+//				if (status != 0)
+//					fprintf(stderr,"Error :[%d] \n", status);
+//			}
 			del_ast(data->root);
 		}
 	}

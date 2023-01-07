@@ -23,6 +23,7 @@ char	**get_path();
 int		ft_cd(char **args, char **env);
 int		ft_echo(char **args, char **env);
 int		ft_pwd(char **args,char **env);
+int		ft_exit(char **args,char **env);
 void	del_environ(char ***env);
 int		realloc_environ(char ***env,size_t size);
 int		set_env(char ***env,char *key,char *value);

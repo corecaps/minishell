@@ -472,13 +472,13 @@ TEST_LOG_COMPILE = $(TEST_LOG_COMPILER) $(AM_TEST_LOG_FLAGS) \
 am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/test_vars.in \
 	$(top_srcdir)/depcomp $(top_srcdir)/test-driver
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/missing aclocal-1.15
+ACLOCAL = ${SHELL} /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/missing aclocal-1.15
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
 AR = ar
-AUTOCONF = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/missing autoconf
-AUTOHEADER = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/missing autoheader
-AUTOMAKE = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/missing automake-1.15
+AUTOCONF = ${SHELL} /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/missing autoconf
+AUTOHEADER = ${SHELL} /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/missing autoheader
+AUTOMAKE = ${SHELL} /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/missing automake-1.15
 AWK = gawk
 AWK_GSUB_DBL_BSLASH = \\\\
 AWK_PATH = /usr/bin/gawk
@@ -510,7 +510,7 @@ GCOV = gcov
 GCOV_CFLAGS = 
 GCOV_LIBS = 
 GENHTML = false
-GRAPHVIZ = dot
+GRAPHVIZ = false
 GREP = /usr/bin/grep
 HAVE_FORK = 1
 HAVE_INIT_ONCE_BEGIN_INITIALIZE = 0
@@ -523,7 +523,7 @@ INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LCOV = false
-LD = /usr/bin/ld -m elf_x86_64
+LD = /usr/x86_64-unknown-linux-gnu/bin/ld -m elf_x86_64
 LDFLAGS = 
 LIBOBJS = 
 LIBS = -lrt -lm 
@@ -535,7 +535,7 @@ LIPO =
 LN_S = ln -s
 LTLIBOBJS = 
 LT_SYS_LIBRARY_PATH = 
-MAKEINFO = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/missing makeinfo
+MAKEINFO = ${SHELL} /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/missing makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = /usr/bin/mkdir -p
 NM = /usr/bin/nm -B
@@ -561,13 +561,13 @@ PTHREAD_LIBS =
 RANLIB = ranlib
 SED = /usr/bin/sed
 SET_MAKE = 
-SHELL = /bin/bash
+SHELL = /bin/sh
 STRIP = strip
 VERSION = 0.15.2
-abs_builddir = /home/corecaps/42/minishell/unit_tests/check-0.15.2/tests
-abs_srcdir = /home/corecaps/42/minishell/unit_tests/check-0.15.2/tests
-abs_top_builddir = /home/corecaps/42/minishell/unit_tests/check-0.15.2
-abs_top_srcdir = /home/corecaps/42/minishell/unit_tests/check-0.15.2
+abs_builddir = /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/tests
+abs_srcdir = /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/tests
+abs_top_builddir = /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2
+abs_top_srcdir = /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_DUMPBIN = 
@@ -597,7 +597,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/install-sh
+install_sh = ${SHELL} /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -1285,7 +1285,7 @@ distclean-tags:
 	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
 
 # Recover from deleted '.trs' file; this should ensure that
-# "rm -f foo.log; make foo.trs" re-run 'foo.test', and re-create
+# "rm -f foo.log; make foo.trs" re-exec_command_node 'foo.test', and re-create
 # both 'foo.log' and 'foo.trs'.  Break the recipe in two subshells
 # to avoid problems with "make -n".
 .log.trs:
