@@ -13,7 +13,7 @@
 #include "minishell.h"
 #include "exec.h"
 
-int	ft_cd(char **args,char **env)
+int	ft_cd(char **args,char ***env)
 {
 	char	*path;
 
@@ -29,13 +29,13 @@ int	ft_cd(char **args,char **env)
 	{
 		return (-1);
 	}
-	if (set_env(&env,"PWD", getcwd(NULL,0)) == -1)
+	if (set_env(env,"PWD", getcwd(NULL,0)) == -1)
 		return (-2);
 	free(path);
 	return (0);
 }
 
-int	ft_echo(char **args,char **env)
+int	ft_echo(char **args,char ***env)
 {
 	int	i;
 	int trailing_newline;
@@ -60,7 +60,7 @@ int	ft_echo(char **args,char **env)
 	return (0);
 }
 
-int	ft_pwd(char **args,char **env)
+int	ft_pwd(char **args,char ***env)
 {
 	(void) args;
 
@@ -68,10 +68,72 @@ int	ft_pwd(char **args,char **env)
 	return (0);
 }
 
-int ft_exit(char **args,char **env)
+int ft_exit(char **args,char ***env)
 {
 	(void) args;
 	(void) env;
 	exit(EXIT_SUCCESS);
+	return (0);
+}
+
+int	ft_export(char **args, char ***env)
+{
+	char	*key;
+	char	*value;
+	int		i;
+	int		j;
+	int		stop;
+
+	i = 1;
+	while (args[i])
+	{
+		stop = -1;
+		j = 0;
+		while(args[i][j])
+		{
+			if (args[i][j] == '=')
+			{
+				stop = j;
+				break ;
+			}
+			j++;
+		}
+		if (stop > -1) //if we found '=' symbol in args
+		{
+			key = ft_substr(args[i], 0, stop);
+			value = ft_substr(args[i], stop + 1, ft_strlen(args[i]) - stop);
+		}
+		else
+		{
+			key = args[i];
+			value = "";
+		}
+
+		// printf("key = [%s]\nvalue = [%s]\n", key, value);
+		set_env(env, key, value);
+		i++;
+	}
+	// ft_env(NULL, env);
+	return (0);
+}
+
+int	ft_env(char **args,char ***env)
+{
+	(void) args;
+	//FOR TESTING EXPORT
+	printf("In ft_env:\n\tenv address = [%p]\n", env);
+	int i = 0;
+	while((*env)[i])
+	{
+		printf("%s\n", (*env)[i]);
+		i++;
+	}
+	printf("Env count = %d\n", i);
+	//
+	return (0);
+}
+
+int	ft_unset(char **args, char ***env)
+{
 	return (0);
 }

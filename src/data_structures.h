@@ -36,7 +36,7 @@ typedef enum e_token_type {
 	E_END_OF_TOKEN
 }	t_token_type;
 
-typedef int		(*t_f_builtin)(char **args, char **env);
+typedef int		(*t_f_builtin)(char **args, char ***env);
 
 
 typedef struct s_here_doc {

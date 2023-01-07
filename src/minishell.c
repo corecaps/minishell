@@ -37,11 +37,14 @@ int	main(int argc, char **argv, char **env)
 	new_env = create_env(env, argc, argv);
 	while (running)
 	{
-		printf("here ");
+		
+		// printf("\n\nPID: [%d]\n", getpid());
 		data = data_init();
 		data->line = readline(PS1);
 		if (!data->line)
+		{
 			exit(EXIT_FAILURE);
+		}
 		if (ft_strlen(data->line))
 			add_history(data->line);
 		lexer(data);
@@ -66,6 +69,7 @@ int	main(int argc, char **argv, char **env)
 //			}
 			del_ast(data->root);
 		}
+		free(data->line);
 	}
 	return (0);
 }

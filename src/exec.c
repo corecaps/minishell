@@ -29,12 +29,12 @@ t_f_builtin check_builtins(char *cmd)
 		return (ft_cd);
 	else if (ft_strncmp(cmd, "pwd",4) == 0)
 		return (ft_pwd);
-//	else if (ft_strcmp(cmd, "export") == 0)
-//		return (ft_export);
-//	else if (ft_strcmp(cmd, "unset") == 0)
-//		return (ft_unset);
-//	else if (ft_strcmp(cmd, "env") == 0)
-//		return (ft_env);
+	else if (ft_strncmp(cmd, "export", 6) == 0)
+		return (ft_export);
+	else if (ft_strncmp(cmd, "unset", 5) == 0)
+		return (ft_unset);
+	else if (ft_strncmp(cmd, "env", 3) == 0)
+		return (ft_env);
 	else if (ft_strncmp(cmd, "exit",5) == 0)
 		return (ft_exit);
 	return (NULL);
@@ -113,7 +113,7 @@ int	exec_command_node(t_ast *node, char ***env)
 			close(pipe_fd[0]);
 			if (builtin)
 			{
-				builtin(args, *env);
+				builtin(args, env);//env ** or ***
 			}
 			else
 			{
@@ -135,7 +135,7 @@ int	exec_command_node(t_ast *node, char ***env)
 	}
 	if (builtin)
 	{
-		builtin(args, *env);
+		builtin(args, env);
 	}
 	else
 	pid2 = fork();
@@ -147,9 +147,11 @@ int	exec_command_node(t_ast *node, char ***env)
 	}
 	else
 	{
+		// printf("\tchild->parent process %d\n", pid2);
 		waitpid(pid2,&status,WUNTRACED);
+		// printf("||||||||||||\n");
 	}
-	return (0);
+	return (pid2);
 }
 
 /***************************************************************************
@@ -341,17 +343,13 @@ int exec_pipe(t_ast *current_node, char ***env)
 		return (-5);
 	else if (pid == 0)
 	{
-		printf("fork to exec %s pid %d\n", current_node->left->token_node->value, getpid());
 		write_pipe(current_node, env, pipe_fd);
-		return (777);
+		exit(0);
 	}
 	else
 	{
-		printf("fork to read %s pid %d\n", current_node->right->token_node->value, getpid());
 		return read_pipe(current_node, env, pipe_fd, pid);
-
 	}
-	printf("pid %d\n", getpid());
 }
 
 /******************************************************************************
