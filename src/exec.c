@@ -138,19 +138,17 @@ int	exec_command_node(t_ast *node, char ***env)
 		builtin(args, *env);
 	}
 	else
-	{
-		pid2 = fork();
-		if (pid2 < 0)
-			return (-5);
-		if (pid2 == 0)
-		{
-			execve(full_path, args, *env);
-		}
-		else
-		{
-			waitpid(pid2,&status,0);
-		}
-	}
+//	pid2 = fork();
+//	if (pid2 < 0)
+//		return (-5);
+//	if (pid2 == 0)
+//	{
+		execve(full_path, args, *env);
+//	}
+//	else
+//	{
+//		waitpid(pid2,&status,WUNTRACED);
+//	}
 	return (0);
 }
 
@@ -282,6 +280,7 @@ int write_pipe(t_ast *current_node, char ***env, const int *pipe_fd)
 
 	close(pipe_fd[0]);
 	current_node->left->out_pipe = pipe_fd[1];
+	current_node->left->forked =1;
 	status = traverse_ast(current_node->left, env);
 	close(pipe_fd[1]);
 	return (status);
@@ -302,7 +301,6 @@ int write_pipe(t_ast *current_node, char ***env, const int *pipe_fd)
 int read_pipe(t_ast *current_node, char ***env, const int *pipe_fd, int pid)
 {
 	int status;
-
 	close(pipe_fd[1]);
 	if (current_node->right->type == E_COMMAND)
 		current_node->right->in_pipe = pipe_fd[0];
@@ -311,8 +309,11 @@ int read_pipe(t_ast *current_node, char ***env, const int *pipe_fd, int pid)
 	status = traverse_ast(current_node->right, env);
 	if (status < 0)
 		return (status);
+	printf("pid: %d\n",pid);
+	status = waitpid(pid, &status, WUNTRACED);
+	printf("status: %d", status);
+	wait(NULL);
 	close(pipe_fd[0]);
-	status = waitpid(pid, &status, 0);
 	return (status);
 }
 
@@ -339,9 +340,18 @@ int exec_pipe(t_ast *current_node, char ***env)
 	if (pid < 0)
 		return (-5);
 	else if (pid == 0)
-		return write_pipe(current_node, env, pipe_fd);
+	{
+		printf("fork to exec %s pid %d\n", current_node->left->token_node->value, getpid());
+		write_pipe(current_node, env, pipe_fd);
+		return (777);
+	}
 	else
+	{
+		printf("fork to read %s pid %d\n", current_node->right->token_node->value, getpid());
 		return read_pipe(current_node, env, pipe_fd, pid);
+
+	}
+	printf("pid %d\n", getpid());
 }
 
 /******************************************************************************
@@ -356,10 +366,15 @@ int exec_pipe(t_ast *current_node, char ***env)
 
 int traverse_ast(t_ast *current_node, char ***env)
 {
+	int status;
+
 	if (current_node->type == E_COMMAND)
 		return (exec_command_node(current_node, env));
-	else if (current_node->type == E_PIPE)
-		return (exec_pipe(current_node,env));
+	else if (current_node->type == E_PIPE){
+		status = exec_pipe(current_node,env);
+		printf("status %d\n", status);
+		return (status);
+	}
 	else
 		return (-8);
 }

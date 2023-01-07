@@ -62,6 +62,7 @@ int create_cmd_node(t_data *data,t_token *token)
 	new_node->out_pipe = -1;
 	new_node->here_doc = -1;
 	new_node->here_doc_list = NULL;
+	new_node->forked = 0;
 	if (data->root == NULL)
 	{
 		new_node->parent = NULL;
