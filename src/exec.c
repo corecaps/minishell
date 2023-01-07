@@ -138,17 +138,17 @@ int	exec_command_node(t_ast *node, char ***env)
 		builtin(args, *env);
 	}
 	else
-//	pid2 = fork();
-//	if (pid2 < 0)
-//		return (-5);
-//	if (pid2 == 0)
-//	{
+	pid2 = fork();
+	if (pid2 < 0)
+		return (-5);
+	if (pid2 == 0)
+	{
 		execve(full_path, args, *env);
-//	}
-//	else
-//	{
-//		waitpid(pid2,&status,WUNTRACED);
-//	}
+	}
+	else
+	{
+		waitpid(pid2,&status,WUNTRACED);
+	}
 	return (0);
 }
 
