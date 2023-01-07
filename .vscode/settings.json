@@ -30,6 +30,9 @@
   ],
   "files.associations": {
     "locale": "c",
-    "string": "c"
+    "string": "c",
+    "random": "c",
+    "functional": "c",
+    "parser.h": "c"
   }
 }

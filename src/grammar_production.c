@@ -23,8 +23,8 @@
 int	cmd_line(t_token **cursor, t_data *data)
 {
 	if (((*cursor)->token_type >= E_HEREDOC
-		 && (*cursor)->token_type <= E_OUTFILE) ||
-		(*cursor)->token_type == E_WORD
+		&& (*cursor)->token_type <= E_OUTFILE)
+		|| (*cursor)->token_type == E_WORD
 		|| (*cursor)->token_type == E_DOULE_QUOTE
 		|| (*cursor)->token_type == E_SINGLE_QUOTE)
 	{
