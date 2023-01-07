@@ -27,8 +27,8 @@ t_f_builtin check_builtins(char *cmd)
 		return (ft_echo);
 	else if (ft_strncmp(cmd, "cd",3) == 0)
 		return (ft_cd);
-//	else if (ft_strcmp(cmd, "pwd") == 0)
-//		return (ft_pwd);
+	else if (ft_strncmp(cmd, "pwd",4) == 0)
+		return (ft_pwd);
 //	else if (ft_strcmp(cmd, "export") == 0)
 //		return (ft_export);
 //	else if (ft_strcmp(cmd, "unset") == 0)
@@ -116,7 +116,12 @@ int	exec_command_node(t_ast *node, char ***env)
 				exit(EXIT_SUCCESS);
 			}
 			else
-				execve(full_path,args,*env);
+			{
+				printf("CWD: %s",getcwd(NULL,0));
+				printf("PWD : %s",getenv("PWD"));
+				printf("PWD n_env %s",get_env("PWD",*env));
+				execve(full_path, args, *env);
+			}
 			waitpid(pid,NULL,0);
 			return (0);
 		}
@@ -127,7 +132,12 @@ int	exec_command_node(t_ast *node, char ***env)
 		exit(EXIT_SUCCESS);
 	}
 	else
-		execve(full_path,args,*env);
+	{
+		printf("CWD: %s",getcwd(NULL,0));
+		printf("PWD : %s",getenv("PWD"));
+		printf("PWD n_env %s",get_env("PWD",*env));
+		execve(full_path, args, *env);
+	}
 	return (0);
 }
 

@@ -26,9 +26,13 @@ int	ft_cd(char **args,char **env)
 			return (-1);
 	}
 	else if (chdir(args[1]) == -1)
+	{
 		return (-1);
-	if (set_env(&env,"PWD",path) == -1)
+	}
+	if (set_env(&env,"PWD", getcwd(NULL,0)) == -1)
 		return (-2);
+	printf("PWD = %s",get_env("PWD",env));
+	printf("cwd = %s",getcwd(NULL,0));
 	free(path);
 	return (0);
 }
@@ -55,5 +59,13 @@ int	ft_echo(char **args,char **env)
 	}
 	if (trailing_newline == 1)
 		printf("\n");
+	return (0);
+}
+
+int	ft_pwd(char **args,char **env)
+{
+	(void) args;
+
+	printf("%s\n", get_env("PWD", env));
 	return (0);
 }
