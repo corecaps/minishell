@@ -77,8 +77,13 @@ static void	add_word_token(t_data *data, char sep)
 	rawvalue = ft_substr(data->line, data->index, data->end - data->index);
 	if (!rawvalue)
 		exit(EXIT_FAILURE);
-	value = expand(rawvalue);
-	add_token(data, E_WORD, value);
+	if (sep == ' ' || sep == '\"')
+	{
+		value = expand(rawvalue);
+		add_token(data, E_WORD, value);
+	}
+	else
+		add_token(data, E_WORD, rawvalue);
 }
 
 static void	add_quoted_token(t_data *data)
