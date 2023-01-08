@@ -72,10 +72,11 @@ int	realloc_environ(char ***env,size_t size) //I guess we have leaks here
 	i = 0;
 	while ((*env)[i])
 	{
-		new_env[i] = (*env)[i];
+		new_env[i] = ft_strdup((*env)[i]);
 		i++;
 	}
 	new_env[i] = NULL;
+	printf("\n\n\tnew_env[1] = [%p]\n\tenv[1] = [%p]\n\n", new_env[1], env[1]);
 	del_environ(env);
 	*env = new_env;
 	return (0);
@@ -97,7 +98,7 @@ int	set_env(char ***env,char *key,char *value)
 	i=0;
 	//FOR TESTING
 	// printf("\tin set_env()\n");
-	// printf("\tkey = %s\n\tvalue = %s\n", key, value);
+	printf("\tkey = %s\n\tvalue = %s\n", key, value);
 	// int j = 0;
 	// while (*env[j])
 	// {

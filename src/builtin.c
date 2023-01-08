@@ -71,12 +71,35 @@ int	ft_pwd(char **args,char ***env)
 int ft_exit(char **args,char ***env)
 {
 	(void) args;
+	(void) env;
 	t_garbage *gc;
 
 	gc = garbage_collector_add(NULL);
 	garbage_collector_free(gc);
 //	del_environ(env);
 	exit(EXIT_SUCCESS);
+	return (0);
+}
+
+/******************************************************************************
+ * 
+ * Need to test ft_export(), ft_env(), ft_unset()
+ * 
+ *****************************************************************************/
+
+int	ft_env(char **args,char ***env)
+{
+	(void) args;
+	//FOR TESTING EXPORT
+	printf("In ft_env:\n\tenv address = [%p]\n", env);
+	int i = 0;
+	while((*env)[i])
+	{
+		printf("%s\n", (*env)[i]);
+		i++;
+	}
+	printf("Env count = %d\n", i);
+	//
 	return (0);
 }
 
@@ -95,10 +118,21 @@ int	ft_export(char **args, char ***env)
 		j = 0;
 		while(args[i][j])
 		{
-			if (args[i][j] == '=')
+			if (args[i][0] == '?')
+			{
+				stop = 1;
+				break ;
+			}
+			else if (args[i][j] == '=' && j != 0)
 			{
 				stop = j;
 				break ;
+			}
+			else if ((args[i][j] < 65 || (args[i][j] > 90 && args[i][j] < 97) //invalid symbols on input
+				|| args[i][j] > 122) && stop == -1 )
+			{
+				printf("export error: invalid symbols []");
+					return (-100); 	// maybe we need to skip this arg to continue with "continue ;"
 			}
 			j++;
 		}
@@ -121,25 +155,31 @@ int	ft_export(char **args, char ***env)
 	return (0);
 }
 
-int	ft_env(char **args,char ***env)
-{
-	(void) args;
-	//FOR TESTING EXPORT
-	printf("In ft_env:\n\tenv address = [%p]\n", env);
-	int i = 0;
-	while((*env)[i])
-	{
-		printf("%s\n", (*env)[i]);
-		i++;
-	}
-	printf("Env count = %d\n", i);
-	//
-	return (0);
-}
+
 
 int	ft_unset(char **args, char ***env)
 {
+	int	i;
+	int j;
+	int index;
+
 	(void) args;
 	(void) env;
+	i = 1;	
+	while (args[i])
+	{
+		j = 0;
+		while ((*env)[j])
+		{
+			if (ft_strncmp(args[i], (*env)[i], ft_strlen(args[i])))
+			{
+				index = j;
+				realloc_environ(env, count_env(env), index);
+				break ;
+			}
+			j++;
+		}
+		i++;
+	}	
 	return (0);
 }
