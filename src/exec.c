@@ -292,6 +292,7 @@ int read_pipe(t_ast *current_node, char ***env, const int *pipe_fd, int pid)
 {
 	int status;
 	int pid2;
+	t_f_builtin builtin;
 
 	pid2 = -1;
 	close(pipe_fd[1]);
@@ -301,10 +302,20 @@ int read_pipe(t_ast *current_node, char ***env, const int *pipe_fd, int pid)
 		current_node->right->left->in_pipe = pipe_fd[0];
 	if (current_node->right->type == E_COMMAND)
 	{
-		pid2 = fork();
-		if (pid2 < 0)
-			return (-5);
-		if (pid2 == 0)
+		builtin = check_builtins(current_node->token_node->value);
+		if (!builtin)
+		{
+			pid2 = fork();
+			if (pid2 < 0)
+				return (-5);
+			if (pid2 == 0)
+			{
+				status = exec_command_node(current_node->right, env);
+				if (status < 0)
+					return (status);
+			}
+		}
+		else
 		{
 			status = exec_command_node(current_node->right, env);
 			if (status < 0)

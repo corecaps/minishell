@@ -41,11 +41,11 @@ int	ft_echo(char **args,char ***env)
 	int trailing_newline;
 
 	(void) env;
-	trailing_newline = 0;
-	i = 1;
+	trailing_newline = 1;
+	i = 0;
 	if (args[1] && !ft_strncmp(args[1],"-n",3))
 	{
-		trailing_newline = 1;
+		trailing_newline = 0;
 		i++;
 	}
 	while (args[i])
