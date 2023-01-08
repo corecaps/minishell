@@ -75,7 +75,7 @@ int ft_exit(char **args,char ***env)
 
 	gc = garbage_collector_add(NULL);
 	garbage_collector_free(gc);
-	del_environ(env);
+//	del_environ(env);
 	exit(EXIT_SUCCESS);
 	return (0);
 }

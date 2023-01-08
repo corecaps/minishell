@@ -22,9 +22,17 @@ char	**get_path()
 {
 	char	*env_path;
 	char	**path_array;
+	int		i;
 
 	env_path = getenv("PATH");
 	path_array = ft_split(env_path,':');
+	i = 0;
+	while (path_array[i])
+	{
+		garbage_collector_add(path_array[i]);
+		i++;
+	}
+	garbage_collector_add(path_array);
 	return (path_array);
 }
 
@@ -59,6 +67,7 @@ char	*get_full_path(char *name,char **path)
 	int				i;
 	DIR				*dp;
 	struct dirent	*entry;
+	char			*tmp;
 
 	i = 0;
 	while (path[i] != 0)
@@ -69,8 +78,13 @@ char	*get_full_path(char *name,char **path)
 			entry = readdir(dp);
 			while (entry)
 			{
-				if (ft_strncmp(name,entry->d_name, strlen(name)+1) == 0) // TODO Refactor to prevent leak on the double join
-					return (ft_strjoin(ft_strjoin(path[i],"/"),name));
+				if (ft_strncmp(name,entry->d_name, strlen(name)+1) == 0)
+				{
+					closedir(dp);
+					tmp = ft_strjoin(path[i],"/");
+					garbage_collector_add(tmp);
+					return (ft_strjoin(tmp,  name));
+				}
 				entry = readdir(dp);
 			}
 		}
@@ -90,12 +104,17 @@ char	*get_full_path(char *name,char **path)
 
 char	*check_absolute_relative_path(char *name)
 {
+	char	*parent;
 	if (name[0] == '/')
 		return (name);
 	else if (name[0] == '.' && name[1] == '/')
 		return (ft_strjoin(getcwd(NULL,0),name+1));
 	else if (name[0] == '.' && name[1] == '.' && name[2] == '/')
-		return(ft_strjoin(get_parent(getcwd(NULL,0)),name+2));
+	{
+		parent = get_parent(getcwd(NULL,0));
+//		garbage_collector_add(parent);
+		return(ft_strjoin(parent,name+2));
+	}
 	else
 		return (NULL);
 }

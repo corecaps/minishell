@@ -271,7 +271,7 @@ int write_pipe(t_ast *current_node, char ***env, const int *pipe_fd)
 	close(pipe_fd[0]);
 	current_node->left->out_pipe = pipe_fd[1];
 	current_node->left->forked =1;
-	status = traverse_ast(current_node->left, env);
+	status = exec_command_node(current_node->left, env);
 	close(pipe_fd[1]);
 	return (status);
 }
@@ -390,11 +390,8 @@ int traverse_ast(t_ast *current_node, char ***env)
 		else
 			return (exec_command_node(current_node, env));
 	}
-	else if (current_node->type == E_PIPE){
-		status = exec_pipe(current_node,env);
-		printf("status %d\n", status);
-		return (status);
-	}
+	else if (current_node->type == E_PIPE)
+		return (exec_pipe(current_node,env));
 	else
 		return (-8);
 }

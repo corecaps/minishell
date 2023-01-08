@@ -50,7 +50,7 @@ int	main(int argc, char **argv, char **env)
 		if (data->root && status == 1)
 		{
 			status = traverse_ast(data->root, &new_env);
-			printf("\n[Status:%d]\n", status);
+			set_env(&new_env, "?", ft_itoa(status));
 			del_ast(data->root);
 		}
 		free(data->line);

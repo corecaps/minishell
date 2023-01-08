@@ -40,7 +40,7 @@ void	del_environ(char ***env)
 {
 	size_t	i;
 
-	if(env == NULL)
+	if(*env == NULL)
 		return ;
 	i = 0;
 	while ((*env)[i])
@@ -76,7 +76,7 @@ int	realloc_environ(char ***env,size_t size) //I guess we have leaks here
 		i++;
 	}
 	new_env[i] = NULL;
-//	del_environ(env);
+	del_environ(env);
 	*env = new_env;
 	return (0);
 }
@@ -106,14 +106,24 @@ int	set_env(char ***env,char *key,char *value)
 	// }
 	// printf("\tbefore set_env() count = %d\n", j);
 	//
-	while ((*env)[i])
+	if ((*env) == NULL)
+	{
+		(*env) = malloc(sizeof(char *) * 2);
+		if ((*env) == NULL)
+			return (-1);
+		tmp = ft_strjoin(key, "=");
+		(*env)[0] = ft_strjoin(tmp, value);
+		(*env)[1] = NULL;
+		return (0);
+	}
+	while ((*env)[i] != NULL)
 	{
 		tmp = ft_strjoin(key,"=");
+		if (tmp == NULL)
+			return (-1);
 		if (ft_strncmp(tmp,(*env)[i],ft_strlen(tmp)) == 0)
 			break;
 		i ++;
-		free (tmp);
-		tmp = NULL;
 	}
 	size = count_env(env);
 	if (i > size -1)
@@ -125,7 +135,8 @@ int	set_env(char ***env,char *key,char *value)
 	}
 	else
 	{
-		free ((*env)[i]);
+		if ((*env)[i])
+			free((*env)[i]);
 		(*env)[i] = ft_strjoin(tmp,value);
 	}
 	//FOR TESTING
@@ -136,8 +147,7 @@ int	set_env(char ***env,char *key,char *value)
 	// }
 	// printf("\tafter set_env() count = %d\n", j);
 	//
-	if (tmp)
-		free(tmp);
+	free(tmp);
 	return (0);
 }
 
