@@ -11,7 +11,8 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-static	t_data	*data_init(void)
+
+static t_data	*data_init(void)
 {
 	t_data	*data;
 
@@ -27,15 +28,12 @@ static	t_data	*data_init(void)
 
 int	main(int argc, char **argv, char **env)
 {
-	int		running;
 	t_data	*data;
-	int		pid;
 	int		status;
 	char	**new_env;
 
-	running = 1;
 	new_env = create_env(env, argc, argv);
-	while (running)
+	while (1)
 	{
 		data = data_init();
 		data->line = readline(PS1);
@@ -51,14 +49,7 @@ int	main(int argc, char **argv, char **env)
 		{
 			status = traverse_ast(data->root, &new_env);
 			set_env(&new_env, "?", ft_itoa(status));
-			del_ast(data->root);
 		}
-		free(data->line);
-		if(data->start_token)
-			del_token_list(data->start_token);
-		if (data->parsing_stack)
-			del_stack(data->parsing_stack);
-		free(data);
 	}
 	return (0);
 }

@@ -24,12 +24,14 @@ t_ast	*get_top(t_ast *node)
 		node = node->parent;
 	return (node);
 }
+
 /*****************************************************************************
  * Add a child to node and set the parent of the child to node
  * @param parent the parent node
  * @param token the token to add to the node
  * @return the leftmost node of the Abstract Syntax Tree
  ****************************************************************************/
+
 t_ast	*add_left(t_ast *parent, t_token *token)
 {
 	t_ast	*new_node;

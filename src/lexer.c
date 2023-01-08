@@ -67,9 +67,10 @@ static void	add_word_token(t_data *data, char sep)
 				&& data->line[data->end] != '\n' && data->line[data->end] != '>'
 				&& data->line[data->end] != '\v' && data->line[data->end] != '<'
 				&& data->line[data->end] != '\f' && data->line[data->end] != '|'
-				&& data->line[data->end] != '\r' && data->line[data->end] != '\''
+				&& data->line[data->end] != '\r'
+				&& data->line[data->end] != '\''
 				&& data->line[data->end] != '"')
-			   && data->line[data->end] != 0)
+			&& data->line[data->end] != 0)
 			data->end++;
 	else
 		while (data->line[data->end] != sep && data->line != 0)
@@ -126,5 +127,5 @@ void	lexer(t_data *data)
 		else
 			break ;
 	}
-	add_token(data,E_END_OF_TOKEN,"");
+	add_token(data, E_END_OF_TOKEN, "");
 }

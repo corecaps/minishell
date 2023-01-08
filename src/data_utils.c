@@ -27,17 +27,13 @@
 
 void	free_all(t_data *data)
 {
-	//need to add ast_node_free part of func
-	if (data->line)
-	{
-		free(data->line);
-		data->line = NULL;
-	}
+	if (data->root)
+		del_ast(data->root);
+	free(data->line);
 	if (data->start_token)
-	{
 		del_token_list(data->start_token);
-		data->start_token = NULL;
-	}
+	if (data->parsing_stack)
+		del_stack(data->parsing_stack);
 	if (data)
 		free(data);
 }

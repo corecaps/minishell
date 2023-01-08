@@ -22,12 +22,12 @@
  * @return -3 in case of out of bound non terminal symbol
  * @return -2 in case of syntax error
  * @return -1 in case of memory error
- ******************************************************************************/
+ *****************************************************************************/
 
 static int	get_prod(t_token_type non_terminal, t_token **cursor, t_data *data)
 {
 	int	result;
-	int (*prod[9])(t_token **,t_data *data);
+	int	(*prod[9])(t_token **, t_data *data);
 
 	if (non_terminal > E_REDIRECTION_OP || non_terminal < E_COMMAND_LINE)
 		return (-3);
@@ -40,7 +40,7 @@ static int	get_prod(t_token_type non_terminal, t_token **cursor, t_data *data)
 	prod[6] = cmd;
 	prod[7] = cmd_arg;
 	prod[8] = redir_op;
-	result = prod[non_terminal-E_COMMAND_LINE](cursor,data);
+	result = prod[non_terminal - E_COMMAND_LINE](cursor, data);
 	return (result);
 }
 
@@ -112,7 +112,7 @@ int	parse(t_data *data)
 	while (count_stack(data->parsing_stack))
 	{
 		if (data->parsing_stack->type == E_END_OF_TOKEN)
-			break;
+			break ;
 		if (data->parsing_stack->type > E_NON_TERMINALS)
 		{
 			// TODO Extract method here
@@ -128,7 +128,7 @@ int	parse(t_data *data)
 			// TODO extract method here
 			state = pop(&data->parsing_stack);
 			if (state == E_EPSILON)
-				continue;
+				continue ;
 			if (cursor->token_type == state)
 				cursor = cursor->next_token;
 			else

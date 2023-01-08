@@ -211,6 +211,7 @@ int	apply_redirections(t_ast *node)
 	{
 		if (ft_strncmp(node->token_node->value, ">>",2) == 0)
 		{
+			// TODO : correct flags for append mode
 			fd = open(node->token_node->next_token->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (fd == -1)
 				return (-2);
@@ -302,6 +303,7 @@ int read_pipe(t_ast *current_node, char ***env, const int *pipe_fd, int pid)
 		current_node->right->left->in_pipe = pipe_fd[0];
 	if (current_node->right->type == E_COMMAND)
 	{
+		// TODO : extract method (repeated from traverse_ast)
 		builtin = check_builtins(current_node->token_node->value);
 		if (!builtin)
 		{
