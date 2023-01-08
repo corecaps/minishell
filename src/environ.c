@@ -59,7 +59,7 @@ void	del_environ(char ***env)
  * @return 0 if success, -1 if error
  *****************************************************************************/
 
-int	realloc_environ(char ***env,size_t size)
+int	realloc_environ(char ***env,size_t size) //I guess we have leaks here
 {
 	char	**new_env;
 	size_t	i;
@@ -95,6 +95,17 @@ int	set_env(char ***env,char *key,char *value)
 	char	*tmp;
 
 	i=0;
+	//FOR TESTING
+	// printf("\tin set_env()\n");
+	// printf("\tkey = %s\n\tvalue = %s\n", key, value);
+	// int j = 0;
+	// while (*env[j])
+	// {
+	// 	printf("%s\n", *env[j]);	
+	// 	j++;
+	// }
+	// printf("\tbefore set_env() count = %d\n", j);
+	//
 	while ((*env)[i])
 	{
 		tmp = ft_strjoin(key,"=");
@@ -115,11 +126,19 @@ int	set_env(char ***env,char *key,char *value)
 		free ((*env)[i]);
 		(*env)[i] = ft_strjoin(tmp,value);
 	}
+	//FOR TESTING
+	// j = 0;
+	// while (env[j])
+	// {
+	// 	j++;	
+	// }
+	// printf("\tafter set_env() count = %d\n", j);
+	//
 	free(tmp);
 	return (0);
 }
 
-char	*get_env(char *key,char **env)
+char	*get_env(char *key,char ***env)
 {
 	size_t	i;
 	char	*tmp;
@@ -128,12 +147,12 @@ char	*get_env(char *key,char **env)
 	if (key == NULL || env == NULL)
 		return (NULL);
 	i = 0;
-	while (env[i])
+	while ((*env)[i])
 	{
 		tmp = ft_strjoin(key,"=");
-		if (ft_strncmp(tmp,env[i],ft_strlen(tmp)) == 0)
+		if (ft_strncmp(tmp,(*env)[i],ft_strlen(tmp)) == 0)
 		{
-			ret = ft_substr(env[i],ft_strlen(tmp),ft_strlen(env[i]));
+			ret = ft_substr((*env)[i],ft_strlen(tmp),ft_strlen((*env)[i]));
 			free(tmp);
 			return (ret);
 		}

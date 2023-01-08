@@ -37,34 +37,39 @@ int	main(int argc, char **argv, char **env)
 	new_env = create_env(env, argc, argv);
 	while (running)
 	{
+		
+		// printf("\n\nPID: [%d]\n", getpid());
 		data = data_init();
 		data->line = readline(PS1);
 		if (!data->line)
+		{
 			exit(EXIT_FAILURE);
+		}
 		if (ft_strlen(data->line))
 			add_history(data->line);
 		lexer(data);
 		status = parse(data);
 		if (data->root && status == 1)
 		{
-			pid = fork(); // TODO Move the fork to the exec function
-			if (pid < 0)
-				perror("fork error\n");
-			else if (pid == 0)
-			{
+//			pid = fork(); // TODO Move the fork to the exec function
+//			if (pid < 0)
+//				perror("fork error\n");
+//			else if (pid == 0)
+//			{
 				status = traverse_ast(data->root, &new_env);
 				printf("\n[Status:%d]\n", status);
 				if (status == -3)
 					printf("Command [%s] not found\n", data->root->token_node->value);
-			}
-			else
-			{
-				waitpid(pid,&status,0);
-				if (status != 0)
-					fprintf(stderr,"Error :[%d] \n", status);
-			}
+//			}
+//			else
+//			{
+//				waitpid(pid,&status,0);
+//				if (status != 0)
+//					fprintf(stderr,"Error :[%d] \n", status);
+//			}
 			del_ast(data->root);
 		}
+		free(data->line);
 	}
 	return (0);
 }

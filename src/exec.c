@@ -29,14 +29,14 @@ t_f_builtin check_builtins(char *cmd)
 		return (ft_cd);
 	else if (ft_strncmp(cmd, "pwd",4) == 0)
 		return (ft_pwd);
-//	else if (ft_strcmp(cmd, "export") == 0)
-//		return (ft_export);
-//	else if (ft_strcmp(cmd, "unset") == 0)
-//		return (ft_unset);
-//	else if (ft_strcmp(cmd, "env") == 0)
-//		return (ft_env);
-//	else if (ft_strcmp(cmd, "exit") == 0)
-//		return (ft_exit);
+	else if (ft_strncmp(cmd, "export", 6) == 0)
+		return (ft_export);
+	else if (ft_strncmp(cmd, "unset", 5) == 0)
+		return (ft_unset);
+	else if (ft_strncmp(cmd, "env", 3) == 0)
+		return (ft_env);
+	else if (ft_strncmp(cmd, "exit",5) == 0)
+		return (ft_exit);
 	return (NULL);
 }
 /******************************************************************************
@@ -54,6 +54,7 @@ int	exec_command_node(t_ast *node, char ***env)
 	char	*full_path;
 	char	**args;
 	int		pid;
+	int		pid2;
 	int		pipe_fd[2];
 	int		status;
 	t_f_builtin builtin;
@@ -112,15 +113,21 @@ int	exec_command_node(t_ast *node, char ***env)
 			close(pipe_fd[0]);
 			if (builtin)
 			{
-				builtin(args, *env);
-				exit(EXIT_SUCCESS);
+				builtin(args, env);//env ** or ***
 			}
 			else
 			{
-				printf("CWD: %s",getcwd(NULL,0));
-				printf("PWD : %s",getenv("PWD"));
-				printf("PWD n_env %s",get_env("PWD",*env));
-				execve(full_path, args, *env);
+				pid2 = fork();
+				if (pid2 < 0)
+					return (-5);
+				if (pid2 == 0)
+				{
+					execve(full_path, args, *env);
+				}
+				else
+				{
+					waitpid(pid2,&status,0);
+				}
 			}
 			waitpid(pid,NULL,0);
 			return (0);
@@ -128,17 +135,23 @@ int	exec_command_node(t_ast *node, char ***env)
 	}
 	if (builtin)
 	{
-		builtin(args, *env);
-		exit(EXIT_SUCCESS);
+		builtin(args, env);
+	}
+	else
+	pid2 = fork();
+	if (pid2 < 0)
+		return (-5);
+	if (pid2 == 0)
+	{
+		execve(full_path, args, *env);
 	}
 	else
 	{
-		printf("CWD: %s",getcwd(NULL,0));
-		printf("PWD : %s",getenv("PWD"));
-		printf("PWD n_env %s",get_env("PWD",*env));
-		execve(full_path, args, *env);
+		// printf("\tchild->parent process %d\n", pid2);
+		waitpid(pid2,&status,WUNTRACED);
+		// printf("||||||||||||\n");
 	}
-	return (0);
+	return (pid2);
 }
 
 /***************************************************************************
@@ -269,6 +282,7 @@ int write_pipe(t_ast *current_node, char ***env, const int *pipe_fd)
 
 	close(pipe_fd[0]);
 	current_node->left->out_pipe = pipe_fd[1];
+	current_node->left->forked =1;
 	status = traverse_ast(current_node->left, env);
 	close(pipe_fd[1]);
 	return (status);
@@ -289,7 +303,6 @@ int write_pipe(t_ast *current_node, char ***env, const int *pipe_fd)
 int read_pipe(t_ast *current_node, char ***env, const int *pipe_fd, int pid)
 {
 	int status;
-
 	close(pipe_fd[1]);
 	if (current_node->right->type == E_COMMAND)
 		current_node->right->in_pipe = pipe_fd[0];
@@ -298,8 +311,11 @@ int read_pipe(t_ast *current_node, char ***env, const int *pipe_fd, int pid)
 	status = traverse_ast(current_node->right, env);
 	if (status < 0)
 		return (status);
+	printf("pid: %d\n",pid);
+	status = waitpid(pid, &status, WUNTRACED);
+	printf("status: %d", status);
+	wait(NULL);
 	close(pipe_fd[0]);
-	status = waitpid(pid, &status, 0);
 	return (status);
 }
 
@@ -326,9 +342,14 @@ int exec_pipe(t_ast *current_node, char ***env)
 	if (pid < 0)
 		return (-5);
 	else if (pid == 0)
-		return write_pipe(current_node, env, pipe_fd);
+	{
+		write_pipe(current_node, env, pipe_fd);
+		exit(0);
+	}
 	else
+	{
 		return read_pipe(current_node, env, pipe_fd, pid);
+	}
 }
 
 /******************************************************************************
@@ -343,10 +364,15 @@ int exec_pipe(t_ast *current_node, char ***env)
 
 int traverse_ast(t_ast *current_node, char ***env)
 {
+	int status;
+
 	if (current_node->type == E_COMMAND)
 		return (exec_command_node(current_node, env));
-	else if (current_node->type == E_PIPE)
-		return (exec_pipe(current_node,env));
+	else if (current_node->type == E_PIPE){
+		status = exec_pipe(current_node,env);
+		printf("status %d\n", status);
+		return (status);
+	}
 	else
 		return (-8);
 }
