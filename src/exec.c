@@ -31,8 +31,8 @@ t_f_builtin check_builtins(char *cmd)
 		return (ft_pwd);
 	else if (ft_strncmp(cmd, "export", 6) == 0)
 		return (ft_export);
-	// else if (ft_strncmp(cmd, "unset", 5) == 0)
-	// 	return (ft_unset);
+	else if (ft_strncmp(cmd, "unset", 5) == 0)
+		return (ft_unset);
 	else if (ft_strncmp(cmd, "env", 3) == 0)
 		return (ft_env);
 	else if (ft_strncmp(cmd, "exit",5) == 0)

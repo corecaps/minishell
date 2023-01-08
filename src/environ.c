@@ -54,31 +54,47 @@ void	del_environ(char ***env)
 
 /******************************************************************************
  * Reallocate the environment array to size size
+ * [UPDATE]:Recode realloc func to decrease size of env. Index is the env[index]
+ * 			element to unset. If we add element, index is -1.
  * @param env Pointer to Environment
  * @param size New size of the environment array
+ * @param index Index of element needs to unset
  * @return 0 if success, -1 if error
  *****************************************************************************/
 
-int	realloc_environ(char ***env,size_t size) //I guess we have leaks here
+int	realloc_environ(char ***env,size_t size, size_t index)
 {
 	char	**new_env;
 	size_t	i;
+	size_t	j;
 
-	if (env == NULL || size == 0 || size <= count_env(env))
+	if (env == NULL || size == 0) // deleted "size <= count_env(env) condition"
 		return (-1);
 	new_env = malloc(sizeof(char *) * (size + 1));
 	if (new_env == NULL)
 		return (-1);
 	i = 0;
-	while ((*env)[i])
+	j = 0;
+	// printf("\nIn realloc\n");
+	// printf("\tNew env size = %ld\n", size);
+	// printf("\tIndex = %ld\n", index);
+	while (j < size && (*env)[i])
 	{
-		new_env[i] = ft_strdup((*env)[i]);
+		// printf("\ti = %ld\n", i);
+		if (index == i)
+		{
+			// printf("\n\nHERE\n\n");
+			i++;
+		}
+		new_env[j] = ft_strdup((*env)[i]);
 		i++;
+		j++;
 	}
 	new_env[i] = NULL;
-	printf("\n\n\tnew_env[1] = [%p]\n\tenv[1] = [%p]\n\n", new_env[1], env[1]);
+	// printf("\n\n\tnew_env[1] = [%p]\n\tenv[1] = [%p]\n\n", new_env[1], env[1]);
 	del_environ(env);
 	*env = new_env;
+	// printf("Mistake out the realloc\n");
 	return (0);
 }
 /******************************************************************************
@@ -98,7 +114,7 @@ int	set_env(char ***env,char *key,char *value)
 	i=0;
 	//FOR TESTING
 	// printf("\tin set_env()\n");
-	printf("\tkey = %s\n\tvalue = %s\n", key, value);
+	// printf("\tkey = %s\n\tvalue = %s\n", key, value);
 	// int j = 0;
 	// while (*env[j])
 	// {
@@ -129,7 +145,7 @@ int	set_env(char ***env,char *key,char *value)
 	size = count_env(env);
 	if (i > size -1)
 	{
-		realloc_environ(env, size + 1);
+		realloc_environ(env, size + 1, -1);
 		if (!(*env))
 			return (-1);
 		(*env)[size] = ft_strjoin(tmp,value);

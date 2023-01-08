@@ -91,7 +91,8 @@ int	ft_env(char **args,char ***env)
 {
 	(void) args;
 	//FOR TESTING EXPORT
-	printf("In ft_env:\n\tenv address = [%p]\n", env);
+	// printf("\n\n\nENVENV\n\n\n");
+	// printf("In ft_env:\n\tenv address = [%p]\n", env);
 	int i = 0;
 	while((*env)[i])
 	{
@@ -131,7 +132,7 @@ int	ft_export(char **args, char ***env)
 			else if ((args[i][j] < 65 || (args[i][j] > 90 && args[i][j] < 97) //invalid symbols on input
 				|| args[i][j] > 122) && stop == -1 )
 			{
-				printf("export error: invalid symbols []");
+				printf("export error: invalid symbols []\n");
 					return (-100); 	// maybe we need to skip this arg to continue with "continue ;"
 			}
 			j++;
@@ -159,22 +160,26 @@ int	ft_export(char **args, char ***env)
 
 int	ft_unset(char **args, char ***env)
 {
-	int	i;
-	int j;
-	int index;
+	int		i;
+	int		j;
+	size_t	index;
 
 	(void) args;
 	(void) env;
-	i = 1;	
+	i = 1;
+	// printf("\n\n\nUNSETTTTT\n\n\n");
 	while (args[i])
 	{
 		j = 0;
 		while ((*env)[j])
 		{
-			if (ft_strncmp(args[i], (*env)[i], ft_strlen(args[i])))
+			// printf("Args[%d] = [%s] : (*env)[%d] = [%s]\n", i, args[i], j, (*env)[j]);
+			if (!ft_strncmp(args[i], (const char *)(*env)[j], ft_strlen(args[i])))
 			{
-				index = j;
-				realloc_environ(env, count_env(env), index);
+				index = (size_t) j;
+				// printf("\tFound index = [%ld]\n", index);
+				realloc_environ(env, count_env(env) - 1, index);
+				// printf("\n\nhello\n\n");
 				break ;
 			}
 			j++;
