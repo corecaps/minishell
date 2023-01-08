@@ -322,7 +322,7 @@ or\~\fBtcase_add_unchecked_fixture()\fR,
 .TP 0.2i
 \(bu
 set up test logging for the suite
-runner, via \fBsrunner_set_log()\fR
+traverse_ast, via \fBsrunner_set_log()\fR
 or\~\fBsrunner_set_xml()\fR, or
 .TP 0.2i
 \(bu
@@ -552,7 +552,7 @@ int main(void)
     nf = srunner_ntests_failed(sr);
     srunner_free(sr);
 
-    /* User-specified post-run code */
+    /* User-specified post-exec_command_node code */
     if (nf != 0) {
       printf("Hey, something's wrong! %d whole tests failed!\\n", nf);
     }

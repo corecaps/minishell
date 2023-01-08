@@ -67,7 +67,9 @@ static void	add_word_token(t_data *data, char sep)
 				&& data->line[data->end] != '\n' && data->line[data->end] != '>'
 				&& data->line[data->end] != '\v' && data->line[data->end] != '<'
 				&& data->line[data->end] != '\f' && data->line[data->end] != '|'
-				&& data->line[data->end] != '\r')
+				&& data->line[data->end] != '\r'
+				&& data->line[data->end] != '\''
+				&& data->line[data->end] != '"')
 			&& data->line[data->end] != 0)
 			data->end++;
 	else
@@ -76,9 +78,13 @@ static void	add_word_token(t_data *data, char sep)
 	rawvalue = ft_substr(data->line, data->index, data->end - data->index);
 	if (!rawvalue)
 		exit(EXIT_FAILURE);
-	value = expand(rawvalue);
-	free(rawvalue);
-	add_token(data, E_WORD, value);
+	if (sep == ' ' || sep == '\"')
+	{
+		value = expand(rawvalue);
+		add_token(data, E_WORD, value);
+	}
+	else
+		add_token(data, E_WORD, rawvalue);
 }
 
 static void	add_quoted_token(t_data *data)

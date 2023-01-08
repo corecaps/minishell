@@ -37,7 +37,7 @@ The versions specified may be higher than those actually needed.
 
 in this directory to set everything up.  autoreconf calls all of the
 necessary tools for you, like autoconf, automake, autoheader, etc.  If
-you ever change something during development, run autoreconf again
+you ever change something during development, exec_command_node autoreconf again
 (without --install), and it will perform the minimum set of actions
 necessary.  Check is installed to `/usr/local/lib` by default. ldconfig rebuilds
 the linker cache so that newly installed library file is included in the cache.
@@ -62,4 +62,3 @@ nice to eliminate these macros.
 Check is available packaged for the following operating systems:
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/check.svg)](https://repology.org/project/check/versions)
-
