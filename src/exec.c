@@ -86,72 +86,60 @@ int	exec_command_node(t_ast *node, char ***env)
 		if (node->here_doc == 1)
 			parse_here_doc(node);
 	}
-	if (node->here_doc_list)
-	{
-		if (pipe(pipe_fd) == -1)
-			return (-4);
-		pid = fork();
-		if (pid < 0)
-			return (-5);
-		if (pid == 0)
-		{
-			close(pipe_fd[0]);
-			cursor = node->here_doc_list;
-			while (cursor)
-			{
-				write(pipe_fd[1],cursor->line,ft_strlen(cursor->line));
-				write(pipe_fd[1],"\n",1);
-				//TODO free cursor->line and cursor
-				cursor = cursor->next;
-			}
-			close(pipe_fd[1]);
-		}
-		else
-		{
-			close(pipe_fd[1]);
-			dup2(pipe_fd[0],STDIN_FILENO);
-			close(pipe_fd[0]);
-			if (builtin)
-			{
-				builtin(args, env);//env ** or ***
-			}
-			else
-			{
-				pid2 = fork();
-				if (pid2 < 0)
-					return (-5);
-				if (pid2 == 0)
-				{
-					execve(full_path, args, *env);
-				}
-				else
-				{
-					waitpid(pid2,&status,0);
-				}
-			}
-			waitpid(pid,NULL,0);
-			return (0);
-		}
-	}
+//	if (node->here_doc_list)
+//	{
+//		if (pipe(pipe_fd) == -1)
+//			return (-4);
+//		pid = fork();
+//		if (pid < 0)
+//			return (-5);
+//		if (pid == 0)
+//		{
+//			close(pipe_fd[0]);
+//			cursor = node->here_doc_list;
+//			while (cursor)
+//			{
+//				write(pipe_fd[1],cursor->line,ft_strlen(cursor->line));
+//				write(pipe_fd[1],"\n",1);
+//				//TODO free cursor->line and cursor
+//				cursor = cursor->next;
+//			}
+//			close(pipe_fd[1]);
+//		}
+//		else
+//		{
+//			close(pipe_fd[1]);
+//			dup2(pipe_fd[0],STDIN_FILENO);
+//			close(pipe_fd[0]);
+//			if (builtin)
+//			{
+//				builtin(args, env);//env ** or ***
+//			}
+//			else
+//			{
+//				pid2 = fork();
+//				if (pid2 < 0)
+//					return (-5);
+//				if (pid2 == 0)
+//				{
+//					execve(full_path, args, *env);
+//				}
+//				else
+//				{
+//					waitpid(pid2,&status,0);
+//				}
+//			}
+//			waitpid(pid,NULL,0);
+//			return (0);
+//		}
+//	}
 	if (builtin)
 	{
 		builtin(args, env);
 	}
 	else
-	pid2 = fork();
-	if (pid2 < 0)
-		return (-5);
-	if (pid2 == 0)
-	{
 		execve(full_path, args, *env);
-	}
-	else
-	{
-		// printf("\tchild->parent process %d\n", pid2);
-		waitpid(pid2,&status,WUNTRACED);
-		// printf("||||||||||||\n");
-	}
-	return (pid2);
+	return (0);
 }
 
 /***************************************************************************
@@ -303,18 +291,38 @@ int write_pipe(t_ast *current_node, char ***env, const int *pipe_fd)
 int read_pipe(t_ast *current_node, char ***env, const int *pipe_fd, int pid)
 {
 	int status;
+	int pid2;
+
+	pid2 = -1;
 	close(pipe_fd[1]);
 	if (current_node->right->type == E_COMMAND)
 		current_node->right->in_pipe = pipe_fd[0];
 	else
 		current_node->right->left->in_pipe = pipe_fd[0];
-	status = traverse_ast(current_node->right, env);
-	if (status < 0)
-		return (status);
-	printf("pid: %d\n",pid);
+	if (current_node->right->type == E_COMMAND)
+	{
+		pid2 = fork();
+		if (pid2 < 0)
+			return (-5);
+		if (pid2 == 0)
+		{
+			status = exec_command_node(current_node->right, env);
+			if (status < 0)
+				return (status);
+		}
+	}
+	else
+	{
+		status = exec_pipe(current_node->right, env);
+		if (status < 0)
+			return (status);
+	}
+	if (pid2 > 0)
+	{
+		close(pipe_fd[0]);
+		waitpid(pid2, &status, 0);
+	}
 	status = waitpid(pid, &status, WUNTRACED);
-	printf("status: %d", status);
-	wait(NULL);
 	close(pipe_fd[0]);
 	return (status);
 }
@@ -365,9 +373,29 @@ int exec_pipe(t_ast *current_node, char ***env)
 int traverse_ast(t_ast *current_node, char ***env)
 {
 	int status;
-
+	int pid;
+	t_f_builtin builtin;
 	if (current_node->type == E_COMMAND)
-		return (exec_command_node(current_node, env));
+	{
+		// TODO : check if the command is a builtin and execute it
+		builtin = check_builtins(current_node->token_node->value);
+		if (builtin == NULL)
+		{
+			pid = fork();
+			if (pid < 0)
+				return (-5);
+			if (pid == 0)
+				return (exec_command_node(current_node, env));
+			else
+				status = waitpid(pid, &status, 0);
+			return (status);
+		}
+		else
+		{
+			printf("builtin\n");
+			return (exec_command_node(current_node, env));
+		}
+	}
 	else if (current_node->type == E_PIPE){
 		status = exec_pipe(current_node,env);
 		printf("status %d\n", status);

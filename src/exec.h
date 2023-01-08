@@ -30,4 +30,5 @@ int     ft_unset(char **args, char ***env);
 void	del_environ(char ***env);
 int		realloc_environ(char ***env,size_t size);
 int		set_env(char ***env,char *key,char *value);
+int		exec_pipe(t_ast *current_node, char ***env);
 #endif
