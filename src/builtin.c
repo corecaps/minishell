@@ -71,7 +71,11 @@ int	ft_pwd(char **args,char ***env)
 int ft_exit(char **args,char ***env)
 {
 	(void) args;
-	(void) env;
+	t_garbage *gc;
+
+	gc = garbage_collector_add(NULL);
+	garbage_collector_free(gc);
+	del_environ(env);
 	exit(EXIT_SUCCESS);
 	return (0);
 }
@@ -135,5 +139,7 @@ int	ft_env(char **args,char ***env)
 
 int	ft_unset(char **args, char ***env)
 {
+	(void) args;
+	(void) env;
 	return (0);
 }

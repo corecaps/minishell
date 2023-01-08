@@ -25,7 +25,7 @@ SRC =	minishell.c				token_list.c			ast.c \
 		grammar_production.c	grammar_production_2.c	ast_builder.c \
 		exec.c					path_expander.c			arguments.c \
 		environ.c				data_utils.c			expand.c \
-		builtin.c
+		builtin.c				garbage_collector.c		\
 
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h data_structures.h

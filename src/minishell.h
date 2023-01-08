@@ -51,4 +51,6 @@ int				traverse_ast(t_ast *current_node, char ***env);
 size_t			count_env(char ***env);
 char			**create_env(char **env, int argc, char **argv);
 char			*get_env(char *key,char ***env);
+t_garbage		*garbage_collector_add(void *ptr);
+void			garbage_collector_free(t_garbage *garbage);
 #endif

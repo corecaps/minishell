@@ -38,6 +38,11 @@ typedef enum e_token_type {
 
 typedef int		(*t_f_builtin)(char **args, char ***env);
 
+typedef struct s_garbage
+{
+	void			*ptr;
+	struct s_garbage	*next;
+}	t_garbage;
 
 typedef struct s_here_doc {
 	char	*line;

@@ -355,9 +355,7 @@ int exec_pipe(t_ast *current_node, char ***env)
 		exit(0);
 	}
 	else
-	{
 		return read_pipe(current_node, env, pipe_fd, pid);
-	}
 }
 
 /******************************************************************************
@@ -377,9 +375,8 @@ int traverse_ast(t_ast *current_node, char ***env)
 	t_f_builtin builtin;
 	if (current_node->type == E_COMMAND)
 	{
-		// TODO : check if the command is a builtin and execute it
 		builtin = check_builtins(current_node->token_node->value);
-		if (builtin == NULL)
+		if (!builtin)
 		{
 			pid = fork();
 			if (pid < 0)
@@ -391,10 +388,7 @@ int traverse_ast(t_ast *current_node, char ***env)
 			return (status);
 		}
 		else
-		{
-			printf("builtin\n");
 			return (exec_command_node(current_node, env));
-		}
 	}
 	else if (current_node->type == E_PIPE){
 		status = exec_pipe(current_node,env);

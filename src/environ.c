@@ -112,6 +112,8 @@ int	set_env(char ***env,char *key,char *value)
 		if (ft_strncmp(tmp,(*env)[i],ft_strlen(tmp)) == 0)
 			break;
 		i ++;
+		free (tmp);
+		tmp = NULL;
 	}
 	size = count_env(env);
 	if (i > size -1)
@@ -134,7 +136,8 @@ int	set_env(char ***env,char *key,char *value)
 	// }
 	// printf("\tafter set_env() count = %d\n", j);
 	//
-	free(tmp);
+	if (tmp)
+		free(tmp);
 	return (0);
 }
 
