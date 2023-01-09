@@ -33,6 +33,16 @@
     "string": "c",
     "random": "c",
     "functional": "c",
-    "parser.h": "c"
+    "parser.h": "c",
+    "stdio.h": "c",
+    "*.tcc": "c",
+    "optional": "c",
+    "istream": "c",
+    "ostream": "c",
+    "system_error": "c",
+    "array": "c",
+    "tuple": "c",
+    "type_traits": "c",
+    "utility": "c"
   }
 }

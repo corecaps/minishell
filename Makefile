@@ -6,7 +6,7 @@
 #    By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/04 12:18:46 by jgarcia           #+#    #+#              #
-#    Updated: 2022/12/22 16:37:03 by latahbah         ###   ########.fr        #
+#    Updated: 2023/01/09 12:51:20 by latahbah         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ SRC =	minishell.c				token_list.c			ast.c \
 		grammar_production.c	grammar_production_2.c	ast_builder.c \
 		exec.c					path_expander.c			arguments.c \
 		environ.c				data_utils.c			expand.c \
-		builtin.c				garbage_collector.c		\
+		builtin.c				builtin2.c				garbage_collector.c \
+		set_env.c
 
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h data_structures.h
