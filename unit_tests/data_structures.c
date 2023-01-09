@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   data_structures.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/09 15:53:37 by jgarcia           #+#    #+#             */
+/*   Updated: 2023/01/09 15:53:39 by jgarcia          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "check.h"
 #include "../src/minishell.h"
 
@@ -192,18 +204,3 @@ Suite *data_structures_test(void)
 	suite_add_tcase(s, tc_core);
 	return (s);
 }
-
-//int main(void)
-//{
-//	int		n_failed;
-//	Suite	*s;
-//	SRunner	*sr;
-//
-//	n_failed = 0;
-//	s = data_structures_test();
-//	sr = srunner_create(s);
-//	srunner_run_all(sr, CK_VERBOSE);
-//	n_failed = srunner_ntests_failed(sr);
-//	srunner_free(sr);
-//	return (n_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
-//}

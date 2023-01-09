@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/01/09 15:54:30 by jgarcia           #+#    #+#              #
+#    Updated: 2023/01/09 15:54:32 by jgarcia          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 # Unit tests for minishell
 
 CC		= gcc
@@ -17,24 +29,25 @@ MS_SOURCE	= ../src/token_list.c ../src/ast.c ../src/lexer.c ../src/stack.c ../sr
 MS_SOURCE	+= ../src/grammar_production.c ../src/grammar_production_2.c ../src/exec.c
 MS_SOURCE	+= ../src/ast_builder.c ../src/path_expander.c ../src/arguments.c ../src/environ.c
 MS_SOURCE	+= ../src/data_utils.c ../src/expand.c ../src/builtin.c ../src/garbage_collector.c
+MS_SOURCE	+= ../src/set_env.c ../src/builtin2.c
 MS_OBJ		= $(subst ../src/,../obj/,$(MS_SOURCE:.c=.o))
 MS_COV		= $(subst ../src/,../obj/,$(MS_SOURCE:.c=.gcno))
 MS_COV2		= $(subst ../src/,../obj/,$(MS_SOURCE:.c=.gcda))
 # Sources for unit tests
-SOURCE		= data_structures.c lexer_test.c parser_test.c exec_test.c main.c
+SOURCE		= data_structures.c lexer_test.c parser_test.c exec_test.c main.c environ_test.c
 OBJDIR		= obj
 OBJ			= $(addprefix $(OBJDIR)/,$(SOURCE:.c=.o))
 OBJ_COV		= $(addprefix $(OBJDIR)/,$(SOURCE:.c=.gcno))
 OBJ_COV2	= $(addprefix $(OBJDIR)/,$(SOURCE:.c=.gcda))
 NAMES		= unit_tests
 
-all: fclean $(NAMES)
+all: $(NAMES)
 
 unit_tests: $(OBJ) $(MS_OBJ) $(LIBFT) $(LCHECK)
 	@echo '====>LINK<===='
 	$(CC) $(CFLAGS) $(OBJ) $(MS_OBJ) $(LINK) -o unit_tests
 	@./unit_tests > test.log
-	@gcov $(MS_COV) >> test.log
+	@gcov  $(MS_COV) >> test.log
 	@mkdir -p gcov
 	@mv *.gcov gcov
 	@cat test.log
