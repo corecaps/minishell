@@ -6,6 +6,14 @@ unit_tests/parser_test
 doxygen_cfg
 doc/*
 doc/*/*
+unit_tests/gcov
+unit_tests/gcov/*
+unit_tests/obj/*
+obj/*
+callgrind.*
+unit_tests/callgrind.*
+unit_tests/test.log
+
 # Prerequisites
 *.d
 
