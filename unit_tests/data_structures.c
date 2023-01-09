@@ -1,6 +1,7 @@
 #include "check.h"
 #include "../src/minishell.h"
 
+
 START_TEST(test_stack)
 {
 	t_stack *head;
@@ -192,17 +193,17 @@ Suite *data_structures_test(void)
 	return (s);
 }
 
-int main(void)
-{
-	int		n_failed;
-	Suite	*s;
-	SRunner	*sr;
-
-	n_failed = 0;
-	s = data_structures_test();
-	sr = srunner_create(s);
-	srunner_run_all(sr, CK_VERBOSE);
-	n_failed = srunner_ntests_failed(sr);
-	srunner_free(sr);
-	return (n_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
-}
+//int main(void)
+//{
+//	int		n_failed;
+//	Suite	*s;
+//	SRunner	*sr;
+//
+//	n_failed = 0;
+//	s = data_structures_test();
+//	sr = srunner_create(s);
+//	srunner_run_all(sr, CK_VERBOSE);
+//	n_failed = srunner_ntests_failed(sr);
+//	srunner_free(sr);
+//	return (n_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+//}

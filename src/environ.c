@@ -76,7 +76,7 @@ int	realloc_environ(char ***env,size_t size) //I guess we have leaks here
 		i++;
 	}
 	new_env[i] = NULL;
-	del_environ(env);
+	free(*env);
 	*env = new_env;
 	return (0);
 }
