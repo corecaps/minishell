@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:13:41 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/08 15:13:59 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/09 18:34:33 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 void	garbage_collector_free(t_garbage *garbage)
 {
-	t_garbage *tmp;
+	t_garbage	*tmp;
 
 	while (garbage)
 	{
@@ -36,16 +36,17 @@ void	garbage_collector_free(t_garbage *garbage)
  * @return Pointer to the garbage collector
  ****************************************************************************/
 
-t_garbage *garbage_collector_add(void *ptr)
+t_garbage	*garbage_collector_add(void *ptr)
 {
-	static t_garbage *garbage = NULL;
-	t_garbage *new;
-	t_garbage *bottom;
+	static t_garbage	*garbage = NULL;
+	t_garbage			*new;
+	t_garbage			*bottom;
 
+	new = malloc(sizeof(t_garbage));
+	if (!new)
+		return (NULL);
 	if (ptr == NULL)
 		return (garbage);
-	if (!(new = malloc(sizeof(t_garbage))))
-		return (NULL);
 	new->ptr = ptr;
 	new->next = NULL;
 	if (garbage)
@@ -57,5 +58,5 @@ t_garbage *garbage_collector_add(void *ptr)
 	}
 	else
 		garbage = new;
-	return garbage;
+	return (garbage);
 }
