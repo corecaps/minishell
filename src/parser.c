@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 11:03:27 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/22 11:52:17 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/09 18:18:59 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ int	parse(t_data *data)
 			break ;
 		if (data->parsing_stack->type > E_NON_TERMINALS)
 		{
-			// TODO Extract method here
 			state = pop(&data->parsing_stack);
 			if (state >= E_END_OF_TOKEN)
 				return (-3);
@@ -125,7 +124,6 @@ int	parse(t_data *data)
 		}
 		else
 		{
-			// TODO extract method here
 			state = pop(&data->parsing_stack);
 			if (state == E_EPSILON)
 				continue ;

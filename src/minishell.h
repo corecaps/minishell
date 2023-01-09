@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:55 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/22 16:35:57 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/09 18:15:00 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,13 @@ void			del_stack(t_stack *head);
 int				count_stack(t_stack *head);
 int				parse(t_data *data);
 void			print_debug(t_token_type type);
-char			**get_path();
 char			*find_binary(char *name);
 char			**get_args(t_ast *command_node);
 int				traverse_ast(t_ast *current_node, char ***env);
 size_t			count_env(char ***env);
 char			**create_env(char **env, int argc, char **argv);
-char			*get_env(char *key,char ***env);
+char			*get_env(char *key, char ***env);
 t_garbage		*garbage_collector_add(void *ptr);
 void			garbage_collector_free(t_garbage *garbage);
-int				set_env(char ***env,char *key,char *value);
+int				set_env(char ***env, char *key, char *value);
 #endif
