@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environ.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 01:11:08 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/06 01:11:49 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/09 12:50:34 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ size_t	count_env(char ***env)
 {
 	size_t	i;
 
-	if(env == NULL || *env == NULL)
+	if (env == NULL || *env == NULL)
 		return (0);
 	i = 0;
 	while ((*env)[i])
@@ -40,7 +40,7 @@ void	del_environ(char ***env)
 {
 	size_t	i;
 
-	if(*env == NULL)
+	if (*env == NULL)
 		return ;
 	i = 0;
 	while ((*env)[i])
@@ -55,120 +55,42 @@ void	del_environ(char ***env)
 /******************************************************************************
  * Reallocate the environment array to size size
  * [UPDATE]:Recode realloc func to decrease size of env. Index is the env[index]
- * 			element to unset. If we add element, index is -1.
+ * 			element to unset. If we add element, index is -1. (also i deleted
+ * 			size <= count_env(dev) condition in the first if statement) 
  * @param env Pointer to Environment
  * @param size New size of the environment array
  * @param index Index of element needs to unset
  * @return 0 if success, -1 if error
  *****************************************************************************/
 
-int	realloc_environ(char ***env,size_t size, size_t index)
+int	realloc_environ(char ***env, size_t size, size_t index)
 {
 	char	**new_env;
 	size_t	i;
 	size_t	j;
 
-	if (env == NULL || size == 0) // deleted "size <= count_env(env) condition"
+	if (env == NULL || size == 0)
 		return (-1);
 	new_env = malloc(sizeof(char *) * (size + 1));
 	if (new_env == NULL)
 		return (-1);
 	i = 0;
 	j = 0;
-	// printf("\nIn realloc\n");
-	// printf("\tNew env size = %ld\n", size);
-	// printf("\tIndex = %ld\n", index);
 	while (j < size && (*env)[i])
 	{
-		// printf("\ti = %ld\n", i);
 		if (index == i)
-		{
-			// printf("\n\nHERE\n\n");
 			i++;
-		}
 		new_env[j] = ft_strdup((*env)[i]);
 		i++;
 		j++;
 	}
 	new_env[i] = NULL;
-	// printf("\n\n\tnew_env[1] = [%p]\n\tenv[1] = [%p]\n\n", new_env[1], env[1]);
 	del_environ(env);
 	*env = new_env;
-	// printf("Mistake out the realloc\n");
-	return (0);
-}
-/******************************************************************************
- * Add a variable to the environment
- * @param env Pointer to Environment
- * @param name Name of the variable
- * @param value Value of the variable
- * @return 0 if success, -1 if error
- *****************************************************************************/
-
-int	set_env(char ***env,char *key,char *value)
-{
-	size_t	i;
-	size_t	size;
-	char	*tmp;
-
-	i=0;
-	//FOR TESTING
-	// printf("\tin set_env()\n");
-	// printf("\tkey = %s\n\tvalue = %s\n", key, value);
-	// int j = 0;
-	// while (*env[j])
-	// {
-	// 	printf("%s\n", *env[j]);	
-	// 	j++;
-	// }
-	// printf("\tbefore set_env() count = %d\n", j);
-	//
-	if ((*env) == NULL)
-	{
-		(*env) = malloc(sizeof(char *) * 2);
-		if ((*env) == NULL)
-			return (-1);
-		tmp = ft_strjoin(key, "=");
-		(*env)[0] = ft_strjoin(tmp, value);
-		(*env)[1] = NULL;
-		return (0);
-	}
-	while ((*env)[i] != NULL)
-	{
-		tmp = ft_strjoin(key,"=");
-		if (tmp == NULL)
-			return (-1);
-		if (ft_strncmp(tmp,(*env)[i],ft_strlen(tmp)) == 0)
-			break;
-		i ++;
-	}
-	size = count_env(env);
-	if (i > size -1)
-	{
-		realloc_environ(env, size + 1, -1);
-		if (!(*env))
-			return (-1);
-		(*env)[size] = ft_strjoin(tmp,value);
-	}
-	else
-	{
-		if ((*env)[i])
-			free((*env)[i]);
-		(*env)[i] = ft_strjoin(tmp,value);
-	}
-	//FOR TESTING
-	// j = 0;
-	// while (env[j])
-	// {
-	// 	j++;	
-	// }
-	// printf("\tafter set_env() count = %d\n", j);
-	//
-	free(tmp);
 	return (0);
 }
 
-char	*get_env(char *key,char ***env)
+char	*get_env(char *key, char ***env)
 {
 	size_t	i;
 	char	*tmp;
@@ -179,10 +101,10 @@ char	*get_env(char *key,char ***env)
 	i = 0;
 	while ((*env)[i])
 	{
-		tmp = ft_strjoin(key,"=");
-		if (ft_strncmp(tmp,(*env)[i],ft_strlen(tmp)) == 0)
+		tmp = ft_strjoin(key, "=");
+		if (ft_strncmp(tmp, (*env)[i], ft_strlen(tmp)) == 0)
 		{
-			ret = ft_substr((*env)[i],ft_strlen(tmp),ft_strlen((*env)[i]));
+			ret = ft_substr((*env)[i], ft_strlen(tmp), ft_strlen((*env)[i]));
 			free(tmp);
 			return (ret);
 		}
