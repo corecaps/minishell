@@ -6,14 +6,15 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:17:12 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/09 18:39:53 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/10 20:52:38 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 // TODO: add an init_node function
-int create_redir_node(t_data *data, t_token *token)
+
+int	create_redir_node(t_data *data, t_token *token)
 {
 	t_ast	*new_node;
 	t_ast	*tmp;

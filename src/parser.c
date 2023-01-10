@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 11:03:27 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/10 19:39:17 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/10 20:53:30 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ static void	pre_parse(t_data *data)
  * 
 *******************************************************************/
 
-int	parsing(t_data *data)
+static int	parsing(t_data *data)
 {
 	t_token_type	state;
 

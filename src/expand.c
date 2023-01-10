@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 16:35:29 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/10 20:28:47 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/10 20:44:08 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,28 +43,26 @@ char	*expand(char *str, char ***env)
 {
 	t_expand	*exp;
 	char		*result;
-	char		*value;
-	char		*tmp;
 
 	exp = malloc(sizeof(t_expand));
 	exp->start = start_expantion(str);
 	if (exp->start == -1)
 		return (str);
 	exp->end = end_expantion(str, exp->start);
-	tmp = ft_substr(str, exp->start + 1, exp->end - (exp->start + 1));
-	value = get_env(tmp, env);
-	if (value == NULL)
-		value = "";
-	free(tmp);
+	exp->tmp = ft_substr(str, exp->start + 1, exp->end - (exp->start + 1));
+	exp->value = get_env(exp->tmp, env);
+	if (exp->value == NULL)
+		exp->value = ft_strjoin("", "");
+	free(exp->tmp);
 	result = ft_substr(str, 0, (size_t)exp->start);
-	result = ft_strjoin(result, value);
-	free(tmp);
-	free(value);
-	value = ft_substr(str, exp->end, ft_strlen(str) - (size_t)exp->end);
-	tmp = result;
-	result = ft_strjoin(result, value);
-	free(tmp);
-	free(value);
+	result = ft_strjoin(result, exp->value);
+	free(exp->tmp);
+	free(exp->value);
+	exp->value = ft_substr(str, exp->end, ft_strlen(str) - (size_t)exp->end);
+	exp->tmp = result;
+	result = ft_strjoin(result, exp->value);
+	free(exp->tmp);
+	free(exp->value);
 	free(str);
 	free(exp);
 	return (result);
