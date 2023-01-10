@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 11:03:27 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/09 18:18:59 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/10 19:39:17 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,44 +96,65 @@ static int	get_prod(t_token_type non_terminal, t_token **cursor, t_data *data)
  * @return 1 in case of success
  */
 
-int	parse(t_data *data)
+static void	pre_parse(t_data *data)
 {
-	t_token_type	state;
-	t_token			*cursor;
-	int				result;
-
-	cursor = data->start_token;
+	data->parse_cursor = data->start_token;
 	data->root = NULL;
 	data->current = NULL;
 	data->parsing_stack = push(E_END_OF_TOKEN, NULL);
 	data->parsing_stack = push(E_COMMAND_LINE, data->parsing_stack);
+}
+
+/*****************************************************************
+ * Parsing func
+ * @return -99 in case continuing while loop in parse
+ * 			other value in case we need to stop while loop 
+ * 										as previous parse logic
+ * 
+*******************************************************************/
+
+int	parsing(t_data *data)
+{
+	t_token_type	state;
+
+	if (data->parsing_stack->type > E_NON_TERMINALS)
+	{
+		state = pop(&data->parsing_stack);
+		if (state >= E_END_OF_TOKEN)
+			return (-3);
+		data->parse_result = get_prod(state, &data->parse_cursor, data);
+		if (data->parse_result < 0)
+			return (data->parse_result);
+	}
+	else
+	{
+		state = pop(&data->parsing_stack);
+		if (state == E_EPSILON)
+			return (-99);
+		if (data->parse_cursor->token_type == state)
+			data->parse_cursor = data->parse_cursor->next_token;
+		else
+			return (-2);
+	}
+	return (-99);
+}
+
+int	parse(t_data *data)
+{
+	int	status;
+
+	pre_parse(data);
 	if (data->parsing_stack == NULL)
 		return (-1);
 	while (count_stack(data->parsing_stack))
 	{
 		if (data->parsing_stack->type == E_END_OF_TOKEN)
 			break ;
-		if (data->parsing_stack->type > E_NON_TERMINALS)
-		{
-			state = pop(&data->parsing_stack);
-			if (state >= E_END_OF_TOKEN)
-				return (-3);
-			result = get_prod(state, &cursor, data);
-			if (result < 0)
-				return (result);
-		}
-		else
-		{
-			state = pop(&data->parsing_stack);
-			if (state == E_EPSILON)
-				continue ;
-			if (cursor->token_type == state)
-				cursor = cursor->next_token;
-			else
-				return (-2);
-		}
+		status = parsing(data);
+		if (status != -99)
+			return (status);
 	}
-	if (cursor && cursor->token_type != E_END_OF_TOKEN)
+	if (data->parse_cursor && data->parse_cursor->token_type != E_END_OF_TOKEN)
 		return (-2);
 	return (1);
 }

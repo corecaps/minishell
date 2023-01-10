@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 09:34:48 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/09 18:22:49 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/10 20:03:46 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	skip_whitespaces(t_data *data)
 		data->end++;
 }
 
-void	lexer(t_data *data)
+void	lexer(t_data *data, char ***env)
 {
 	data->end = 0;
 	while (data->end < (int)ft_strlen(data->line))
@@ -34,9 +34,9 @@ void	lexer(t_data *data)
 		else if (data->line[data->end] == '>' || data->line[data->end] == '<')
 			add_redirect_token(data);
 		else if (data->line[data->end] == '\'' || data->line[data->end] == '\"')
-			add_quoted_token(data);
+			add_quoted_token(data, env);
 		else if (data->line[data->end] > 32 && data->line[data->end] < 127)
-			add_word_token(data, ' ');
+			add_word_token(data, ' ', env);
 		else
 			break ;
 	}

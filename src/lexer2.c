@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 18:20:44 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/09 18:26:24 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/10 20:05:06 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	get_end_index(t_data *data)
 		data->end++;
 }
 
-void	add_word_token(t_data *data, char sep)
+void	add_word_token(t_data *data, char sep, char ***env)
 {
 	char	*rawvalue;
 	char	*value;
@@ -77,14 +77,14 @@ void	add_word_token(t_data *data, char sep)
 		exit(EXIT_FAILURE);
 	if (sep == ' ' || sep == '\"')
 	{
-		value = expand(rawvalue);
+		value = expand(rawvalue, env);
 		add_token(data, E_WORD, value);
 	}
 	else
 		add_token(data, E_WORD, rawvalue);
 }
 
-void	add_quoted_token(t_data *data)
+void	add_quoted_token(t_data *data, char ***env)
 {
 	char	sep;
 
@@ -103,5 +103,5 @@ void	add_quoted_token(t_data *data)
 	data->index = data->end;
 	if (data->line[data->end] && data->open_quote > 0
 		&& data->line[data->end] != sep)
-		add_word_token(data, sep);
+		add_word_token(data, sep, env);
 }

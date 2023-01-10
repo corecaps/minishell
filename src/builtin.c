@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:42:09 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/09 12:07:57 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/10 19:53:45 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_echo(char **args, char ***env)
 
 	(void) env;
 	trailing_newline = 1;
-	i = 0;
+	i = 1;
 	if (args[1] && !ft_strncmp(args[1], "-n", 3))
 	{
 		trailing_newline = 0;
