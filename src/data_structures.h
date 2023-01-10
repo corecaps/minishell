@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:13:13 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/10 19:50:09 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/10 20:28:22 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ typedef struct s_expand
 {
 	int		start;
 	int		end;
+	char	*result;
+	char	*value;
+	char	*tmp;
 }	t_expand;
 
 typedef struct s_garbage

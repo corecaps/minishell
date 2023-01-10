@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 16:35:29 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/10 20:09:35 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/10 20:28:47 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ char	*expand(char *str, char ***env)
 		return (str);
 	exp->end = end_expantion(str, exp->start);
 	tmp = ft_substr(str, exp->start + 1, exp->end - (exp->start + 1));
-	printf("tmp = [%s]\n", tmp);
-	exit(0);
 	value = get_env(tmp, env);
 	if (value == NULL)
 		value = "";
