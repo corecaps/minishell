@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:55 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/10 20:06:20 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/11 18:47:42 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ char			**create_env(char **env, int argc, char **argv);
 char			*get_env(char *key, char ***env);
 t_garbage		*garbage_collector_add(void *ptr);
 void			garbage_collector_free(t_garbage *garbage);
-int				set_env(char ***env,char *key,char *value);
-void			set_signals();
+int				set_env(char ***env, char *key, char *value);
+t_ast			*ast_node_init(t_token *token, t_token_type token_type);
+void			set_signals(void);
 #endif
