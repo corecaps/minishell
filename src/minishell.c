@@ -32,6 +32,7 @@ int	main(int argc, char **argv, char **env)
 	int		status;
 	char	**new_env;
 
+	set_signals();
 	new_env = create_env(env, argc, argv);
 	while (1)
 	{

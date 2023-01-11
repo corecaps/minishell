@@ -51,5 +51,6 @@ char			**create_env(char **env, int argc, char **argv);
 char			*get_env(char *key, char ***env);
 t_garbage		*garbage_collector_add(void *ptr);
 void			garbage_collector_free(t_garbage *garbage);
-int				set_env(char ***env, char *key, char *value);
+int				set_env(char ***env,char *key,char *value);
+void			set_signals();
 #endif
