@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ast_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:17:12 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/18 17:17:17 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/10 20:52:38 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 // TODO: add an init_node function
-int create_redir_node(t_data *data, t_token *token)
+
+int	create_redir_node(t_data *data, t_token *token)
 {
-	t_ast *new_node;
-	t_ast *tmp;
+	t_ast	*new_node;
+	t_ast	*tmp;
 
 	new_node = malloc(sizeof (t_ast));
 	if (new_node == NULL)
@@ -34,12 +35,12 @@ int create_redir_node(t_data *data, t_token *token)
 		data->current = new_node;
 	}
 	else if ((data->current->type == E_REDIRECTION)
-		|| (data->current->type == E_COMMAND ))
+		|| (data->current->type == E_COMMAND))
 	{
 		tmp = data->current;
 		while (tmp->left)
 			tmp = tmp->left;
-		new_node->parent =tmp;
+		new_node->parent = tmp;
 		tmp->left = new_node;
 	}
 	else
@@ -47,9 +48,9 @@ int create_redir_node(t_data *data, t_token *token)
 	return (1);
 }
 
-int create_cmd_node(t_data *data,t_token *token)
+int	create_cmd_node(t_data *data, t_token *token)
 {
-	t_ast *new_node;
+	t_ast	*new_node;
 
 	new_node = malloc(sizeof(t_ast));
 	if (new_node == NULL)
@@ -96,7 +97,7 @@ int create_cmd_node(t_data *data,t_token *token)
 	return (1);
 }
 
-int create_pipe_node(t_data *data,t_token *token)
+int	create_pipe_node(t_data *data, t_token *token)
 {
 	t_ast	*new_node;
 
@@ -131,10 +132,10 @@ int create_pipe_node(t_data *data,t_token *token)
 	return (1);
 }
 
-int create_cmd_arg_node(t_data *data,t_token *token)
+int	create_cmd_arg_node(t_data *data, t_token *token)
 {
-	t_ast *new_node;
-	t_ast *tmp;
+	t_ast	*new_node;
+	t_ast	*tmp;
 
 	new_node = malloc(sizeof(t_ast));
 	if (new_node == NULL)

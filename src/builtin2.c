@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 12:07:37 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/09 12:35:15 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/09 18:18:23 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	ft_env(char **args, char ***env)
 		printf("%s\n", (*env)[i]);
 		i++;
 	}
-	printf("Env count = %d\n", i);
 	return (0);
 }
 

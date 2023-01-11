@@ -6,24 +6,11 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:20:07 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/19 10:21:07 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/09 18:36:10 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-//
-//t_data	*data_init(void)
-//{
-//	t_data	*data;
-//
-//	data = (t_data *)malloc(sizeof(t_data));
-//	data->start_token = NULL;
-//	data->line = NULL;
-//	data->end = 0;
-//	data->index = 0;
-//	data->open_quote = -1;
-//	return (data);
-//}
 
 void	free_all(t_data *data)
 {
@@ -44,10 +31,10 @@ void	free_all(t_data *data)
  * @return a freshly allocated array of environment variables
  *****************************************************************************/
 
-char	**create_env(char **env, int argc,char **argv)
+char	**create_env(char **env, int argc, char **argv)
 {
-	char **new_env;
-	int i;
+	char	**new_env;
+	int		i;
 
 	(void) argc;
 	(void) argv;

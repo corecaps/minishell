@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/09 12:40:17 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/10 20:27:38 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	main(int argc, char **argv, char **env)
 		}
 		if (ft_strlen(data->line))
 			add_history(data->line);
-		lexer(data);
+		lexer(data, &new_env);
 		status = parse(data);
 		if (data->root && status == 1)
 		{

@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 09:34:48 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/22 16:35:20 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/10 20:03:46 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "minishell.h"
 #include "data_structures.h"
 
-static void	skip_whitespaces(t_data *data)
+void	skip_whitespaces(t_data *data)
 {
 	while (data->line[data->end] == ' ' || data->line[data->end] == '\t'
 		|| data->line[data->end] == '\n' || data->line[data->end] == '\v'
@@ -22,94 +22,7 @@ static void	skip_whitespaces(t_data *data)
 		data->end++;
 }
 
-static void	add_pipe_token(t_data *data)
-{
-	add_token(data, E_PIPE, "|");
-	data->end++;
-}
-
-static void	add_redirect_token(t_data *data)
-{
-	if (data->line[data->end] == '>')
-	{
-		if (data->line[data->end + 1] != 0
-			&& data->line[data->end + 1] == '>')
-		{
-			add_token(data, E_APPEND, ">>");
-			data->end += 1;
-		}
-		else
-			add_token(data, E_OUTFILE, ">");
-	}
-	else
-	{
-		if (data->line[data->end + 1] != 0
-			&& data->line[data->end + 1] == '<')
-		{
-			add_token(data, E_HEREDOC, "<<");
-			data->end += 1;
-		}
-		else
-			add_token(data, E_INFILE, "<");
-	}
-	data->end++;
-}
-
-static void	add_word_token(t_data *data, char sep)
-{
-	char	*rawvalue;
-	char	*value;
-
-	skip_whitespaces(data);
-	data->index = data->end;
-	if (sep == ' ')
-		while ((data->line[data->end] != ' ' && data->line[data->end] != '\t'
-				&& data->line[data->end] != '\n' && data->line[data->end] != '>'
-				&& data->line[data->end] != '\v' && data->line[data->end] != '<'
-				&& data->line[data->end] != '\f' && data->line[data->end] != '|'
-				&& data->line[data->end] != '\r'
-				&& data->line[data->end] != '\''
-				&& data->line[data->end] != '"')
-			&& data->line[data->end] != 0)
-			data->end++;
-	else
-		while (data->line[data->end] != sep && data->line != 0)
-			data->end++;
-	rawvalue = ft_substr(data->line, data->index, data->end - data->index);
-	if (!rawvalue)
-		exit(EXIT_FAILURE);
-	if (sep == ' ' || sep == '\"')
-	{
-		value = expand(rawvalue);
-		add_token(data, E_WORD, value);
-	}
-	else
-		add_token(data, E_WORD, rawvalue);
-}
-
-static void	add_quoted_token(t_data *data)
-{
-	char	sep;
-
-	if (data->line[data->end] == '\'')
-	{
-		add_token(data, E_SINGLE_QUOTE, "\'");
-		sep = '\'';
-	}
-	else
-	{
-		add_token(data, E_DOULE_QUOTE, "\"");
-		sep = '\"';
-	}
-	data->open_quote *= -1;
-	data->end++;
-	data->index = data->end;
-	if (data->line[data->end] && data->open_quote > 0
-		&& data->line[data->end] != sep)
-		add_word_token(data, sep);
-}
-
-void	lexer(t_data *data)
+void	lexer(t_data *data, char ***env)
 {
 	data->end = 0;
 	while (data->end < (int)ft_strlen(data->line))
@@ -121,9 +34,9 @@ void	lexer(t_data *data)
 		else if (data->line[data->end] == '>' || data->line[data->end] == '<')
 			add_redirect_token(data);
 		else if (data->line[data->end] == '\'' || data->line[data->end] == '\"')
-			add_quoted_token(data);
+			add_quoted_token(data, env);
 		else if (data->line[data->end] > 32 && data->line[data->end] < 127)
-			add_word_token(data, ' ');
+			add_word_token(data, ' ', env);
 		else
 			break ;
 	}
