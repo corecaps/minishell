@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/12 09:43:26 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/12 09:59:48 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ int	main(int argc, char **argv, char **env)
 			status = traverse_ast(data->root, &new_env);
 			data->status = ft_itoa(status);
 			set_env(&new_env, "?", data->status);
-			free(data->status);
 		}
+		free_data(data);
 	}
+	free_env(new_env);
 	return (0);
 }

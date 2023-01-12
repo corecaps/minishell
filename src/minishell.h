@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:55 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/11 18:47:42 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/12 10:00:49 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ t_token_type	pop(t_stack **head);
 t_stack			*push(t_token_type type, t_stack *head);
 void			del_ast(t_ast *top);
 char			*expand(char *str, char ***env);
-void			free_all(t_data *data);
+void			free_data(t_data *data);
+void			free_env(char ***env);
 void			del_stack(t_stack *head);
 int				count_stack(t_stack *head);
 int				parse(t_data *data);

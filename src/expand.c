@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 16:35:29 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/10 20:54:32 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/12 11:37:02 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*expand(char *str, char ***env)
 	t_expand	*exp;
 	char		*result;
 
-	exp = malloc(sizeof(t_expand));
+	exp = (t_expand *)malloc(sizeof(t_expand));
 	exp->start = start_expantion(str);
 	if (exp->start == -1)
 		return (str);
@@ -63,7 +63,7 @@ char	*expand(char *str, char ***env)
 	result = ft_strjoin(result, exp->value);
 	free(exp->tmp);
 	free(exp->value);
-	free(str);
 	free(exp);
+	free(str);
 	return (result);
 }
