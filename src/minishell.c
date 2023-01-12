@@ -32,7 +32,7 @@ int	main(int argc, char **argv, char **env)
 	int		status;
 	char	**new_env;
 
-	set_signals();
+//	set_signals();
 	new_env = create_env(env, argc, argv);
 	while (1)
 	{
@@ -40,7 +40,7 @@ int	main(int argc, char **argv, char **env)
 		data->line = readline(PS1);
 		if (!data->line)
 		{
-			exit(EXIT_FAILURE);
+			exit(-1);
 		}
 		if (ft_strlen(data->line))
 			add_history(data->line);
@@ -49,7 +49,7 @@ int	main(int argc, char **argv, char **env)
 		if (data->root && status == 1)
 		{
 			status = traverse_ast(data->root, &new_env);
-			printf("%d\n",status);
+//			printf("%d\n",status);
 			set_env(&new_env, "?", ft_itoa(status));
 		}
 	}

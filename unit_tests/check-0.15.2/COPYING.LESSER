@@ -298,7 +298,7 @@ of these things:
     to use the modified definitions.)
 
     b) Use a suitable shared library mechanism for linking with the
-    Library.  A suitable mechanism is one that (1) uses at exec_command_node time a
+    Library.  A suitable mechanism is one that (1) uses at run time a
     copy of the library already present on the user's computer system,
     rather than copying library functions into the executable, and (2)
     will operate properly with a modified version of the library, if
@@ -506,3 +506,5 @@ if necessary.  Here is a sample; alter the names:
   Ty Coon, President of Vice
 
 That's all there is to it!
+
+

@@ -849,7 +849,7 @@ distuninstallcheck:
 	        exit 1; } >&2
 distcleancheck: distclean
 	@if test '$(srcdir)' = . ; then \
-	  echo "ERROR: distcleancheck can only exec_command_node from a VPATH build" ; \
+	  echo "ERROR: distcleancheck can only run from a VPATH build" ; \
 	  exit 1 ; \
 	fi
 	@test `$(distcleancheck_listfiles) | wc -l` -eq 0 \

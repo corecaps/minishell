@@ -53,4 +53,5 @@ t_garbage		*garbage_collector_add(void *ptr);
 void			garbage_collector_free(t_garbage *garbage);
 int				set_env(char ***env,char *key,char *value);
 void			set_signals();
+int				parse_here_doc(t_ast *node);
 #endif
