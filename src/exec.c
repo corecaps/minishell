@@ -22,6 +22,10 @@
 // TODO : code builtins functions
 
 
+int pipe_heredoc(t_ast *current_node, int pid2, int *pipe_fd, t_here_doc *cursor);
+
+int run(t_ast *current_node, char ***env, int *status, int pid, int pid2, const int *pipe_fd);
+
 t_f_builtin	check_builtins(char *cmd)
 {
 	if (ft_strncmp(cmd, "echo", 5) == 0)
@@ -344,55 +348,13 @@ int traverse_ast(t_ast *current_node, char ***env)
 		builtin = check_builtins(current_node->token_node->value);
 		if (current_node->here_doc_list) // TODO check if heredoc is the last input redirection
 		{
-			if (pipe(pipe_fd) == -1)
-				return (-4);
-			pid2 = fork();
+			pid2 = pipe_heredoc(current_node, pid2, pipe_fd, cursor);
 			if (pid2 < 0)
-				return (-5);
-			if (pid2 == 0)
-			{
-				close(pipe_fd[0]);
-				dup2(pipe_fd[1],STDOUT_FILENO);
-				cursor = current_node->here_doc_list;
-				while (cursor && cursor->line)
-				{
-					write(pipe_fd[1],cursor->line,ft_strlen(cursor->line));
-					write(pipe_fd[1],"\n",1);
-					//TODO free cursor->line and cursor
-					cursor = cursor->next;
-				}
-				close(pipe_fd[1]);
-				exit (0);
-			}
-			else
-			{
-				close(pipe_fd[1]);
-			}
+				return (pid2);
 		}
 		if (!builtin)
 		{
-			pid = fork();
-			if (pid < 0)
-				return (-5);
-			if (pid == 0)
-			{
-				if (current_node->here_doc_list)
-				{
-					dup2(pipe_fd[0],STDIN_FILENO);
-					close(pipe_fd[0]);
-				}
-				status = exec_command_node(current_node, env);
-				if (status < 0)
-					exit(status);
-			}
-			else
-				waitpid(pid2, &status, 0);
-//			close(pipe_fd[0]);
-			waitpid(pid,NULL,0);
-//			if (WIFEXITED(status))
-//				return (status);
-//			else
-				return (0);
+			return run(current_node, env, &status, pid, pid2, pipe_fd);
 		}
 		else
 			return (exec_command_node(current_node, env));
@@ -401,4 +363,60 @@ int traverse_ast(t_ast *current_node, char ***env)
 		return (exec_pipe(current_node,env));
 	else
 		return (-8);
+}
+
+int run(t_ast *current_node, char ***env, int *status, int pid, int pid2, const int *pipe_fd)
+{
+	pid = fork();
+	if (pid < 0)
+				return (-5);
+	if (pid == 0)
+	{
+		if (current_node->here_doc_list)
+		{
+			dup2(pipe_fd[0],STDIN_FILENO);
+			close(pipe_fd[0]);
+		}
+		(*status) = exec_command_node(current_node, env);
+		if ((*status) < 0)
+			exit((*status));
+	}
+	else
+		waitpid(pid2, status, 0);
+//			close(pipe_fd[0]);
+	waitpid(pid,NULL,0);
+//			if (WIFEXITED(status))
+//				return (status);
+//			else
+	return (0);
+}
+
+int pipe_heredoc(t_ast *current_node, int pid2, int *pipe_fd, t_here_doc *cursor)
+{
+	if (pipe(pipe_fd) == -1)
+				return (-4);
+	// TODO : abort if here_doc but here_doc_list empty
+	pid2 = fork();
+	if (pid2 < 0)
+				return (-5);
+	if (pid2 == 0)
+	{
+		close(pipe_fd[0]);
+		dup2(pipe_fd[1],STDOUT_FILENO);
+		cursor = current_node->here_doc_list;
+		while (cursor && cursor->line)
+		{
+			write(pipe_fd[1],cursor->line,ft_strlen(cursor->line));
+			write(pipe_fd[1],"\n",1);
+			//TODO free cursor->line and cursor
+			cursor = cursor->next;
+		}
+		close(pipe_fd[1]);
+		exit (0);
+	}
+	else
+	{
+		close(pipe_fd[1]);
+	}
+	return pid2;
 }
