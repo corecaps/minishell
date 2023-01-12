@@ -82,7 +82,7 @@ char	*get_full_path(char *name, char **path)
 	int				i;
 	DIR				*dp;
 	struct dirent	*entry;
-	char			*tmp;
+
 
 	i = 0;
 	while (path[i] != 0)

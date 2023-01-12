@@ -29,7 +29,8 @@ MS_SOURCE	= ../src/token_list.c ../src/ast.c ../src/lexer.c ../src/stack.c ../sr
 MS_SOURCE	+= ../src/grammar_production.c ../src/grammar_production_2.c ../src/exec.c
 MS_SOURCE	+= ../src/ast_builder.c ../src/path_expander.c ../src/arguments.c ../src/environ.c
 MS_SOURCE	+= ../src/data_utils.c ../src/expand.c ../src/builtin.c ../src/garbage_collector.c
-MS_SOURCE	+= ../src/set_env.c ../src/builtin2.c
+MS_SOURCE	+= ../src/set_env.c ../src/builtin2.c ../src/signal_handler.c ../src/lexer2.c
+MS_SOURCE	+= ../src/find_binary.c
 MS_OBJ		= $(subst ../src/,../obj/,$(MS_SOURCE:.c=.o))
 MS_COV		= $(subst ../src/,../obj/,$(MS_SOURCE:.c=.gcno))
 MS_COV2		= $(subst ../src/,../obj/,$(MS_SOURCE:.c=.gcda))
