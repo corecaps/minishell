@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:42:09 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/12 11:07:07 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/12 12:58:23 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,12 @@ int	ft_pwd(char **args, char ***env)
 
 int	ft_exit(char **args, char ***env)
 {
-	// t_garbage	*gc;
+	t_garbage	*gc;
 
 	(void) args;
 	(void) env;
-	// gc = garbage_collector_add(NULL);
-	// garbage_collector_free(gc);
+	gc = garbage_collector_add(NULL);
+	garbage_collector_free(gc);
 	free_env(env);
 	exit(EXIT_SUCCESS);
 	return (0);

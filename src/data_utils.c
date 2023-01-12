@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:20:07 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/12 11:42:52 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/12 12:31:25 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	**create_env(char **env, int argc, char **argv)
 
 	(void) argc;
 	(void) argv;
-	new_env = malloc(sizeof(char *) * (count_env(&env) + 1));
+	new_env = (char **)malloc(sizeof(char *) * (count_env(&env) + 1));
 	i = 0;
 	while (env[i])
 	{
@@ -54,15 +54,17 @@ char	**create_env(char **env, int argc, char **argv)
 
 void	free_env(char ***env)
 {
-	int	i;
+	int		i;
+	char	**tmp_env;
 
 	i = 0;
-	while ((*env)[i])
+	tmp_env = *env;
+	while (tmp_env[i])
 	{
-		free((*env)[i]);
-		(*env)[i] = NULL;
+		free(tmp_env[i]);
+		tmp_env[i] = NULL;
 		i++;
 	}
-	free(*env);
-	*env = NULL;
+	free(tmp_env);
+	tmp_env = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 13:09:16 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/10 19:40:34 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/12 12:06:36 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -384,9 +384,10 @@ int exec_pipe(t_ast *current_node, char ***env)
 
 int traverse_ast(t_ast *current_node, char ***env)
 {
-	int status;
-	int pid;
-	t_f_builtin builtin;
+	int			status;
+	int			pid;
+	t_f_builtin	builtin;
+
 	if (current_node->type == E_COMMAND)
 	{
 		builtin = check_builtins(current_node->token_node->value);
@@ -405,7 +406,7 @@ int traverse_ast(t_ast *current_node, char ***env)
 			return (exec_command_node(current_node, env));
 	}
 	else if (current_node->type == E_PIPE)
-		return (exec_pipe(current_node,env));
+		return (exec_pipe(current_node, env));
 	else
 		return (-8);
 }

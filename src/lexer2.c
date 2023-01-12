@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 18:20:44 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/12 11:38:19 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/12 12:07:39 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void	add_word_token(t_data *data, char sep, char ***env)
 	rawvalue = ft_substr(data->line, data->index, data->end - data->index);
 	if (!rawvalue)
 		exit(EXIT_FAILURE);
-	printf("sep = [%c]\n", sep);
 	if (sep == ' ' || sep == '\"')
 	{
 		value = expand(rawvalue, env);
