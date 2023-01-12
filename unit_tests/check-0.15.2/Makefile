@@ -280,7 +280,7 @@ GCOV = gcov
 GCOV_CFLAGS = 
 GCOV_LIBS = 
 GENHTML = false
-GRAPHVIZ = false
+GRAPHVIZ = dot
 GREP = /usr/bin/grep
 HAVE_FORK = 1
 HAVE_INIT_ONCE_BEGIN_INITIALIZE = 0
@@ -293,7 +293,7 @@ INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LCOV = false
-LD = /usr/x86_64-unknown-linux-gnu/bin/ld -m elf_x86_64
+LD = /usr/bin/ld -m elf_x86_64
 LDFLAGS = 
 LIBOBJS = 
 LIBS = -lrt -lm 
@@ -326,12 +326,12 @@ PKG_CONFIG = /usr/bin/pkg-config
 PKG_CONFIG_LIBDIR = 
 PKG_CONFIG_PATH = 
 PTHREAD_CC = gcc
-PTHREAD_CFLAGS = 
+PTHREAD_CFLAGS = -pthread
 PTHREAD_LIBS = 
 RANLIB = ranlib
 SED = /usr/bin/sed
 SET_MAKE = 
-SHELL = /bin/sh
+SHELL = /bin/bash
 STRIP = strip
 VERSION = 0.15.2
 abs_builddir = /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2
@@ -849,7 +849,7 @@ distuninstallcheck:
 	        exit 1; } >&2
 distcleancheck: distclean
 	@if test '$(srcdir)' = . ; then \
-	  echo "ERROR: distcleancheck can only exec_command_node from a VPATH build" ; \
+	  echo "ERROR: distcleancheck can only run from a VPATH build" ; \
 	  exit 1 ; \
 	fi
 	@test `$(distcleancheck_listfiles) | wc -l` -eq 0 \

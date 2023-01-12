@@ -12,13 +12,15 @@
 
 #include "check.h"
 #include "../src/minishell.h"
+extern char **environ;
 
 START_TEST(test_word) {
 	t_data test;
-
+	char **new_env;
 	test.line = "word";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 	ck_assert_int_eq(2, count_token(test.start_token));
 	ck_assert_int_eq(0, strcmp(test.start_token->value,"word"));
 	ck_assert_int_eq(E_WORD,test.start_token->token_type);
@@ -27,10 +29,11 @@ START_TEST(test_word) {
 
 START_TEST(test_squote) {
 	t_data test;
-
+	char **new_env;
 	test.line = "'";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 	ck_assert_int_eq(2, count_token(test.start_token));
 	ck_assert_int_eq(0, strcmp(test.start_token->value,"'"));
 	ck_assert_int_eq(E_SINGLE_QUOTE,test.start_token->token_type);
@@ -39,10 +42,12 @@ START_TEST(test_squote) {
 
 START_TEST(test_pipe) {
 	t_data test;
+	char **new_env;
 
 	test.line = "|";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 	ck_assert_int_eq(2, count_token(test.start_token));
 	ck_assert_int_eq(0, strcmp(test.start_token->value,"|"));
 	ck_assert_int_eq(E_PIPE,test.start_token->token_type);
@@ -51,10 +56,12 @@ START_TEST(test_pipe) {
 
 START_TEST(test_dquote) {
 	t_data test;
+	char **new_env;
 
 	test.line = "\"";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 	ck_assert_int_eq(2, count_token(test.start_token));
 	ck_assert_int_eq(0, strcmp(test.start_token->value,"\""));
 	ck_assert_int_eq(E_DOULE_QUOTE,test.start_token->token_type);
@@ -63,20 +70,23 @@ START_TEST(test_dquote) {
 
 START_TEST(test_empty) {
 	t_data test;
-
+	char **new_env;
 	test.line = "";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 	ck_assert_int_eq(1, count_token(test.start_token));
 	ck_assert_int_eq(E_END_OF_TOKEN, test.start_token->token_type);
 } END_TEST
 
 START_TEST(test_append) {
 	t_data test;
+	char **new_env;
 
 	test.line = ">>";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 	ck_assert_int_eq(2, count_token(test.start_token));
 	ck_assert_int_eq(0, strcmp(test.start_token->value,">>"));
 	ck_assert_int_eq(E_APPEND,test.start_token->token_type);
@@ -85,10 +95,12 @@ START_TEST(test_append) {
 
 START_TEST(test_heredoc) {
 	t_data test;
+	char **new_env;
 
 	test.line = "<<";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 	ck_assert_int_eq(2, count_token(test.start_token));
 	ck_assert_int_eq(0, strcmp(test.start_token->value,"<<"));
 	ck_assert_int_eq(E_HEREDOC,test.start_token->token_type);
@@ -96,10 +108,12 @@ START_TEST(test_heredoc) {
 } END_TEST
 START_TEST(test_infile) {
 	t_data test;
+	char **new_env;
 
 	test.line = "<";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 	ck_assert_int_eq(2, count_token(test.start_token));
 	ck_assert_int_eq(0, strcmp(test.start_token->value,"<"));
 	ck_assert_int_eq(E_INFILE,test.start_token->token_type);
@@ -108,10 +122,12 @@ START_TEST(test_infile) {
 
 START_TEST(test_outfile) {
 	t_data test;
+	char **new_env;
 
 	test.line = ">";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 	ck_assert_int_eq(2, count_token(test.start_token));
 	ck_assert_int_eq(0, strcmp(test.start_token->value,">"));
 	ck_assert_int_eq(E_OUTFILE,test.start_token->token_type);
@@ -120,10 +136,12 @@ START_TEST(test_outfile) {
 
 START_TEST(test_multiple_greater_than) {
 	t_data test;
+	char **new_env;
 
 	test.line = ">>>>>";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 	ck_assert_int_eq(4, count_token(test.start_token));
 	ck_assert_int_eq(0, strcmp(test.start_token->value,">>"));
 	ck_assert_int_eq(E_APPEND,test.start_token->token_type);
@@ -135,10 +153,12 @@ START_TEST(test_multiple_greater_than) {
 
 START_TEST(test_separtor) {
 	t_data test;
+	char **new_env;
 
 	test.line = "word\nword2\tword3            word4<word5'word6";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 	ck_assert_int_eq(9, count_token(test.start_token));
 	ck_assert_int_eq(0, strcmp(test.start_token->value,"word"));
 	ck_assert_int_eq(0, strcmp(test.start_token->next_token->value,"word2"));
@@ -152,10 +172,12 @@ START_TEST(test_separtor) {
 
 START_TEST(test_quoted_string) {
 	t_data test;
+	char **new_env;
 // TODO : test FAILS with simple quote inside double quotes
 	test.line = "\"test  test\"";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 //	ck_assert_int_eq(5, count_token(test.start_token));
 	ck_assert_int_eq(0, strcmp(test.start_token->value,"\""));
 	ck_assert_int_eq(E_DOULE_QUOTE,test.start_token->token_type);
@@ -168,19 +190,21 @@ START_TEST(test_quoted_string) {
 START_TEST(test_expand_variable) {
 	t_data test;
 	char *path;
+	char **new_env;
 
 	test.line = "$PATH";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 	path = getenv("PATH");
 	ck_assert_int_eq(strcmp(test.start_token->value, path), 0);
 	test.line = "$NOTHING";
 	test.start_token = NULL;
-	lexer(&test);
+	lexer(&test,&new_env);
 	ck_assert_int_eq(strcmp(test.start_token->value, ""), 0);
 	test.line = "ls $NOTHING";
 	test.start_token = NULL;
-	lexer(&test);
+	lexer(&test,&new_env);
 	ck_assert_int_eq(strcmp(test.start_token->value, "ls"), 0);
 	ck_assert_int_eq(strcmp(test.start_token->next_token->value, ""), 0);
 

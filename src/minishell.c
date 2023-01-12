@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/12 09:59:48 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/12 17:48:11 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	main(int argc, char **argv, char **env)
 	int		status;
 	char	**new_env;
 
-	set_signals();
+//	set_signals();
 	new_env = create_env(env, argc, argv);
 	while (1)
 	{

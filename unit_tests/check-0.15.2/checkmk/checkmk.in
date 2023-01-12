@@ -304,7 +304,7 @@ $0 ~ pp_main_post_line {
     main_post();
 
     print "";
-    print "    /* User-specified post-exec_command_node code */";
+    print "    /* User-specified post-run code */";
 
     if (!clean_mode)
         needs_line_decl = 1;

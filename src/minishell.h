@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:55 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/12 12:04:44 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/12 17:49:06 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,5 @@ void			garbage_collector_free(t_garbage *garbage);
 int				set_env(char ***env, char *key, char *value);
 t_ast			*ast_node_init(t_token *token, t_token_type token_type);
 void			set_signals(void);
+int				parse_here_doc(t_ast *node);
 #endif

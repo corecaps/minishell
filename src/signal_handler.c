@@ -15,6 +15,7 @@
 void	sig_handler(int signum, siginfo_t *client_info, void *context)
 {
 	(void) context;
+	(void) client_info;
 
 	if (signum == SIGINT)
 	{

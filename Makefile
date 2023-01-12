@@ -6,7 +6,7 @@
 #    By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/04 12:18:46 by jgarcia           #+#    #+#              #
-#    Updated: 2023/01/11 18:48:08 by latahbah         ###   ########.fr        #
+#    Updated: 2023/01/12 17:49:23 by latahbah         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,14 +27,14 @@ SRC =	minishell.c				token_list.c			ast.c \
 		environ.c				data_utils.c			expand.c \
 		builtin.c				builtin2.c				garbage_collector.c \
 		set_env.c				signal_handler.c		lexer2.c \
-		find_binary.c			ast_node_init.c
+		find_binary.c			ast_node_init.c			heredoc_parse.c
 
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h data_structures.h
 SOURCE = $(addprefix $(SRCDIR)/,$(SRC))
 OBJECT = $(addprefix $(OBJDIR)/,$(OBJ))
 HEADERS = $(addprefix $(SRCDIR)/,$(HEADER))
-UNITTESTS = unit_tests/data_structures_test unit_tests/lexer_test unit_tests/parser_test unit_tests/exec_test
+UNITTESTS = unit_tests/unit_tests
 
 all: $(BIN)/$(NAME)
 
@@ -57,14 +57,7 @@ $(LIBFT):
 
 test: $(UNITTESTS)
 	@echo '====>RUNNING UNIT TESTS<===='
-	@echo '====>Testing : Data Structures<===='
-	./unit_tests/data_structures_test
-	@echo '====>Testing : Lexer<===='
-	./unit_tests/lexer_test
-	@echo '====>Testing : Parser<===='
-	./unit_tests/parser_test
-	@echo '====>Testing : Exec<===='
-	./unit_tests/exec_test
+	@./unit_tests/unit_tests
 
 $(UNITTESTS):
 	@echo '====>BUILDING UNIT TESTS<===='

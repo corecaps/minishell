@@ -36,6 +36,8 @@ int	create_redir_node(t_data *data, t_token *token)
 			tmp = tmp->left;
 		new_node->parent = tmp;
 		tmp->left = new_node;
+		if (ft_strncmp(token->value,"<<",3) == 0)
+			parse_here_doc(new_node);
 	}
 	else
 		return (-2);

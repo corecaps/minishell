@@ -12,14 +12,16 @@
 
 #include "check.h"
 #include "../src/minishell.h"
+extern char **environ;
 
 START_TEST(test_parser) {
 	t_data test;
 	int result;
-
+	char **new_env;
 	test.line = "< test ls arg1 arg2 arg3 < test2 arg4 | cat";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 	result = parse(&test);
 	ck_assert_int_eq(1, result);
 	ck_assert_ptr_nonnull(test.root);
@@ -44,10 +46,12 @@ START_TEST(parser_empty_string)
 {
 	t_data test;
 	int result;
+	char **new_env;
 
 	test.line = "";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 	result = parse(&test);
 	ck_assert_int_eq(1, result);
 	ck_assert_ptr_null(test.root);
@@ -57,10 +61,12 @@ START_TEST(parser_only_spaces)
 {
 	t_data test;
 	int result;
+	char **new_env;
 
 	test.line = "   ";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 	result = parse(&test);
 	ck_assert_int_eq(1, result);
 	ck_assert_ptr_null(test.root);
@@ -70,25 +76,27 @@ START_TEST(parser_invalid_syntax)
 {
 	t_data test;
 	int result;
+	char **new_env;
 
 	test.line = "ls |";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 	result = parse(&test);
 	ck_assert_int_eq(-2, result);
 	test.line = "ls <";
 	test.start_token = NULL;
-	lexer(&test);
+	lexer(&test,&new_env);
 	result = parse(&test);
 	ck_assert_int_eq(-2, result);
 	test.line = ">|";
 	test.start_token = NULL;
-	lexer(&test);
+	lexer(&test,&new_env);
 	result = parse(&test);
 	ck_assert_int_eq(-2, result);
 	test.line = "ls \"haha";
 	test.start_token = NULL;
-	lexer(&test);
+	lexer(&test,&new_env);
 	result = parse(&test);
 	ck_assert_int_eq(-2, result);
 
@@ -98,25 +106,27 @@ START_TEST(parser_invalid_syntax2)
 {
 	t_data test;
 	int result;
+	char **new_env;
 
 	test.line = "ls | |";
 	test.start_token = NULL;
-	lexer(&test);
+	new_env = create_env(environ,0,NULL);
+	lexer(&test, &new_env);
 	result = parse(&test);
 	ck_assert_int_eq(-2, result);
 	test.line = "ls < <";
 	test.start_token = NULL;
-	lexer(&test);
+	lexer(&test,&new_env);
 	result = parse(&test);
 	ck_assert_int_eq(-2, result);
 	test.line = ">| |";
 	test.start_token = NULL;
-	lexer(&test);
+	lexer(&test,&new_env);
 	result = parse(&test);
 	ck_assert_int_eq(-2, result);
 	test.line = "ls 'haha ";
 	test.start_token = NULL;
-	lexer(&test);
+	lexer(&test,&new_env);
 	result = parse(&test);
 	ck_assert_int_eq(-2, result);
 
