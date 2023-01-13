@@ -19,7 +19,7 @@
  * @return status of the command
  **************************************************************************/
 
-int	exec_leaf(t_exec *exec)
+int exec_leaf(t_exec *exec, int to_close)
 {
 	t_f_builtin	builtin;
 	int			status;
@@ -27,11 +27,17 @@ int	exec_leaf(t_exec *exec)
 	builtin = check_builtins(exec->current_node->token_node->value);
 	if (builtin)
 		return (run_builtin(exec, builtin));
+	printf("[%d] forking\n", getpid());
 	status = fork();
 	if (status < 0)
 		return (-5);
 	if (status == 0)
-		run_leaf(exec);
+	{
+		run_leaf(exec, to_close);
+		exit(0);
+	}
+//	printf("[%d] waiting for child %d\n", getpid(), status);
+//	waitpid(status, NULL, 0);
 	exec->n_child ++;
-	return (0);
+	return (status);
 }

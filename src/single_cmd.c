@@ -30,13 +30,20 @@ int	single_cmd(t_exec *exec)
 			status = exec_heredoc(exec);
 			if (status < 0)
 				return (status);
+			exec->root->in_pipe = exec->pipes[0];
+			exec_leaf(exec, exec->pipes[1]);
 		}
 	}
-	status = exec_leaf(exec);
+	else
+	{
+		status = exec_leaf(exec, -1);
+	}
 	if (status < 0)
 		return (-1);
-	while (exec->n_child -- > 0)
-		waitpid(-1, &status, 0);
+	printf("[%d] waiting for child\n", getpid());
+	waitpid(-1, &status, 0);
+	printf("[%d] waiting for child\n", getpid());
+	waitpid(-1, &status, 0);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	return (0);

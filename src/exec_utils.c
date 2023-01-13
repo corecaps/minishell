@@ -15,6 +15,7 @@
 
 void	apply_dup(int fd1, int fd2)
 {
+	printf("[%d] redirecting %d to %d closing %d\n", getpid(), fd1, fd2, fd1);
 	dup2(fd1, fd2);
 	close(fd1);
 }

@@ -23,15 +23,17 @@ static void	here_doc_child(t_exec *exec)
 {
 	t_here_doc	*cursor;
 
+	printf("[%d] closing %d dup2 %d to %d\n", getpid(), exec->pipes[exec->pipe_i], exec->pipes[exec->pipe_i+1], STDOUT_FILENO);
 	close(exec->pipes[exec->pipe_i]);
 	dup2(exec->pipes[exec->pipe_i + 1], STDOUT_FILENO);
 	cursor = exec->current_node->here_doc_list;
 	while (cursor && cursor->line)
 	{
-		write(STDOUT_FILENO, cursor->line, ft_strlen(cursor->line));
-		write(STDOUT_FILENO, "\n", 1);
+		write(exec->pipes[exec->pipe_i + 1], cursor->line, ft_strlen(cursor->line));
+		write(exec->pipes[exec->pipe_i + 1], "\n", 1);
 		cursor = cursor->next;
 	}
+	printf("[%d] closing %d\n", getpid(), exec->pipes[exec->pipe_i + 1]);
 	close(exec->pipes[exec->pipe_i + 1]);
 	exit(0);
 }
@@ -49,13 +51,20 @@ int	exec_heredoc(t_exec *exec)
 
 	if (pipe(exec->pipes + exec->pipe_i) == -1)
 		return (-4);
-	exec->pipe_i += 2;
+	printf("[%d] fork\n", getpid());
 	status = fork();
 	if (status == -1)
+	{
 		return (-5);
+	}
 	if (status == 0)
 	{
 		here_doc_child(exec);
+	}
+	else
+	{
+		close(exec->pipes[exec->pipe_i + 1]);
+		exec->pipe_i += 2;
 	}
 	return (status);
 }

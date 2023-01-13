@@ -26,11 +26,17 @@ int	run_builtin(t_exec *exec, t_f_builtin builtin)
 	return (0);
 }
 
-int	run_leaf(t_exec *exec)
+int run_leaf(t_exec *exec, int to_close)
 {
 	char	**argv;
 	char	*full_path;
 
+	printf("[%d] running leaf %s\n", getpid(), exec->current_node->token_node->value);
+	if (to_close > -1)
+	{
+		printf("[%d] closing %d\n", getpid(), to_close);
+		close(to_close);
+	}
 	argv = get_args(exec->current_node);
 	full_path = find_binary(exec->current_node->token_node->value);
 	if (!full_path)
@@ -42,6 +48,6 @@ int	run_leaf(t_exec *exec)
 	if (exec->current_node->left
 		&& (apply_redirections(exec->current_node) < 0))
 		return (-2);
-	if (execve(full_path, argv, *exec->envp) < 0)
-		exit (-6);
+	execve(full_path, argv, *exec->envp);
+	exit (-6);
 }
