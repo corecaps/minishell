@@ -28,7 +28,6 @@ t_ast	*ast_node_init(t_token *token, t_token_type token_type)
 		new_node->left = NULL;
 	new_node->here_doc = -1;
 	new_node->here_doc_list = NULL;
-	new_node->forked = 0;
 	if (token_type == E_COMMAND || token_type == E_PIPE)
 	{
 		new_node->in_pipe = -1;

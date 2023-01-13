@@ -52,19 +52,6 @@ unit_tests: $(OBJ) $(MS_OBJ) $(LIBFT) $(LCHECK)
 	@mkdir -p gcov
 	@mv *.gcov gcov
 	@cat test.log
-#
-#data_structures_test: $(OBJ) $(MS_OBJ) $(LIBFT) $(LCHECK)
-#	@$(CC) $(OBJDIR)/data_structures.o $(MS_OBJ) $(LINK) -o data_structures_test
-#
-#lexer_test:  $(OBJ) $(MS_OBJ) $(LIBFT) $(LCHECK)
-#	@$(CC) $(OBJDIR)/lexer_test.o $(MS_OBJ) $(LINK) -o lexer_test
-#
-#parser_test: $(OBJ) $(MS_OBJ) $(LIBFT) $(LCHECK)
-#	@$(CC) $(OBJDIR)/parser_test.o $(MS_OBJ) $(LINK) -o parser_test
-#
-#exec_test: $(OBJ) $(MS_OBJ) $(LIBFT) $(LCHECK)
-#	@$(CC) $(OBJDIR)/exec_test.o $(MS_OBJ) $(LINK) -o exec_test
-
 
 $(MS_OBJDIR)/%.o:$(MS_SRCDIR)/%.c
 	@mkdir -p ../obj
