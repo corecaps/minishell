@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 12:07:37 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/09 18:18:23 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/12 13:15:52 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,29 @@ static int	get_stop(const char *str)
 	return (-1);
 }
 
+static void	to_set_env(char ***env, char *arg, int stop)
+{
+	char	*key;
+	char	*value;
+
+	if (stop > -1)
+	{
+		key = ft_substr(arg, 0, stop);
+		value = ft_substr(arg, stop + 1, ft_strlen(arg) - stop);
+	}
+	else
+	{
+		key = arg;
+		value = "";
+	}
+	set_env(env, key, value);
+	if (stop > -1)
+	{
+		free(key);
+		free(value);
+	}
+}
+
 int	ft_export(char **args, char ***env)
 {
 	char	*key;
@@ -78,17 +101,7 @@ int	ft_export(char **args, char ***env)
 		stop = get_stop(args[i]);
 		if (stop == -2)
 			return (-100);
-		else if (stop > -1)
-		{
-			key = ft_substr(args[i], 0, stop);
-			value = ft_substr(args[i], stop + 1, ft_strlen(args[i]) - stop);
-		}
-		else
-		{
-			key = args[i];
-			value = "";
-		}
-		set_env(env, key, value);
+		to_set_env(env, args[i], stop);
 		i++;
 	}
 	return (0);

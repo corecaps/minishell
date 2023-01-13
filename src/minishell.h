@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:55 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/10 20:06:20 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/12 17:49:06 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ t_token_type	pop(t_stack **head);
 t_stack			*push(t_token_type type, t_stack *head);
 void			del_ast(t_ast *top);
 char			*expand(char *str, char ***env);
-void			free_all(t_data *data);
+void			free_data(t_data *data);
+void			free_env(char ***env);
 void			del_stack(t_stack *head);
 int				count_stack(t_stack *head);
 int				parse(t_data *data);
@@ -51,6 +52,8 @@ char			**create_env(char **env, int argc, char **argv);
 char			*get_env(char *key, char ***env);
 t_garbage		*garbage_collector_add(void *ptr);
 void			garbage_collector_free(t_garbage *garbage);
-int				set_env(char ***env,char *key,char *value);
-void			set_signals();
+int				set_env(char ***env, char *key, char *value);
+t_ast			*ast_node_init(t_token *token, t_token_type token_type);
+void			set_signals(void);
+int				parse_here_doc(t_ast *node);
 #endif

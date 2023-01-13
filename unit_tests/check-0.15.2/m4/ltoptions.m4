@@ -74,7 +74,7 @@ m4_if([$1],[LT_INIT],[
   ])
   dnl
   dnl If no reference was made to various pairs of opposing options, then
-  dnl we exec_command_node the default mode handler for the pair.  For example, if neither
+  dnl we run the default mode handler for the pair.  For example, if neither
   dnl 'shared' nor 'disable-shared' was passed, we enable building of shared
   dnl archives by default:
   _LT_UNLESS_OPTIONS([LT_INIT], [shared disable-shared], [_LT_ENABLE_SHARED])

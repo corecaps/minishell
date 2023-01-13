@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:13:41 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/09 18:34:33 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/12 13:06:44 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ t_garbage	*garbage_collector_add(void *ptr)
 	if (!new)
 		return (NULL);
 	if (ptr == NULL)
+	{
+		free(new);
 		return (garbage);
+	}
 	new->ptr = ptr;
 	new->next = NULL;
 	if (garbage)

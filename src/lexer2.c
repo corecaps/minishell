@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 18:20:44 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/10 20:51:09 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/12 12:07:39 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	add_word_token(t_data *data, char sep, char ***env)
 	if (sep == ' ' || sep == '\"')
 	{
 		value = expand(rawvalue, env);
-		add_token(data, E_WORD, value); //SEARCH FOR LEAKS IN VALUE AFTER EXPANSION
+		add_token(data, E_WORD, value);
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 01:11:08 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/10 20:27:24 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/12 12:29:29 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	realloc_environ(char ***env, size_t size, size_t index)
 		j++;
 	}
 	new_env[i] = NULL;
-	free(*env);
+	free_env(env);
 	*env = new_env;
 	return (0);
 }
