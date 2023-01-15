@@ -41,7 +41,6 @@ int	main(int argc, char **argv, char **env)
 	new_env = create_env(env, argc, argv);
 	while (1)
 	{
-		printf("Main Process [%d]\n", getpid());
 		data = data_init();
 		lexer(data, &new_env);
 		status = parse(data);

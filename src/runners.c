@@ -28,15 +28,15 @@ int	run_builtin(t_exec *exec, t_f_builtin builtin)
 
 int run_leaf(t_exec *exec, int to_close)
 {
-	char	**argv;
-	char	*full_path;
+	char **argv;
+	char *full_path;
 
-	printf("[%d] running leaf %s\n", getpid(), exec->current_node->token_node->value);
-	if (to_close > -1)
-	{
-		printf("[%d] closing %d\n", getpid(), to_close);
-		close(to_close);
-	}
+//	if (to_close > -1)
+//		close(to_close);
+	if (exec->current_node->in_pipe > -1)
+		close(exec->current_node->in_pipe + 1);
+	if (exec->current_node->out_pipe > -1)
+		close(exec->current_node->out_pipe - 1);
 	argv = get_args(exec->current_node);
 	full_path = find_binary(exec->current_node->token_node->value);
 	if (!full_path)

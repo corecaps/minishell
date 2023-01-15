@@ -104,8 +104,6 @@ int	exec_cmd_line(t_ast *current_node, char ***env)
 		return (-8);
 	if (status < 0)
 		return (status);
-//	while (exec->n_child -- > 0)
-//		wait(&status);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	return (0);

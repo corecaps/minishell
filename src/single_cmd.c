@@ -40,9 +40,7 @@ int	single_cmd(t_exec *exec)
 	}
 	if (status < 0)
 		return (-1);
-	printf("[%d] waiting for child\n", getpid());
 	waitpid(-1, &status, 0);
-	printf("[%d] waiting for child\n", getpid());
 	waitpid(-1, &status, 0);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));

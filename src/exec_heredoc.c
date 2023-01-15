@@ -23,7 +23,6 @@ static void	here_doc_child(t_exec *exec)
 {
 	t_here_doc	*cursor;
 
-	printf("[%d] closing %d dup2 %d to %d\n", getpid(), exec->pipes[exec->pipe_i], exec->pipes[exec->pipe_i+1], STDOUT_FILENO);
 	close(exec->pipes[exec->pipe_i]);
 	dup2(exec->pipes[exec->pipe_i + 1], STDOUT_FILENO);
 	cursor = exec->current_node->here_doc_list;
@@ -33,7 +32,6 @@ static void	here_doc_child(t_exec *exec)
 		write(exec->pipes[exec->pipe_i + 1], "\n", 1);
 		cursor = cursor->next;
 	}
-	printf("[%d] closing %d\n", getpid(), exec->pipes[exec->pipe_i + 1]);
 	close(exec->pipes[exec->pipe_i + 1]);
 	exit(0);
 }
@@ -51,7 +49,7 @@ int	exec_heredoc(t_exec *exec)
 
 	if (pipe(exec->pipes + exec->pipe_i) == -1)
 		return (-4);
-	printf("[%d] fork\n", getpid());
+	exec->current_node->in_pipe = exec->pipes[exec->pipe_i];
 	status = fork();
 	if (status == -1)
 	{
