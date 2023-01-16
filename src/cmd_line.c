@@ -80,7 +80,6 @@ static t_exec	*exec_init(t_ast *current_node, char ***env)
 
 void free_exec(t_exec *exec)
 {
-	printf("freeing exec\n");
 	free(exec->pipes);
 	free(exec);
 }

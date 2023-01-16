@@ -28,40 +28,17 @@ int	apply_redirections(t_ast *node)
 
 	if (node->type == E_REDIRECTION)
 	{
-		if (ft_strncmp(node->token_node->value, ">>",2) == 0)
-		{
-			fd = open(node->token_node->next_token->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			if (fd == -1)
-				return (-2);
-			dup2(fd,STDOUT_FILENO);
-			close(fd);
-		}
-		else if (ft_strncmp(node->token_node->value, "<<",2) == 0)
-		{
-			cursor = node;
-			while (cursor->parent && cursor->type != E_COMMAND)
-				cursor = cursor->parent;
-			cursor->here_doc = 1;
-		}
-		else if (ft_strncmp(node->token_node->value, "<",1) == 0)
-		{
-			fd = open(node->token_node->next_token->value, O_RDONLY);
-			if (fd == -1)
-				return (-2);
-			else
-			{
-				dup2(fd,STDIN_FILENO);
-				close(fd);
-			}
-		}
-		else if (ft_strncmp(node->token_node->value, ">",1) == 0)
-		{
-			fd = open(node->token_node->next_token->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (fd == -1)
-				return (-2);
-			dup2(fd,STDOUT_FILENO);
-			close(fd);
-		}
+		if (ft_strncmp(node->token_node->value, ">>",3) == 0)
+			open_redir(node->token_node->next_token->value,
+				O_WRONLY | O_CREAT | O_APPEND, node, STDOUT_FILENO);
+		else if (ft_strncmp(node->token_node->value, "<<",3) == 0)
+			open_redir(NULL,0, node, 0);
+		else if (ft_strncmp(node->token_node->value, "<",2) == 0)
+			open_redir(node->token_node->next_token->value,
+				O_RDONLY, node, STDIN_FILENO);
+		else if (ft_strncmp(node->token_node->value, ">",2) == 0)
+			open_redir(node->token_node->next_token->value,
+				O_WRONLY | O_CREAT | O_TRUNC, node, STDOUT_FILENO);
 	}
 	if (node->left)
 		if (apply_redirections(node->left) < 0)

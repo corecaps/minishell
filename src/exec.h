@@ -48,4 +48,5 @@ char		*check_absolute_relative_path(char *name);
 char		*get_full_path(char *name, char **path);
 int			check_heredoc_last_in(t_ast *current_node);
 t_f_builtin	check_builtins(char *cmd);
+int			open_redir(char *path,int oflags, t_ast * node,int dest);
 #endif
