@@ -13,6 +13,18 @@
 #include "minishell.h"
 #include "exec.h"
 
+void free_here_doc_list(t_here_doc *here_doc_list)
+{
+	t_here_doc	*tmp;
+
+	while (here_doc_list)
+	{
+		tmp = here_doc_list;
+		here_doc_list = here_doc_list->next;
+		free(tmp->line);
+		free(tmp);
+	}
+}
 /**************************************************************************
  * Output the heredoc to the pipe
  * SHOULD BE EXECUTED IN CHILD PROCESS
@@ -63,6 +75,7 @@ int	exec_heredoc(t_exec *exec)
 	{
 		close(exec->pipes[exec->pipe_i + 1]);
 		exec->pipe_i += 2;
+		free_here_doc_list(exec->current_node->here_doc_list);
 	}
 	return (status);
 }

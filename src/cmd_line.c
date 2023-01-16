@@ -78,6 +78,12 @@ static t_exec	*exec_init(t_ast *current_node, char ***env)
 	return (new_exec);
 }
 
+void free_exec(t_exec *exec)
+{
+	printf("freeing exec\n");
+	free(exec->pipes);
+	free(exec);
+}
 /******************************************************************************
  * Execute a command line traversing the AST
  * @param current_node starting point in the Abstract Syntax Tree
@@ -97,11 +103,19 @@ int	exec_cmd_line(t_ast *current_node, char ***env)
 	if (exec == NULL)
 		return (-1);
 	if (current_node->type == E_COMMAND)
-		return (single_cmd(exec));
+	{
+		status = single_cmd(exec);
+		free_exec(exec);
+		return (status);
+	}
 	else if (current_node->type == E_PIPE)
 		status = traverse_pipe(exec);
 	else
+	{
+		free_exec(exec);
 		return (-8);
+	}
+	free_exec(exec);
 	if (status < 0)
 		return (status);
 	if (WIFEXITED(status))
