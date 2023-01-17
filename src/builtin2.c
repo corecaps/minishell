@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 12:07:37 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/12 13:15:52 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/17 10:52:55 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,20 +90,23 @@ static void	to_set_env(char ***env, char *arg, int stop)
 
 int	ft_export(char **args, char ***env)
 {
-	char	*key;
-	char	*value;
 	int		i;
 	int		stop;
 
 	i = 1;
-	while (args[i])
+	if (args[i])
 	{
-		stop = get_stop(args[i]);
-		if (stop == -2)
-			return (-100);
-		to_set_env(env, args[i], stop);
-		i++;
+		while (args[i])
+		{
+			stop = get_stop(args[i]);
+			if (stop == -2)
+				return (-100);
+			to_set_env(env, args[i], stop);
+			i++;
+		}
 	}
+	else
+		print_sorted(env);
 	return (0);
 }
 
