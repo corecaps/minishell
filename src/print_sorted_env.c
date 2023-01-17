@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:10:05 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/17 11:16:53 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/17 11:19:30 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static char	**buble_sort(char **env, int size)
 void	print_sorted(char ***env_pointer)
 {
 	char	**env;
-	char	**res;
 	int		size;
 
 	env = *env_pointer;

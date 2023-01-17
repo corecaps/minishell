@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/12 17:48:11 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/17 12:37:45 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,15 @@ int	main(int argc, char **argv, char **env)
 	{
 		data = data_init();
 		lexer(data, &new_env);
+		//FOR TEST
+		// printf("Token List:\n");
+		// while (data->start_token)
+		// {
+		// 	printf("[%s]\n", data->start_token->value);
+		// 	data->start_token = data->start_token->next_token;
+		// }
+		// exit(0);
+		//
 		status = parse(data);
 		if (data->root && status == 1)
 		{
@@ -56,6 +65,6 @@ int	main(int argc, char **argv, char **env)
 			set_env(&new_env, "?",data->status);
 		}free_data(data);
 	}
-	free_env(new_env);
+	free_env(&new_env);
 	return (0);
 }
