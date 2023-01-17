@@ -6,14 +6,13 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:10:05 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/17 10:50:31 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/17 11:16:53 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-static char **buble_sort(char **env, int size)
+static char	**buble_sort(char **env, int size)
 {
 	int		i;
 	int		j;
@@ -41,8 +40,8 @@ static char **buble_sort(char **env, int size)
 void	print_sorted(char ***env_pointer)
 {
 	char	**env;
-	char  **res;
-	int   size;
+	char	**res;
+	int		size;
 
 	env = *env_pointer;
 	size = 0;
