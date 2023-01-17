@@ -69,7 +69,7 @@ int	parse_here_doc(t_ast *node)
 	node = node->parent;
 	while (node->type != E_COMMAND)
 		node = node->parent;
-	printf("storing heredoc in %s node\n",node->token_node->value);
+	node->here_doc = 1;
 	while (1)
 	{
 		current_line = malloc(sizeof(t_here_doc));
@@ -85,5 +85,3 @@ int	parse_here_doc(t_ast *node)
 		prev = current_line;
 	}
 }
-
-

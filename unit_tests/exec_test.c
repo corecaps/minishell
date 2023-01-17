@@ -60,7 +60,7 @@ START_TEST(test_traverse_ast)
 	test.start_token = NULL;
 	lexer(&test,&new_env);
 	parse(&test);
-	traverse_ast(test.root,&new_env);
+	exec_cmd_line(test.root,&new_env);
 	system("cat Makefile | cat | wc > test2.txt");
 	fd = open("test.txt", O_RDONLY);
 	read(fd, buffer, 256);
@@ -82,7 +82,7 @@ START_TEST(test_traverse_ast_binary_not_found)
 	test.start_token = NULL;
 	lexer(&test,&new_env);
 	parse(&test);
-	result = traverse_ast(test.root,&new_env);
+	result = exec_cmd_line(test.root,&new_env);
 
 	ck_assert_int_eq(result,-3);
 } END_TEST

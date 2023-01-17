@@ -30,8 +30,6 @@ static t_data	*data_init(void)
 }
 // TODO : signal handling
 // TODO : prompt function
-// TODO : proper exit
-// TODO : leak fixing
 
 int	main(int argc, char **argv, char **env)
 {
@@ -48,11 +46,15 @@ int	main(int argc, char **argv, char **env)
 		status = parse(data);
 		if (data->root && status == 1)
 		{
-			status = traverse_ast(data->root, &new_env);
+			status = exec_cmd_line(data->root, &new_env);
 			data->status = ft_itoa(status);
 			set_env(&new_env, "?", data->status);
 		}
-		free_data(data);
+		else
+		{
+			data->status = ft_itoa(status);
+			set_env(&new_env, "?",data->status);
+		}free_data(data);
 	}
 	free_env(new_env);
 	return (0);

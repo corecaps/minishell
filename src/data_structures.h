@@ -74,7 +74,6 @@ typedef struct s_ast
 	int				in_pipe;
 	int				out_pipe;
 	int				here_doc;
-	int				forked;
 	t_here_doc		*here_doc_list;
 }	t_ast;
 

@@ -1,36 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal_handler.c                                   :+:      :+:    :+:   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/10 12:14:18 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/10 12:14:38 by jgarcia          ###   ########.fr       */
+/*   Created: 2023/01/13 14:51:44 by jgarcia           #+#    #+#             */
+/*   Updated: 2023/01/13 14:51:55 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <signal.h>
-void	sig_handler(int signum, siginfo_t *client_info, void *context)
-{
-	(void) context;
-	(void) client_info;
+#include "exec.h"
 
-	if (signum == SIGINT)
-	{
-		printf("\n");
-		return ;
-	}
+void	apply_dup(int fd1, int fd2)
+{
+	dup2(fd1, fd2);
+	close(fd1);
 }
 
-void set_signals(void)
+int		open_redir(char *path,int oflags, t_ast * node,int dest)
 {
-	struct sigaction	handler;
+	int		fd;
+	t_ast	*cursor;
 
-	handler.sa_handler = SIG_IGN;
-	sigemptyset(&handler.sa_mask);
-	handler.sa_flags = 0;
-	sigaction(SIGINT, &handler, NULL);
-//	sigaction(SIGQUIT, &handler, NULL);
+	if (!path)
+	{
+		cursor = node;
+		while (cursor->parent && cursor->type != E_COMMAND)
+			cursor = cursor->parent;
+		cursor->here_doc = 1;
+		return (0);
+	}
+	fd = open(path, oflags, 0644);
+	if (fd == -1)
+		return (-2);
+	apply_dup(fd, dest);
+	return (0);
 }
