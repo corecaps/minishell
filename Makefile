@@ -66,6 +66,9 @@ $(UNITTESTS):
 	@echo '====>BUILDING UNIT TESTS<===='
 	@make -C unit_tests
 
+exit_code: utils/exit_code.c
+	gcc utils/exit_code.c -o bin/exit_code
+
 clean:
 	$(RM) $(OBJECT)
 	make clean -C libft

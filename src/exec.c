@@ -23,9 +23,6 @@
 
 int	apply_redirections(t_ast *node)
 {
-	int		fd;
-	t_ast	*cursor;
-
 	if (node->type == E_REDIRECTION)
 	{
 		if (ft_strncmp(node->token_node->value, ">>",3) == 0)

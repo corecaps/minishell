@@ -50,7 +50,11 @@ int	main(int argc, char **argv, char **env)
 			data->status = ft_itoa(status);
 			set_env(&new_env, "?", data->status);
 		}
-		free_data(data);
+		else
+		{
+			data->status = ft_itoa(status);
+			set_env(&new_env, "?",data->status);
+		}free_data(data);
 	}
 	free_env(new_env);
 	return (0);

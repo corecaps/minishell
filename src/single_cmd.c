@@ -42,6 +42,7 @@ int	single_cmd(t_exec *exec)
 		return (-1);
 	waitpid(-1, &status, 0);
 	waitpid(-1, &status, 0);
+	free_exec(exec);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	return (0);

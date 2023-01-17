@@ -102,11 +102,7 @@ int	exec_cmd_line(t_ast *current_node, char ***env)
 	if (exec == NULL)
 		return (-1);
 	if (current_node->type == E_COMMAND)
-	{
-		status = single_cmd(exec);
-		free_exec(exec);
-		return (status);
-	}
+		return (single_cmd(exec));
 	else if (current_node->type == E_PIPE)
 		status = traverse_pipe(exec);
 	else
