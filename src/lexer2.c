@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 18:20:44 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/17 12:18:15 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/18 11:10:15 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,8 @@ void	add_word_token(t_data *data, char sep, char ***env)
 		exit(EXIT_FAILURE);
 	if (sep == ' ' || sep == '\"')
 	{
-		expand(data, rawvalue, env);
-		// value = expand(data, rawvalue, env);
-		// add_token(data, E_WORD, value);
+		value = expand(rawvalue, env);
+		add_token(data, E_WORD, value);
 	}
 	else
 	{
