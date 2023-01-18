@@ -61,13 +61,17 @@ int	count_token(t_token *head)
 void	del_token_list(t_token *head)
 {
 	t_token	*prev;
+	t_garbage	*tmp;
 
+	tmp = garbage_collector_add(NULL);
 	prev = head;
 	while (head)
 	{
 		head = head->next_token;
+		gc_remove(&tmp, prev->value);
 		if (prev->value && prev->token_type == E_WORD)
 			free(prev->value);
+		gc_remove(&tmp, prev);
 		if (prev)
 			free(prev);
 		prev = head;

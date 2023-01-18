@@ -62,6 +62,7 @@ int	count_stack(t_stack *head)
 void	del_stack(t_stack *head)
 {
 	t_stack	*prev;
+	t_garbage *tmp;
 
 	if (!head)
 		return ;
@@ -69,6 +70,8 @@ void	del_stack(t_stack *head)
 	while (head && head->next)
 	{
 		head = head->next;
+		tmp = garbage_collector_add(NULL);
+		gc_remove(&tmp,prev);
 		free(prev);
 		prev = head;
 	}

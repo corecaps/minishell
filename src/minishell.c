@@ -26,8 +26,8 @@ static t_data	*data_init(void)
 	}
 	if (ft_strlen(data->line))
 		add_history(data->line);
-	garbage_collector_add(data->line);
-	garbage_collector_add(data);
+//	garbage_collector_add(data->line);
+//	garbage_collector_add(data);
 	return (data);
 }
 // TODO : signal handling
@@ -46,22 +46,22 @@ void gc_pre_exec(t_data * data)
 	t_token	*token_cursor;
 	t_stack	*stack_cursor;
 
-	token_cursor = data->start_token;
-	while (token_cursor)
-	{
-	garbage_collector_add(token_cursor->value);
-	garbage_collector_add(token_cursor);
-	token_cursor = token_cursor->next_token;
-	}
+//	token_cursor = data->start_token;
+//	while (token_cursor)
+//	{
+////	garbage_collector_add(token_cursor->value);
+//	garbage_collector_add(token_cursor);
+//	token_cursor = token_cursor->next_token;
+//	}
 //	garbage_collector_add(data->line);
-	gc_ast_del(data->root);
-	stack_cursor = data->parsing_stack;
-	while (stack_cursor)
-	{
-		garbage_collector_add(stack_cursor);
-		stack_cursor = stack_cursor->next;
-	}
-//	garbage_collector_add(data);
+//	gc_ast_del(data->root);
+//	stack_cursor = data->parsing_stack;
+//	while (stack_cursor)
+//	{
+//		garbage_collector_add(stack_cursor);
+//		stack_cursor = stack_cursor->next;
+//	}
+////	garbage_collector_add(data);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -98,10 +98,13 @@ int	main(int argc, char **argv, char **env)
 			data->status = ft_itoa(status);
 			set_env(&new_env, "?",data->status);
 		}
-		if (data->status)
-			garbage_collector_add(data->status);
+//		if (data->status)
+//		{
+//			printf("add from main\n");
+//			free(data->status);
+//		}
 //		garbage_collector_free(garbage_collector_add(NULL));
-//		free_data(data);
+		free_data(data);
 	}
 	free_env(&new_env);
 	return (0);

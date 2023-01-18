@@ -47,6 +47,8 @@ static int	*init_pipes(t_ast *root)
 	int	n_pipes;
 
 	n_pipes = count_pipes(root);
+	if (n_pipes == 0)
+		return (NULL);
 	pipefd = malloc(sizeof(int) * n_pipes * 2);
 	if (pipefd == NULL)
 		return (NULL);
@@ -71,10 +73,9 @@ static t_exec	*exec_init(t_ast *current_node, char ***env)
 	new_exec->root = current_node;
 	new_exec->envp = *env;
 	new_exec->pipes = init_pipes(current_node);
-	garbage_collector_add(new_exec->pipes);
-	garbage_collector_add(new_exec);
-	if (new_exec->pipes == NULL)
-		return (NULL);
+//	if (new_exec->pipes != NULL)
+//		garbage_collector_add(new_exec->pipes);
+//	garbage_collector_add(new_exec);
 	new_exec->pipe_i = 0;
 	new_exec->n_child = 0;
 	return (new_exec);
@@ -109,13 +110,14 @@ int	exec_cmd_line(t_ast *current_node, char ***env)
 		status = traverse_pipe(exec);
 	else
 	{
-		free_exec(exec);
 		return (-8);
 	}
 	*env = exec->envp;
 	free_exec(exec);
 	if (status < 0)
+	{
 		return (status);
+	}
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	return (0);

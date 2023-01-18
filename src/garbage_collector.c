@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 int	gc_check_double(t_garbage *gc, void *ptr)
 {
 	t_garbage 	*tmp;
@@ -39,7 +40,9 @@ void	garbage_collector_free(t_garbage *garbage)
 		tmp = garbage;
 		garbage = garbage->next;
 		free(tmp->ptr);
-		free(tmp);
+//		tmp->ptr = NULL;
+		if (tmp)
+			free(tmp);
 	}
 }
 
@@ -55,19 +58,13 @@ t_garbage	*garbage_collector_add(void *ptr)
 	t_garbage			*new;
 	t_garbage			*bottom;
 
+	if (ptr == NULL)
+		return (garbage);
+	if (gc_check_double(garbage, ptr))
+		return (garbage);
 	new = malloc(sizeof(t_garbage));
 	if (!new)
 		return (NULL);
-	if (ptr == NULL)
-	{
-		free(new);
-		return (garbage);
-	}
-	if (gc_check_double(garbage, ptr))
-	{
-		free(new);
-		return (garbage);
-	}
 	new->ptr = ptr;
 	new->next = NULL;
 	if (garbage)
@@ -80,4 +77,31 @@ t_garbage	*garbage_collector_add(void *ptr)
 	else
 		garbage = new;
 	return (garbage);
+}
+
+t_garbage	**gc_remove(t_garbage **gc, void *ptr)
+{
+	t_garbage	*tmp;
+	t_garbage	*prev;
+
+
+	if (!gc || !ptr)
+		return (NULL);
+	tmp = *gc;
+	prev = NULL;
+	while (tmp)
+	{
+		if (tmp && tmp->ptr == ptr)
+		{
+			if (prev)
+				prev->next = tmp->next;
+			else
+				*gc = tmp->next;
+			free(tmp);
+			return (gc);
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
+	return (gc);
 }
