@@ -17,7 +17,7 @@ static int	empty_env(char ***env, char *key, char *value)
 {
 	char	*tmp;
 
-	(*env) = malloc(sizeof(char *) * 2);
+	(*env) = ft_calloc(sizeof(char *), 2);
 	if ((*env) == NULL)
 		return (-1);
 	tmp = ft_strjoin(key, "=");

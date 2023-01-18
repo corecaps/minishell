@@ -71,7 +71,7 @@ int	realloc_environ(char ***env, size_t size, size_t index)
 
 	if (env == NULL || size == 0)
 		return (-1);
-	new_env = malloc(sizeof(char *) * (size + 1));
+	new_env = ft_calloc( (size + 1),sizeof(char *));
 	if (new_env == NULL)
 		return (-1);
 	i = 0;
