@@ -32,6 +32,35 @@ static t_data	*data_init(void)
 }
 // TODO : signal handling
 // TODO : prompt function
+void gc_ast_del(t_ast *current)
+{
+	if (current->left)
+		gc_ast_del(current->left);
+	if (current->right)
+		gc_ast_del(current->right);
+	garbage_collector_add(current);
+}
+
+void gc_pre_exec(t_data * data)
+{
+	t_token	*token_cursor;
+	t_stack	*stack_cursor;
+
+	token_cursor = data->start_token;
+	while (token_cursor)
+	{
+	garbage_collector_add(token_cursor->value);
+	garbage_collector_add(token_cursor);
+	token_cursor = token_cursor->next_token;
+	}
+	gc_ast_del(data->root);
+	stack_cursor = data->parsing_stack;
+	while (stack_cursor)
+	{
+		garbage_collector_add(stack_cursor);
+		stack_cursor = stack_cursor->next;
+	}
+}
 
 int	main(int argc, char **argv, char **env)
 {
@@ -57,6 +86,7 @@ int	main(int argc, char **argv, char **env)
 		status = parse(data);
 		if (data->root && status == 1)
 		{
+			gc_pre_exec(data);
 			status = exec_cmd_line(data->root, &new_env);
 			data->status = ft_itoa(status);
 			set_env(&new_env, "?", data->status);
