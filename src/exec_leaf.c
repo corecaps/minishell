@@ -40,3 +40,23 @@ int exec_leaf(t_exec *exec, int to_close)
 	exec->n_child ++;
 	return (status);
 }
+
+int exec_scmd(t_exec *exec, int to_close)
+{
+	t_f_builtin	builtin;
+	int			status;
+
+	builtin = check_builtins(exec->current_node->token_node->value);
+	if (builtin)
+		return (run_builtin(exec, builtin));
+	status = fork();
+	if (status < 0)
+		return (-5);
+	if (status == 0)
+	{
+		run_leaf(exec, to_close);
+		exit(0);
+	}
+	exec->n_child ++;
+	return (status);
+}

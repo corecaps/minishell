@@ -26,6 +26,7 @@ typedef struct s_exec
 int			single_cmd(t_exec *exec, char ***env);
 int			exec_heredoc(t_exec *exec);
 int			exec_leaf(t_exec *exec, int to_close);
+int			exec_scmd(t_exec *exec, int to_close);
 void		apply_dup(int fd1, int fd2);
 int			run_builtin(t_exec *exec, t_f_builtin builtin);
 int			run_leaf(t_exec *exec, int to_close);
