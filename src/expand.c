@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 16:35:29 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/18 12:44:26 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/18 14:05:40 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,33 +46,47 @@ static char	*retrieve_str(char *tmp, char ***env)
 	return (res);
 }
 
+t_exp	exp_init(int i)
+{
+	t_exp	exp;
+
+	exp.i = i;
+	exp.start = i;
+	return (exp);
+}
+
+char	*get_exp_tmp(char *str, int start, int len, char ***env)
+{
+	char	*tmp;
+
+	tmp = ft_substr(str, start, len);
+	tmp = retrieve_str(tmp, env);
+	return (tmp);
+}
+
 char	*expand(char *str, char ***env)
 {
-	int		i;
-	int		start;
+	t_exp	exp;
 	char	*result;
 	char	*tmp;
 
-	i = 0;
-	start = i;
+	exp = exp_init(0);
 	result = ft_strjoin("", "");
-	while (str[i])
+	while (str[exp.i])
 	{
-		if (str[i] == '$')
+		if (str[exp.i] == '$')
 		{
-			tmp = ft_substr(str, start, i - start);
-			tmp = retrieve_str(tmp, env);
+			tmp = get_exp_tmp(str, exp.start, exp.i - exp.start, env);
 			result = add_to_res(result, tmp);
-			start = i;
+			exp.start = exp.i;
 		}
-		if (str[i + 1] == '\0')
+		if (str[exp.i + 1] == '\0')
 		{
-			tmp = ft_substr(str, start, i - start + 1);
-			tmp = retrieve_str(tmp, env);
+			tmp = get_exp_tmp(str, exp.start, exp.i - exp.start + 1, env);
 			result = add_to_res(result, tmp);
-			start = i;
+			exp.start = exp.i;
 		}
-		++i;
+		++exp.i;
 	}
 	free(str);
 	return (result);
