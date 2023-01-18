@@ -25,14 +25,16 @@ int exec_leaf(t_exec *exec, int to_close)
 	int			status;
 
 	builtin = check_builtins(exec->current_node->token_node->value);
-	if (builtin)
-		return (run_builtin(exec, builtin));
+
 	status = fork();
 	if (status < 0)
 		return (-5);
 	if (status == 0)
 	{
-		run_leaf(exec, to_close);
+		if (builtin)
+			run_builtin(exec, builtin);
+		else
+			run_leaf(exec, to_close);
 		exit(0);
 	}
 	exec->n_child ++;

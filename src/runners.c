@@ -48,7 +48,6 @@ int run_leaf(t_exec *exec, int to_close)
 	if (exec->current_node->left
 		&& (apply_redirections(exec->current_node) < 0))
 		return (-2);
-	printf("environ pointer : %p\n", exec->envp);
 	execve(full_path, argv, exec->envp);
 	exit (-6);
 }

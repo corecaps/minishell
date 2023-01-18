@@ -11,6 +11,19 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+int	gc_check_double(t_garbage *gc, void *ptr)
+{
+	t_garbage 	*tmp;
+
+	tmp = gc;
+	while (tmp)
+	{
+		if (tmp->ptr == ptr)
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
 
 /******************************************************************************
  * Free all pointers in the garbage collector
@@ -46,6 +59,11 @@ t_garbage	*garbage_collector_add(void *ptr)
 	if (!new)
 		return (NULL);
 	if (ptr == NULL)
+	{
+		free(new);
+		return (garbage);
+	}
+	if (gc_check_double(garbage, ptr))
 	{
 		free(new);
 		return (garbage);

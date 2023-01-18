@@ -48,6 +48,7 @@ int	traverse_pipe(t_exec *exec)
 	if (pid2 > -1)
 		waitpid(pid2, &status, 0);
 	close(exec->pipes[pipe_local_idx]);
-	waitpid(pid, &status, 0);
+	if (pid != -10)
+		waitpid(pid, &status, 0);
 	return (status);
 }
