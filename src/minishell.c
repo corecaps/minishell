@@ -53,6 +53,7 @@ void gc_pre_exec(t_data * data)
 	garbage_collector_add(token_cursor);
 	token_cursor = token_cursor->next_token;
 	}
+//	garbage_collector_add(data->line);
 	gc_ast_del(data->root);
 	stack_cursor = data->parsing_stack;
 	while (stack_cursor)
@@ -60,6 +61,8 @@ void gc_pre_exec(t_data * data)
 		garbage_collector_add(stack_cursor);
 		stack_cursor = stack_cursor->next;
 	}
+	garbage_collector_add(data->status);
+	garbage_collector_add(data);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -95,7 +98,9 @@ int	main(int argc, char **argv, char **env)
 		{
 			data->status = ft_itoa(status);
 			set_env(&new_env, "?",data->status);
-		}free_data(data);
+		}
+//		garbage_collector_free(garbage_collector_add(NULL));
+//		free_data(data);
 	}
 	free_env(&new_env);
 	return (0);
