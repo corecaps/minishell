@@ -23,7 +23,7 @@ typedef struct s_exec
 	t_ast	*root;
 } t_exec;
 
-int			single_cmd(t_exec *exec);
+int			single_cmd(t_exec *exec, char ***env);
 int			exec_heredoc(t_exec *exec);
 int			exec_leaf(t_exec *exec, int to_close);
 void		apply_dup(int fd1, int fd2);
