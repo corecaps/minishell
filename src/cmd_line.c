@@ -69,8 +69,10 @@ static t_exec	*exec_init(t_ast *current_node, char ***env)
 		return (NULL);
 	new_exec->current_node = current_node;
 	new_exec->root = current_node;
-	new_exec->envp = env;
+	new_exec->envp = *env;
 	new_exec->pipes = init_pipes(current_node);
+	garbage_collector_add(new_exec->pipes);
+	garbage_collector_add(new_exec);
 	if (new_exec->pipes == NULL)
 		return (NULL);
 	new_exec->pipe_i = 0;

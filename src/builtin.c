@@ -73,7 +73,6 @@ int	ft_exit(char **args, char ***env)
 	t_garbage	*gc;
 
 	(void) args;
-	(void) env;
 	gc = garbage_collector_add(NULL);
 	garbage_collector_free(gc);
 	free_env(env);

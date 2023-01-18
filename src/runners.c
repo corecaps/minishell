@@ -22,7 +22,7 @@ int	run_builtin(t_exec *exec, t_f_builtin builtin)
 	if (exec->current_node->left
 		&& (apply_redirections(exec->current_node) < 0))
 		return (-2);
-	builtin(get_args(exec->current_node), exec->envp);
+	builtin(get_args(exec->current_node), &exec->envp);
 	return (0);
 }
 
@@ -48,6 +48,7 @@ int run_leaf(t_exec *exec, int to_close)
 	if (exec->current_node->left
 		&& (apply_redirections(exec->current_node) < 0))
 		return (-2);
-	execve(full_path, argv, *exec->envp);
+	printf("environ pointer : %p\n", exec->envp);
+	execve(full_path, argv, exec->envp);
 	exit (-6);
 }

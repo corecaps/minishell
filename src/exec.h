@@ -17,7 +17,7 @@ typedef struct s_exec
 {
 	int		*pipes;
 	int		pipe_i;
-	char	***envp;
+	char	**envp;
 	int 	n_child;
 	t_ast	*current_node;
 	t_ast	*root;

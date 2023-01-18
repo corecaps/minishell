@@ -59,12 +59,12 @@ void	free_env(char ***env)
 
 	i = 0;
 	tmp_env = *env;
-	while (tmp_env[i])
+	while (*(tmp_env + i))
 	{
-		free(tmp_env[i]);
-		tmp_env[i] = NULL;
+		free(*(tmp_env+i));
+		*(tmp_env + i) = NULL;
 		i++;
 	}
 	free(tmp_env);
-	tmp_env = NULL;
+	*env = NULL;
 }

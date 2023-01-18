@@ -26,6 +26,8 @@ static t_data	*data_init(void)
 	}
 	if (ft_strlen(data->line))
 		add_history(data->line);
+	garbage_collector_add(data->line);
+	garbage_collector_add(data);
 	return (data);
 }
 // TODO : signal handling
