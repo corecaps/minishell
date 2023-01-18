@@ -6,7 +6,7 @@
 #    By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/04 12:18:46 by jgarcia           #+#    #+#              #
-#    Updated: 2023/01/12 17:49:23 by latahbah         ###   ########.fr        #
+#    Updated: 2023/01/17 10:26:12 by latahbah         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,8 +28,8 @@ SRC =	minishell.c				token_list.c			ast.c \
 		builtin.c				builtin2.c				garbage_collector.c \
 		set_env.c				signal_handler.c		lexer2.c \
 		find_binary.c			ast_node_init.c			heredoc_parse.c \
-		check_builtin.c				cmd_line.c \
-		single_cmd.c		exec_heredoc.c				exec_leaf.c \
+		check_builtin.c			cmd_line.c 				print_sorted_env.c\
+		single_cmd.c			exec_heredoc.c			exec_leaf.c \
 		runners.c				exec_utils.c			traverse_pipe.c
 
 OBJ = $(SRC:.c=.o)
