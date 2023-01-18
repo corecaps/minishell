@@ -19,7 +19,7 @@
  * @return status of the command
  **************************************************************************/
 
-int	single_cmd(t_exec *exec)
+int	single_cmd(t_exec *exec, char ***env)
 {
 	int	status;
 
@@ -42,6 +42,7 @@ int	single_cmd(t_exec *exec)
 		return (-1);
 	waitpid(-1, &status, 0);
 	waitpid(-1, &status, 0);
+	*env = exec->envp;
 	free_exec(exec);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));

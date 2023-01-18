@@ -104,7 +104,7 @@ int	exec_cmd_line(t_ast *current_node, char ***env)
 	if (exec == NULL)
 		return (-1);
 	if (current_node->type == E_COMMAND)
-		return (single_cmd(exec));
+		return (single_cmd(exec,env));
 	else if (current_node->type == E_PIPE)
 		status = traverse_pipe(exec);
 	else
@@ -112,6 +112,7 @@ int	exec_cmd_line(t_ast *current_node, char ***env)
 		free_exec(exec);
 		return (-8);
 	}
+	*env = exec->envp;
 	free_exec(exec);
 	if (status < 0)
 		return (status);
