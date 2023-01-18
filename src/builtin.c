@@ -16,19 +16,24 @@
 int	ft_cd(char **args, char ***env)
 {
 	char	*path;
+	char	*home;
 
 	path = getcwd(NULL, 0);
+	home = NULL;
 	if (!path)
 		return (-1);
 	if (args[1] == NULL)
 	{
-		if (chdir(get_env("HOME", env)) == -1)
+		home = get_env("HOME", env);
+		if (chdir(home) == -1)
 			return (-1);
 	}
 	else if (chdir(args[1]) == -1)
 	{
 		return (-1);
 	}
+	if (home)
+		free(home);
 	free (path);
 	path = getcwd(NULL, 0);
 	if (set_env(env, "PWD", path) == -1)
@@ -76,8 +81,9 @@ int	ft_exit(char **args, char ***env)
 
 	(void) args;
 	gc = garbage_collector_add(NULL);
-	garbage_collector_free(gc);
-	free_env(env);
+	if (gc)
+		garbage_collector_free(gc);
+//	free_env(env);
 	exit(EXIT_SUCCESS);
 	return (0);
 }

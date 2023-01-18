@@ -14,6 +14,12 @@
 
 void	free_data(t_data *data)
 {
+	t_garbage *tmp;
+
+	tmp = garbage_collector_add(NULL);
+	gc_remove(&tmp, data->line);
+	gc_remove(&tmp, data->status);
+	gc_remove(&tmp, data);
 	if (data->line)
 		free(data->line);
 	if (data->status)
