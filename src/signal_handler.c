@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 12:14:18 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/10 12:14:38 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/18 14:14:33 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <signal.h>
+
 void	sig_handler(int signum, siginfo_t *client_info, void *context)
 {
 	(void) context;
 	(void) client_info;
-
 	if (signum == SIGINT)
 	{
 		printf("\n");
@@ -24,7 +24,7 @@ void	sig_handler(int signum, siginfo_t *client_info, void *context)
 	}
 }
 
-void set_signals(void)
+void	set_signals(void)
 {
 	struct sigaction	handler;
 

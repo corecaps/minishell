@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 01:11:08 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/12 12:29:29 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/18 14:13:48 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	realloc_environ(char ***env, size_t size, size_t index)
 
 	if (env == NULL || size == 0)
 		return (-1);
-	new_env = ft_calloc( (size + 1),sizeof(char *));
+	new_env = ft_calloc((size + 1), sizeof(char *));
 	if (new_env == NULL)
 		return (-1);
 	i = 0;

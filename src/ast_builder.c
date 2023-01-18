@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:17:12 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/11 18:46:43 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/18 14:11:48 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	create_redir_node(t_data *data, t_token *token)
 			tmp = tmp->left;
 		new_node->parent = tmp;
 		tmp->left = new_node;
-		if (ft_strncmp(token->value,"<<",3) == 0)
+		if (ft_strncmp(token->value, "<<", 3) == 0)
 			parse_here_doc(new_node);
 	}
 	else

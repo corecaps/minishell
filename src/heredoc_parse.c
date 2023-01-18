@@ -38,9 +38,10 @@ static int	end_heredoc(t_ast *node, t_here_doc *prev, t_here_doc *current_line,
  * @param current_line node to store
  ****************************************************************************/
 
-static void store_heredoc(t_ast *node, t_here_doc *current_line)
+static void	store_heredoc(t_ast *node, t_here_doc *current_line)
 {
-	t_here_doc *cursor;
+	t_here_doc	*cursor;
+
 	if (node->here_doc_list == NULL)
 		node->here_doc_list = current_line;
 	else

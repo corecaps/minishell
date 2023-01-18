@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 13:08:09 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/09 18:16:36 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/18 14:12:53 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ typedef struct s_exec
 	int		*pipes;
 	int		pipe_i;
 	char	**envp;
-	int 	n_child;
+	int		n_child;
 	t_ast	*current_node;
 	t_ast	*root;
-} t_exec;
+}	t_exec;
 
 int			single_cmd(t_exec *exec, char ***env);
 int			exec_heredoc(t_exec *exec);

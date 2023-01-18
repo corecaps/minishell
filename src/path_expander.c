@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 11:18:44 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/12 12:04:26 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/18 14:13:24 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ static char	*get_parent(char *path)
 	{
 		*parent = '\0';
 	}
-
 	return (path);
 }
 
@@ -82,7 +81,6 @@ char	*get_full_path(char *name, char **path)
 	int				i;
 	DIR				*dp;
 	struct dirent	*entry;
-
 
 	i = 0;
 	while (path[i] != 0)
