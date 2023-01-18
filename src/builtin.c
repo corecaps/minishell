@@ -29,7 +29,9 @@ int	ft_cd(char **args, char ***env)
 	{
 		return (-1);
 	}
-	if (set_env(env, "PWD", getcwd(NULL, 0)) == -1)
+	free (path);
+	path = getcwd(NULL, 0);
+	if (set_env(env, "PWD", path) == -1)
 		return (-2);
 	free(path);
 	return (0);

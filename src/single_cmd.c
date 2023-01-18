@@ -36,7 +36,7 @@ int	single_cmd(t_exec *exec, char ***env)
 	}
 	else
 	{
-		status = exec_leaf(exec, -1);
+		status = exec_scmd(exec, -1);
 	}
 	if (status < 0)
 		return (-1);
