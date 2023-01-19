@@ -34,10 +34,11 @@ int	single_cmd(t_exec *exec, char ***env)
 			exec_leaf(exec, exec->pipes[1]);
 		}
 	}
+	else if (check_builtins(exec->current_node->token_node->value)
+		&& exec->current_node->left)
+		status = exec_leaf(exec, -1);
 	else
-	{
 		status = exec_scmd(exec, -1);
-	}
 	if (status < 0)
 		return (-1);
 	waitpid(-1, &status, 0);
