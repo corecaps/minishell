@@ -198,13 +198,13 @@ am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 am__DIST_COMMON = $(check_TEXINFOS) $(srcdir)/Makefile.in mdate-sh \
 	texinfo.tex
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/missing aclocal-1.15
+ACLOCAL = ${SHELL} /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/missing aclocal-1.15
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
 AR = ar
-AUTOCONF = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/missing autoconf
-AUTOHEADER = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/missing autoheader
-AUTOMAKE = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/missing automake-1.15
+AUTOCONF = ${SHELL} /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/missing autoconf
+AUTOHEADER = ${SHELL} /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/missing autoheader
+AUTOMAKE = ${SHELL} /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/missing automake-1.15
 AWK = gawk
 AWK_GSUB_DBL_BSLASH = \\\\
 AWK_PATH = /usr/bin/gawk
@@ -261,7 +261,7 @@ LIPO =
 LN_S = ln -s
 LTLIBOBJS = 
 LT_SYS_LIBRARY_PATH = 
-MAKEINFO = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/missing makeinfo
+MAKEINFO = ${SHELL} /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/missing makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = /usr/bin/mkdir -p
 NM = /usr/bin/nm -B
@@ -282,7 +282,7 @@ PKG_CONFIG = /usr/bin/pkg-config
 PKG_CONFIG_LIBDIR = 
 PKG_CONFIG_PATH = 
 PTHREAD_CC = gcc
-PTHREAD_CFLAGS = 
+PTHREAD_CFLAGS = -pthread
 PTHREAD_LIBS = 
 RANLIB = ranlib
 SED = /usr/bin/sed
@@ -290,10 +290,10 @@ SET_MAKE =
 SHELL = /bin/bash
 STRIP = strip
 VERSION = 0.15.2
-abs_builddir = /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc
-abs_srcdir = /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc
-abs_top_builddir = /home/corecaps/42/minishell/unit_tests/check-0.15.2
-abs_top_srcdir = /home/corecaps/42/minishell/unit_tests/check-0.15.2
+abs_builddir = /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/doc
+abs_srcdir = /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/doc
+abs_top_builddir = /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2
+abs_top_srcdir = /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_DUMPBIN = 
@@ -323,7 +323,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/corecaps/42/minishell/unit_tests/check-0.15.2/install-sh
+install_sh = ${SHELL} /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -956,47 +956,47 @@ $(srcdir)/check.texi: money.1-2.h.diff \
 # think that means there is an error
 money.1-2.h.diff: $(eg_src)/money.1.h $(eg_src)/money.2.h
 	cd $(eg_root); \
-	diff -U 100 src/money.1.h src/money.2.h ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 src/money.1.h src/money.2.h ${filter_timestapms} > /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 money.1-3.c.diff: $(eg_src)/money.1.c $(eg_src)/money.3.c
 	cd $(eg_root); \
-	diff -U 100 src/money.1.c src/money.3.c ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 src/money.1.c src/money.3.c ${filter_timestapms} > /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 money.3-4.c.diff: $(eg_src)/money.3.c $(eg_src)/money.4.c
 	cd $(eg_root); \
-	diff -U 100 src/money.3.c src/money.4.c ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 src/money.3.c src/money.4.c ${filter_timestapms} > /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 money.4-5.c.diff: $(eg_src)/money.4.c $(eg_src)/money.5.c
 	cd $(eg_root); \
-	diff -U 100 src/money.4.c src/money.5.c ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 src/money.4.c src/money.5.c ${filter_timestapms} > /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 money.5-6.c.diff: $(eg_src)/money.5.c $(eg_src)/money.6.c
 	cd $(eg_root); \
-	diff -U 100 src/money.5.c src/money.6.c ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 src/money.5.c src/money.6.c ${filter_timestapms} > /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 check_money.1-2.c.diff: $(eg_tests)/check_money.1.c $(eg_tests)/check_money.2.c
 	cd $(eg_root); \
-	diff -U 100 tests/check_money.1.c tests/check_money.2.c ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 tests/check_money.1.c tests/check_money.2.c ${filter_timestapms} > /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 check_money.2-3.c.diff: $(eg_tests)/check_money.2.c $(eg_tests)/check_money.3.c
 	cd $(eg_root); \
-	diff -U 100 tests/check_money.2.c tests/check_money.3.c ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 tests/check_money.2.c tests/check_money.3.c ${filter_timestapms} > /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 check_money.3-6.c.diff: $(eg_tests)/check_money.3.c $(eg_tests)/check_money.6.c
 	cd $(eg_root); \
-	diff -U 100 tests/check_money.3.c tests/check_money.6.c ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 tests/check_money.3.c tests/check_money.6.c ${filter_timestapms} > /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 check_money.6-7.c.diff: $(eg_tests)/check_money.6.c $(eg_tests)/check_money.7.c
 	cd $(eg_root); \
-	diff -U 100 tests/check_money.6.c tests/check_money.7.c ${filter_timestapms} > /home/corecaps/42/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
+	diff -U 100 tests/check_money.6.c tests/check_money.7.c ${filter_timestapms} > /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/doc/$@ || test $$? -eq 1; \
 	cd -;
 
 clean-local:
