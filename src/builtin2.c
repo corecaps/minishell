@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 12:07:37 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/19 10:39:34 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/19 12:12:16 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,30 +41,6 @@ int	ft_env(char **args, char ***env)
  * 			-2 if there is a var name error
  *****************************************************************************/
 
-static int	get_stop(const char *str)
-{
-	int	j;
-	int	stop;
-
-	stop = -1;
-	j = 0;
-	while (str[j])
-	{
-		if (str[0] == '?' && str[1] == '=')
-			return (1);
-		else if (str[j] == '=' && j != 0)
-			return (j);
-		else if ((str[j] < 65 || (str[j] > 90
-					&& str[j] < 97) || str[j] > 122) && stop == -1)
-		{
-			printf("export error: invalid symbols\n");
-			return (-2);
-		}
-		j++;
-	}
-	return (-1);
-}
-
 static void	to_set_env(char ***env, char *arg, int stop)
 {
 	char	*key;
@@ -88,6 +64,54 @@ static void	to_set_env(char ***env, char *arg, int stop)
 	}
 }
 
+static int	get_stop(const char *str)
+{
+	int	j;
+
+	j = 0;
+	while (str[j])
+	{
+		if (str[0] == '?' && str[1] == '=')
+			return (1);
+		else if (str[j] == '=' && j != 0)
+			return (j);
+		else if ((str[j] < 65 || (str[j] > 90
+					&& str[j] < 97) || str[j] > 122))
+			return (-2);
+		else if (str[j + 1] == '\0' && str[j] == '=')
+			return (j);
+		else if (str[j + 1] == '\0' && str[j] != '=')
+			return (j + 1);
+		j++;
+	}
+	return (-1);
+}
+
+static int	check_args(char **args)
+{
+	int		i;
+	int		j;
+	char	tmp;
+
+	i = 1;
+	while (args[i])
+	{
+		j = 0;
+		if (args[i][0] == '=' && args[i][1] != '\0')
+			return (1);
+		while (args[i][j] != '=' && args[i][j] != '\0')
+		{
+			tmp = args[i][j];
+			if (tmp == '?' || tmp == '*'
+				|| tmp == '!' || tmp == '&')
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	ft_export(char **args, char ***env)
 {
 	int		i;
@@ -96,12 +120,16 @@ int	ft_export(char **args, char ***env)
 	i = 1;
 	if (args[i])
 	{
+		if (check_args(args))
+		{
+			printf("Really bad args prevent to write others\n");
+			return (0);
+		}
 		while (args[i])
 		{
 			stop = get_stop(args[i]);
-			if (stop == -2)
-				return (-100);
-			to_set_env(env, args[i], stop);
+			if (stop != -2)
+				to_set_env(env, args[i], stop);
 			i++;
 		}
 	}
