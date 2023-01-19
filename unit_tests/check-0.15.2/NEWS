@@ -165,7 +165,7 @@ Sun Aug 2, 2015: Released Check 0.10.0
   time.h was not included. This header is now included for the checks.
   Patch #53.
 
-* If the test traverse_ast process catches a SIGTERM or SIGINT signal the running
+* If the test runner process catches a SIGTERM or SIGINT signal the running
   tests are now also killed.
   Patch #52.
 
@@ -676,7 +676,7 @@ Wed Jul 11, 2001: Released Check 0.7.0
 
 Included a primitive logging function (at the moment, it only prints a
 copy of the CRVERBOSE output to the log file), added the ability for
-an SRunner to exec_command_node multiple suites (and reorganized the Check tests to
+an SRunner to run multiple suites (and reorganized the Check tests to
 take advantage of that), and added the magic to allow Check to be used
 with C++.
 

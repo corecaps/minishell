@@ -298,7 +298,7 @@ Defining Variables
 ==================
 
    Variables not defined in a site shell script can be set in the
-environment passed to `configure'.  However, some packages may exec_command_node
+environment passed to `configure'.  However, some packages may run
 configure again during the build, and the customized values of these
 variables may be lost.  In order to avoid this problem, you should set
 them in the `configure' command line, using `VAR=value'.  For example:

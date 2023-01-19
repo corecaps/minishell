@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:55 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/22 16:35:57 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/18 11:08:59 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,27 @@ t_token_type	peek(t_stack *head);
 t_token_type	pop(t_stack **head);
 t_stack			*push(t_token_type type, t_stack *head);
 void			del_ast(t_ast *top);
-// t_data			*data_init(void);
-char			*expand(char *str);
-void			free_all(t_data *data);
+char			*expand(char *str, char ***env);
+void			free_data(t_data *data);
+void			free_env(char ***env);
 void			del_stack(t_stack *head);
 int				count_stack(t_stack *head);
 int				parse(t_data *data);
 void			print_debug(t_token_type type);
-char			**get_path();
 char			*find_binary(char *name);
 char			**get_args(t_ast *command_node);
 int				traverse_ast(t_ast *current_node, char ***env);
 size_t			count_env(char ***env);
 char			**create_env(char **env, int argc, char **argv);
-char			*get_env(char *key,char ***env);
+char			*get_env(char *key, char ***env);
 t_garbage		*garbage_collector_add(void *ptr);
 void			garbage_collector_free(t_garbage *garbage);
-int				set_env(char ***env,char *key,char *value);
+int				set_env(char ***env, char *key, char *value);
+t_ast			*ast_node_init(t_token *token, t_token_type token_type);
+void			set_signals(void);
+int				parse_here_doc(t_ast *node);
+int				exec_cmd_line(t_ast *current_node, char ***env);
+void			print_sorted(char ***env_pointer);
+t_garbage		**gc_remove(t_garbage **gc, void *ptr);
+
 #endif

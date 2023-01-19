@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_expander.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 11:18:44 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/05 11:18:48 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/12 12:04:26 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@
  * @return an array with all the path
  *****************************************************************************/
 
-char	**get_path()
+char	**get_path(void)
 {
 	char	*env_path;
 	char	**path_array;
 	int		i;
 
 	env_path = getenv("PATH");
-	path_array = ft_split(env_path,':');
+	path_array = ft_split(env_path, ':');
 	i = 0;
 	while (path_array[i])
 	{
@@ -42,11 +42,11 @@ char	**get_path()
  * @return null terminated string of the parent path
  *****************************************************************************/
 
-char *get_parent(char *path)
+static char	*get_parent(char *path)
 {
-	char *parent;
+	char	*parent;
 
-	parent = ft_strrchr(path,'/');
+	parent = ft_strrchr(path, '/');
 	if (parent)
 	{
 		*parent = '\0';
@@ -60,14 +60,29 @@ char *get_parent(char *path)
  * @param name null terminated string of the name of the command
  * @param path array of string built from the environement variable
  * @return full_path or NULL if binary not found in path
+ * 
+ * [NORME]: HAVE TO FREE RESULT VAR
+ * 
  ****************************************************************************/
 
-char	*get_full_path(char *name,char **path)
+static char	*return_path(DIR *dp, char *path_str, char *name)
+{
+	char	*tmp;
+	char	*result;
+
+	closedir(dp);
+	tmp = ft_strjoin(path_str, "/");
+	result = ft_strjoin(tmp, name);
+	free(tmp);
+	return (result);
+}
+
+char	*get_full_path(char *name, char **path)
 {
 	int				i;
 	DIR				*dp;
 	struct dirent	*entry;
-	char			*tmp;
+
 
 	i = 0;
 	while (path[i] != 0)
@@ -78,20 +93,14 @@ char	*get_full_path(char *name,char **path)
 			entry = readdir(dp);
 			while (entry)
 			{
-				if (ft_strncmp(name,entry->d_name, strlen(name)+1) == 0)
-				{
-					closedir(dp);
-					tmp = ft_strjoin(path[i],"/");
-					garbage_collector_add(tmp);
-					return (ft_strjoin(tmp,  name));
-				}
+				if (ft_strncmp(name, entry->d_name, strlen(name) + 1) == 0)
+					return (return_path(dp, path[i], name));
 				entry = readdir(dp);
 			}
 		}
 		closedir(dp);
 		i ++;
 	}
-	printf("heheh\n");
 	return (NULL);
 }
 
@@ -100,43 +109,23 @@ char	*get_full_path(char *name,char **path)
  * return the full path
  * @param name null terminated string of the name of the command
  * @return full path or NULL if not absolute or relative path
+ * [NORME]: DELETED COMMENTED STRING "garbage_collector_add(parent);"
+ * 			right before return string
  *****************************************************************************/
 
 char	*check_absolute_relative_path(char *name)
 {
 	char	*parent;
+
 	if (name[0] == '/')
 		return (name);
 	else if (name[0] == '.' && name[1] == '/')
-		return (ft_strjoin(getcwd(NULL,0),name+1));
+		return (ft_strjoin(getcwd(NULL, 0), name + 1));
 	else if (name[0] == '.' && name[1] == '.' && name[2] == '/')
 	{
-		parent = get_parent(getcwd(NULL,0));
-//		garbage_collector_add(parent);
-		return(ft_strjoin(parent,name+2));
+		parent = get_parent(getcwd(NULL, 0));
+		return (ft_strjoin(parent, name + 2));
 	}
-	else
-		return (NULL);
-}
-
-/******************************************************************************
- * Find the binary in the path
- * @return the full path of the binary
- * @param name null terminated string of the name of the command
- *****************************************************************************/
-
-char	*find_binary(char *name)
-{
-	char	*final_path;
-	char	**path;
-
-	final_path = check_absolute_relative_path(name);
-	if (final_path)
-		return (final_path);
-	path = get_path();
-	final_path = get_full_path(name, path);
-	if (final_path && access(final_path,X_OK) != -1)
-		return (final_path);
 	else
 		return (NULL);
 }

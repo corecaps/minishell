@@ -6,30 +6,26 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:20:07 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/19 10:21:07 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/12 12:31:25 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-//
-//t_data	*data_init(void)
-//{
-//	t_data	*data;
-//
-//	data = (t_data *)malloc(sizeof(t_data));
-//	data->start_token = NULL;
-//	data->line = NULL;
-//	data->end = 0;
-//	data->index = 0;
-//	data->open_quote = -1;
-//	return (data);
-//}
 
-void	free_all(t_data *data)
+void	free_data(t_data *data)
 {
+	t_garbage *tmp;
+
+	tmp = garbage_collector_add(NULL);
+	gc_remove(&tmp, data->line);
+	gc_remove(&tmp, data->status);
+	gc_remove(&tmp, data);
+	if (data->line)
+		free(data->line);
+	if (data->status)
+		free(data->status);
 	if (data->root)
 		del_ast(data->root);
-	free(data->line);
 	if (data->start_token)
 		del_token_list(data->start_token);
 	if (data->parsing_stack)
@@ -44,14 +40,14 @@ void	free_all(t_data *data)
  * @return a freshly allocated array of environment variables
  *****************************************************************************/
 
-char	**create_env(char **env, int argc,char **argv)
+char	**create_env(char **env, int argc, char **argv)
 {
-	char **new_env;
-	int i;
+	char	**new_env;
+	int		i;
 
 	(void) argc;
 	(void) argv;
-	new_env = malloc(sizeof(char *) * (count_env(&env) + 1));
+	new_env = (char **)malloc(sizeof(char *) * (count_env(&env) + 1));
 	i = 0;
 	while (env[i])
 	{
@@ -60,4 +56,21 @@ char	**create_env(char **env, int argc,char **argv)
 	}
 	new_env[i] = NULL;
 	return (new_env);
+}
+
+void	free_env(char ***env)
+{
+	int		i;
+	char	**tmp_env;
+
+	i = 0;
+	tmp_env = *env;
+	while (*(tmp_env + i))
+	{
+		free(*(tmp_env+i));
+		*(tmp_env + i) = NULL;
+		i++;
+	}
+	free(tmp_env);
+	*env = NULL;
 }

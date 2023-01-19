@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:24:12 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/22 11:51:41 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/09 18:29:05 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,9 @@ int	piped_cmd(t_token **cursor, t_data *data)
  * @return -1 in case of mem error
  * @return -2 in case of syntax error
  * @return 1 in case of success
+ * 
+ * [NORME] deleted TODO: CREATE COMMAND NODE COMMENT
+ * 
  *****************************************************************************/
 
 int	cpl_cmd(t_token **cursor, t_data *data)
@@ -87,7 +90,6 @@ int	cpl_cmd(t_token **cursor, t_data *data)
 		data->parsing_stack = push(E_COMMAND_SUFFIX, data->parsing_stack);
 		data->parsing_stack = push(E_COMMAND, data->parsing_stack);
 		data->parsing_stack = push(E_COMMAND_PREFIX, data->parsing_stack);
-		//TODO CREATE COMMAND NODE
 	}
 	else
 		return (-2);

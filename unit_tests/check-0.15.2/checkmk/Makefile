@@ -374,7 +374,7 @@ GCOV = gcov
 GCOV_CFLAGS = 
 GCOV_LIBS = 
 GENHTML = false
-GRAPHVIZ = false
+GRAPHVIZ = dot
 GREP = /usr/bin/grep
 HAVE_FORK = 1
 HAVE_INIT_ONCE_BEGIN_INITIALIZE = 0
@@ -387,7 +387,7 @@ INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LCOV = false
-LD = /usr/x86_64-unknown-linux-gnu/bin/ld -m elf_x86_64
+LD = /usr/bin/ld -m elf_x86_64
 LDFLAGS = 
 LIBOBJS = 
 LIBS = -lrt -lm 
@@ -420,12 +420,12 @@ PKG_CONFIG = /usr/bin/pkg-config
 PKG_CONFIG_LIBDIR = 
 PKG_CONFIG_PATH = 
 PTHREAD_CC = gcc
-PTHREAD_CFLAGS = 
+PTHREAD_CFLAGS = -pthread
 PTHREAD_LIBS = 
 RANLIB = ranlib
 SED = /usr/bin/sed
 SET_MAKE = 
-SHELL = /bin/sh
+SHELL = /bin/bash
 STRIP = strip
 VERSION = 0.15.2
 abs_builddir = /mnt/nfs/homes/jgarcia/CLionProjects/minishell/unit_tests/check-0.15.2/checkmk
@@ -628,7 +628,7 @@ cscope cscopelist:
 
 
 # Recover from deleted '.trs' file; this should ensure that
-# "rm -f foo.log; make foo.trs" re-exec_command_node 'foo.test', and re-create
+# "rm -f foo.log; make foo.trs" re-run 'foo.test', and re-create
 # both 'foo.log' and 'foo.trs'.  Break the recipe in two subshells
 # to avoid problems with "make -n".
 .log.trs:

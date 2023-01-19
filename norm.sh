@@ -1,8 +1,9 @@
 for f in src/* 
 do 
-	echo $f;
-	echo "=========================================";
-	norminette $f | grep -v src | wc | awk '{printf "\n\n%d norm error\n\n",$1}';
-	norminette $f;
 	echo "==========================================";
+	echo "|  " $f "  |";
+	echo "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv";
+	norminette $f | grep -v src | wc | awk '{printf "\n%d norm error\n",$1}';
+	echo "==========================================";
+	norminette $f | grep -v src;
 done

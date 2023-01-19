@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:13:13 by latahbah          #+#    #+#             */
-/*   Updated: 2022/12/22 14:47:17 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/18 10:24:35 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ typedef int		(*t_f_builtin)(char **args, char ***env);
 
 typedef struct s_garbage
 {
-	void			*ptr;
+	void				*ptr;
 	struct s_garbage	*next;
 }	t_garbage;
 
 typedef struct s_here_doc {
-	char	*line;
+	char				*line;
 	struct s_here_doc	*next;
 }	t_here_doc;
 
@@ -66,7 +66,6 @@ typedef struct s_ast
 	int				in_pipe;
 	int				out_pipe;
 	int				here_doc;
-	int				forked;
 	t_here_doc		*here_doc_list;
 }	t_ast;
 
@@ -81,8 +80,11 @@ typedef struct s_data
 	int		index;
 	int		end;
 	int		open_quote;
+	int		parse_result;
 	char	*line;
+	char	*status;
 	t_token	*start_token;
+	t_token	*parse_cursor;
 	t_ast	*root;
 	t_ast	*current;
 	t_stack	*parsing_stack;

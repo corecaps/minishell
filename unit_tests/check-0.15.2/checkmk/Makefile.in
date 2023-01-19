@@ -628,7 +628,7 @@ cscope cscopelist:
 
 
 # Recover from deleted '.trs' file; this should ensure that
-# "rm -f foo.log; make foo.trs" re-exec_command_node 'foo.test', and re-create
+# "rm -f foo.log; make foo.trs" re-run 'foo.test', and re-create
 # both 'foo.log' and 'foo.trs'.  Break the recipe in two subshells
 # to avoid problems with "make -n".
 .log.trs:

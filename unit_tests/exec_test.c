@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_test.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/09 15:54:02 by jgarcia           #+#    #+#             */
+/*   Updated: 2023/01/09 15:54:04 by jgarcia          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "check.h"
 #include "../src/minishell.h"
 #include "../src/exec.h"
 #include <string.h>
-
+extern char **environ;
 START_TEST(test_get_path)
 {
 	char **path;
@@ -33,24 +45,46 @@ START_TEST(test_find_binary)
 	ck_assert_ptr_null(result);
 } END_TEST
 
-START_TEST(test_set_env)
+START_TEST(test_traverse_ast)
 {
-	char	*result;
-	extern char **environ;
+	t_data	test;
 	char **new_env;
+	int fd;
+	char buffer[1024];
+	char buffer2[1024];
 
-	new_env = create_env(environ);
-	set_env(&new_env,"TEST","test");
-	result = get_env("TEST",new_env);
-	ck_assert_int_eq(strcmp(result,"test"),0);
-	ck_assert_ptr_nonnull(result);
-	set_env(&new_env, "TEST","test2");
-	result = get_env("TEST",new_env);
-	ck_assert_int_eq(strcmp(result,"test2"),0);
-	ck_assert_ptr_nonnull(result);
-	set_env(&new_env, "PATH","/bin");
-	ck_assert_int_eq(strcmp(get_env("PATH",new_env),"/bin"),0);
-	ck_assert_ptr_nonnull(result);
+	bzero(buffer,1024);
+	bzero(buffer2,1024);
+	test.line = "cat Makefile | cat | wc > test.txt";
+	new_env = create_env(environ,0,NULL);
+	test.start_token = NULL;
+	lexer(&test,&new_env);
+	parse(&test);
+	exec_cmd_line(test.root,&new_env);
+	system("cat Makefile | cat | wc > test2.txt");
+	fd = open("test.txt", O_RDONLY);
+	read(fd, buffer, 256);
+	close (fd);
+	fd = open("test2.txt", O_RDONLY);
+	read(fd, buffer2, 256);
+	close(fd);
+	ck_assert_int_eq(strcmp(buffer,buffer2),0);
+} END_TEST
+
+START_TEST(test_traverse_ast_binary_not_found)
+{
+	t_data	test;
+	char **new_env;
+	int result;
+
+	test.line = "idonotexist";
+	new_env = create_env(environ,0,NULL);
+	test.start_token = NULL;
+	lexer(&test,&new_env);
+	parse(&test);
+	result = exec_cmd_line(test.root,&new_env);
+
+	ck_assert_int_eq(result,-3);
 } END_TEST
 
 Suite *exec_test(void)
@@ -62,22 +96,8 @@ Suite *exec_test(void)
 	tc_core = tcase_create("Core");
 	tcase_add_test(tc_core, test_get_path);
 	tcase_add_test(tc_core,test_find_binary);
-	tcase_add_test(tc_core,test_set_env);
+	tcase_add_test(tc_core,test_traverse_ast);
+	tcase_add_test(tc_core,test_traverse_ast_binary_not_found);
 	suite_add_tcase(s, tc_core);
 	return (s);
-}
-
-int main(void)
-{
-	int		n_failed;
-	Suite	*s;
-	SRunner	*sr;
-
-	n_failed = 0;
-	s = exec_test();
-	sr = srunner_create(s);
-	srunner_run_all(sr, CK_VERBOSE);
-	n_failed = srunner_ntests_failed(sr);
-	srunner_free(sr);
-	return (n_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

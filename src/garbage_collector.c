@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:13:41 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/08 15:13:59 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/12 13:06:44 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	gc_check_double(t_garbage *gc, void *ptr)
+{
+	t_garbage 	*tmp;
+
+	tmp = gc;
+	while (tmp)
+	{
+		if (tmp->ptr == ptr)
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
 
 /******************************************************************************
  * Free all pointers in the garbage collector
@@ -19,14 +33,16 @@
 
 void	garbage_collector_free(t_garbage *garbage)
 {
-	t_garbage *tmp;
+	t_garbage	*tmp;
 
 	while (garbage)
 	{
 		tmp = garbage;
 		garbage = garbage->next;
 		free(tmp->ptr);
-		free(tmp);
+//		tmp->ptr = NULL;
+		if (tmp)
+			free(tmp);
 	}
 }
 
@@ -36,15 +52,18 @@ void	garbage_collector_free(t_garbage *garbage)
  * @return Pointer to the garbage collector
  ****************************************************************************/
 
-t_garbage *garbage_collector_add(void *ptr)
+t_garbage	*garbage_collector_add(void *ptr)
 {
-	static t_garbage *garbage = NULL;
-	t_garbage *new;
-	t_garbage *bottom;
+	static t_garbage	*garbage = NULL;
+	t_garbage			*new;
+	t_garbage			*bottom;
 
 	if (ptr == NULL)
 		return (garbage);
-	if (!(new = malloc(sizeof(t_garbage))))
+	if (gc_check_double(garbage, ptr))
+		return (garbage);
+	new = malloc(sizeof(t_garbage));
+	if (!new)
 		return (NULL);
 	new->ptr = ptr;
 	new->next = NULL;
@@ -57,5 +76,32 @@ t_garbage *garbage_collector_add(void *ptr)
 	}
 	else
 		garbage = new;
-	return garbage;
+	return (garbage);
+}
+
+t_garbage	**gc_remove(t_garbage **gc, void *ptr)
+{
+	t_garbage	*tmp;
+	t_garbage	*prev;
+
+
+	if (!gc || !ptr)
+		return (NULL);
+	tmp = *gc;
+	prev = NULL;
+	while (tmp)
+	{
+		if (tmp && tmp->ptr == ptr)
+		{
+			if (prev)
+				prev->next = tmp->next;
+			else
+				*gc = tmp->next;
+			free(tmp);
+			return (gc);
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
+	return (gc);
 }
