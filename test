@@ -1,22 +1,2 @@
-total 80
-drwxr-xr-x 14 latahbah 2021_paris 4096 Jan 18 14:07 .
-drwxr-xr-x  4 latahbah 2021_paris 4096 Jan 18 14:00 ..
-drwxr-xr-x  2 latahbah 2021_paris 4096 Jan 18 14:05 bin
-drwxr-xr-x  3 latahbah 2021_paris 4096 Jan  6 13:23 build
-drwxr-xr-x  3 latahbah 2021_paris 4096 Jan  5 12:42 documentation
--rw-r--r--  1 latahbah 2021_paris 6148 Jan  5 12:43 .DS_Store
-drwxr-xr-x  2 latahbah 2021_paris 4096 Jan  5 12:43 expander_test
-drwxr-xr-x  8 latahbah 2021_paris 4096 Jan 18 14:03 .git
--rw-r--r--  1 latahbah 2021_paris  857 Jan  9 17:44 .gitignore
-drwxr-xr-x  2 latahbah 2021_paris 4096 Jan  5 12:42 .idea
--rw-r--r--  1 latahbah 2021_paris   99 Jan 18 11:25 .ignore_readline
-drwxr-xr-x  2 latahbah 2021_paris 4096 Jan 18 14:02 libft
--rw-r--r--  1 latahbah 2021_paris 2665 Jan 17 10:26 Makefile
--rwxr-xr-x  1 latahbah 2021_paris  304 Jan  9 17:44 norm.sh
-drwxr-xr-x  2 latahbah 2021_paris 4096 Jan 18 14:05 obj
-drwxr-xr-x  2 latahbah 2021_paris 4096 Jan 18 14:03 src
--rw-r--r--  1 latahbah 2021_paris    0 Jan 18 14:07 test
-drwxr-xr-x  4 latahbah 2021_paris 4096 Jan 17 09:48 unit_tests
-drwxr-xr-x  2 latahbah 2021_paris 4096 Jan 17 09:48 utils
-drwxr-xr-x  2 latahbah 2021_paris 4096 Jan  5 12:42 .vscode
--rw-r--r--  1 latahbah 2021_paris    0 Jan 18 14:07 wc
+/mnt/nfs/homes/latahbah/Desktop/minishell
+[0;32mMinishell	[0m$^C
