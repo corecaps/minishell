@@ -12,14 +12,17 @@
 
 #include "minishell.h"
 
-static t_data	*data_init(void)
+static t_data	*data_init(char ***env)
 {
 	t_data	*data;
+	char	*prompt;
 
 	data = (t_data *)malloc(sizeof(t_data));
 	data->open_quote = -1;
 	data->start_token = NULL;
-	data->line = readline(PS1);
+	prompt = get_prompt(env);
+	data->line = readline(prompt);
+	free(prompt);
 	if (!data->line)
 	{
 		exit(EXIT_FAILURE);
@@ -74,7 +77,7 @@ int	main(int argc, char **argv, char **env)
 	new_env = create_env(env, argc, argv);
 	while (1)
 	{
-		data = data_init();
+		data = data_init(&new_env);
 		lexer(data, &new_env);
 		//FOR TEST
 		// printf("Token List:\n");

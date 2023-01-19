@@ -59,5 +59,6 @@ int				parse_here_doc(t_ast *node);
 int				exec_cmd_line(t_ast *current_node, char ***env);
 void			print_sorted(char ***env_pointer);
 t_garbage		**gc_remove(t_garbage **gc, void *ptr);
+char			*get_prompt(char ***env);
 
 #endif
