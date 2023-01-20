@@ -44,7 +44,7 @@ int	single_cmd(t_exec *exec, char ***env)
 	waitpid(-1, &status, 0);
 	waitpid(-1, &status, 0);
 	*env = exec->envp;
-//	free(exec->pipes);
+	free(exec->pipes);
 	free(exec);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));

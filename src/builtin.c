@@ -20,8 +20,6 @@ int	ft_cd(char **args, char ***env)
 
 	path = getcwd(NULL, 0);
 	home = NULL;
-	if (!path)
-		return (-1);
 	if (args[1] == NULL)
 	{
 		home = get_env("HOME", env);

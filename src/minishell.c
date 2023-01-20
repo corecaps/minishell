@@ -29,43 +29,11 @@ static t_data	*data_init(char ***env)
 	}
 	if (ft_strlen(data->line))
 		add_history(data->line);
-//	garbage_collector_add(data->line);
-//	garbage_collector_add(data);
 	return (data);
 }
 // TODO : signal handling
 // TODO : prompt function
-void gc_ast_del(t_ast *current)
-{
-	if (current->left)
-		gc_ast_del(current->left);
-	if (current->right)
-		gc_ast_del(current->right);
-	garbage_collector_add(current);
-}
 
-void gc_pre_exec(t_data * data)
-{
-	t_token	*token_cursor;
-	t_stack	*stack_cursor;
-
-//	token_cursor = data->start_token;
-//	while (token_cursor)
-//	{
-////	garbage_collector_add(token_cursor->value);
-//	garbage_collector_add(token_cursor);
-//	token_cursor = token_cursor->next_token;
-//	}
-//	garbage_collector_add(data->line);
-//	gc_ast_del(data->root);
-//	stack_cursor = data->parsing_stack;
-//	while (stack_cursor)
-//	{
-//		garbage_collector_add(stack_cursor);
-//		stack_cursor = stack_cursor->next;
-//	}
-////	garbage_collector_add(data);
-}
 
 int	main(int argc, char **argv, char **env)
 {
@@ -74,24 +42,19 @@ int	main(int argc, char **argv, char **env)
 	char	**new_env;
 
 //	set_signals();
+	if (!isatty(STDIN_FILENO))
+	{
+		perror("minishell works only in interactive mode\n");
+		exit(EXIT_FAILURE);
+	}
 	new_env = create_env(env, argc, argv);
 	while (1)
 	{
 		data = data_init(&new_env);
 		lexer(data, &new_env);
-		//FOR TEST
-		// printf("Token List:\n");
-		// while (data->start_token)
-		// {
-		// 	printf("[%s]\n", data->start_token->value);
-		// 	data->start_token = data->start_token->next_token;
-		// }
-		// exit(0);
-		//
 		status = parse(data);
 		if (data->root && status == 1)
 		{
-			gc_pre_exec(data);
 			status = exec_cmd_line(data->root, &new_env);
 			data->status = ft_itoa(status);
 			set_env(&new_env, "?", data->status);
@@ -101,14 +64,6 @@ int	main(int argc, char **argv, char **env)
 			data->status = ft_itoa(status);
 			set_env(&new_env, "?",data->status);
 		}
-//		if (data->status)
-//		{
-//			printf("add from main\n");
-//			free(data->status);
-//		}
-//		garbage_collector_free(garbage_collector_add(NULL));
 		free_data(data);
 	}
-	free_env(&new_env);
-	return (0);
 }
