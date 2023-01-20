@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:13:13 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/18 10:24:35 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/18 14:04:33 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@ typedef enum e_token_type {
 }	t_token_type;
 
 typedef int		(*t_f_builtin)(char **args, char ***env);
+
+typedef struct s_exp
+{
+	int	i;
+	int	start;
+}	t_exp;
 
 typedef struct s_garbage
 {

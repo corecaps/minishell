@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 16:35:29 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/18 11:19:43 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/18 14:05:40 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,70 +43,51 @@ static char	*retrieve_str(char *tmp, char ***env)
 		res = ft_strjoin("", tmp);
 		free(tmp);
 	}
-	return res;
+	return (res);
+}
+
+t_exp	exp_init(int i)
+{
+	t_exp	exp;
+
+	exp.i = i;
+	exp.start = i;
+	return (exp);
+}
+
+char	*get_exp_tmp(char *str, int start, int len, char ***env)
+{
+	char	*tmp;
+
+	tmp = ft_substr(str, start, len);
+	tmp = retrieve_str(tmp, env);
+	return (tmp);
 }
 
 char	*expand(char *str, char ***env)
 {
-	int		i;
-	int 	start;
+	t_exp	exp;
 	char	*result;
 	char	*tmp;
 
-	i = 0;
-	start = i;
+	exp = exp_init(0);
 	result = ft_strjoin("", "");
-	while (str[i])
+	while (str[exp.i])
 	{
-		if (str[i] == '$')
+		if (str[exp.i] == '$')
 		{
-			tmp = ft_substr(str, start, i - start);
-			// printf("\ttmp = [%s]\n", tmp);
-			tmp = retrieve_str(tmp, env);
-			// printf("\tmtmp = [%s]\n", tmp);
+			tmp = get_exp_tmp(str, exp.start, exp.i - exp.start, env);
 			result = add_to_res(result, tmp);
-			start = i;
+			exp.start = exp.i;
 		}
-		if (str[i + 1] == '\0')
+		if (str[exp.i + 1] == '\0')
 		{
-			tmp = ft_substr(str, start, i - start + 1);
-			// printf("\ttmp = [%s]\n", tmp);
-			tmp = retrieve_str(tmp, env);
-			// printf("\tmtmp = [%s]\n", tmp);
+			tmp = get_exp_tmp(str, exp.start, exp.i - exp.start + 1, env);
 			result = add_to_res(result, tmp);
-			start = i;
+			exp.start = exp.i;
 		}
-		++i;
+		++exp.i;
 	}
-	// printf("\tresult = [%s]\n", result);
-	//result = add_to_res("", ft_strjoin("",""));
 	free(str);
 	return (result);
 }
-
-// char	*expand(char *str, char ***env)
-// {
-// 	t_expand	exp;
-// 	char		*result;
-
-// 	exp.start = start_expantion(str, 0);
-// 	if (exp.start == -1)
-// 		return (str);
-// 	exp.end = end_expantion(str, exp.start);
-// 	exp.tmp = ft_substr(str, exp.start + 1, exp.end - (exp.start + 1));
-// 	exp.value = get_env(exp.tmp, env);
-// 	if (exp.value == NULL)
-// 		exp.value = ft_strjoin("", "");
-// 	free(exp.tmp);
-// 	exp.tmp = ft_substr(str, 0, (size_t)exp.start);
-// 	result = ft_strjoin(exp.tmp, exp.value);
-// 	free(exp.tmp);
-// 	free(exp.value);
-// 	exp.value = ft_substr(str, exp.end, ft_strlen(str) - (size_t)exp.end);
-// 	exp.tmp = result;
-// 	result = ft_strjoin(result, exp.value);
-// 	free(exp.tmp);
-// 	free(exp.value);
-// 	free(str);
-// 	return (result);
-// }
