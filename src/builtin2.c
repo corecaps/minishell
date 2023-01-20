@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 12:07:37 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/19 12:12:16 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/20 13:19:51 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,11 @@ static int	get_stop(const char *str)
 			return (1);
 		else if (str[j] == '=' && j != 0)
 			return (j);
-		else if ((str[j] < 65 || (str[j] > 90
-					&& str[j] < 97) || str[j] > 122))
+		else if (str[j] < 48
+			|| (str[j] >= '0' && str[j] <= '9' && j == 0)
+			|| (str[j] > '9' && str[j] < 'A')
+			|| (str[j] > 'Z' && str[j] < 'a')
+			|| (str[j] > 'z'))
 			return (-2);
 		else if (str[j + 1] == '\0' && str[j] == '=')
 			return (j);
