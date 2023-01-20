@@ -62,21 +62,27 @@ char *get_prompt(char ***env)
 	char *tmp2;
 
 	prompt = ft_strdup("\033[0;32m[minishell]");
-	if (get_return_code(env))
+	tmp = get_return_code(env);
+	if (tmp)
 	{
-		tmp = ft_strjoin(get_return_code(env),prompt);
+		tmp2 = ft_strjoin(tmp,prompt);
 		free(prompt);
-		prompt = ft_strdup(tmp);
+		prompt = ft_strdup(tmp2);
 		free(tmp);
+		free(tmp2);
 	}
-	if (get_user(env))
+	tmp = get_user(env);
+	if (tmp)
 	{
-		tmp = ft_strjoin(prompt,get_user(env));
+		tmp2 = ft_strjoin(prompt,tmp);
 		free(prompt);
-		prompt = ft_strdup(tmp);
 		free(tmp);
+		prompt = ft_strdup(tmp2);
+		free(tmp2);
 	}
-	tmp = ft_strjoin(prompt, getcwd(NULL, 0));
+	tmp2 = getcwd(NULL,0);
+	tmp = ft_strjoin(prompt, tmp2);
+	free(tmp2);
 	tmp2 = ft_strjoin(tmp, "$\033[0m ");
 	free(tmp);
 	free(prompt);
