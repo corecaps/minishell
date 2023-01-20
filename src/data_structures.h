@@ -63,8 +63,8 @@ typedef struct s_ast
 	struct s_ast	*parent;
 	struct s_ast	*left;
 	struct s_ast	*right;
-	int				in_pipe;
-	int				out_pipe;
+	int				*in_pipe;
+	int				*out_pipe;
 	int				here_doc;
 	t_here_doc		*here_doc_list;
 }	t_ast;

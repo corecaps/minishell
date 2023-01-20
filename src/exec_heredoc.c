@@ -61,7 +61,7 @@ int	exec_heredoc(t_exec *exec)
 
 	if (pipe(exec->pipes + exec->pipe_i) == -1)
 		return (-4);
-	exec->current_node->in_pipe = exec->pipes[exec->pipe_i];
+	exec->current_node->in_pipe = (exec->pipes + exec->pipe_i);
 	status = fork();
 	if (status == -1)
 	{
