@@ -24,7 +24,6 @@
 # include <fcntl.h>
 # include "data_structures.h"
 # include "lexer.h"
-# define PS1 "\033[0;32mMinishell\t\033[0m$"
 
 void			add_token(t_data *data, t_token_type type, char *value);
 int				count_token(t_token *head);
