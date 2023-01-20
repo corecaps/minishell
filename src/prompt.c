@@ -81,8 +81,13 @@ char *get_prompt(char ***env)
 		free(tmp2);
 	}
 	tmp2 = getcwd(NULL,0);
-	tmp = ft_strjoin(prompt, tmp2);
-	free(tmp2);
+	if (tmp2)
+	{
+		tmp = ft_strjoin(prompt, tmp2);
+		free(tmp2);
+	}
+	else
+		tmp = ft_strdup(prompt);
 	tmp2 = ft_strjoin(tmp, "$\033[0m ");
 	free(tmp);
 	free(prompt);

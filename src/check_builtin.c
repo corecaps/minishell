@@ -27,11 +27,11 @@ t_f_builtin	check_builtins(char *cmd)
 		return (ft_cd);
 	else if (ft_strncmp(cmd, "pwd", 4) == 0)
 		return (ft_pwd);
-	else if (ft_strncmp(cmd, "export", 6) == 0)
+	else if (ft_strncmp(cmd, "export", 7) == 0)
 		return (ft_export);
-	else if (ft_strncmp(cmd, "unset", 5) == 0)
+	else if (ft_strncmp(cmd, "unset", 6) == 0)
 		return (ft_unset);
-	else if (ft_strncmp(cmd, "env", 3) == 0)
+	else if (ft_strncmp(cmd, "env", 4) == 0)
 		return (ft_env);
 	else if (ft_strncmp(cmd, "exit", 5) == 0)
 		return (ft_exit);

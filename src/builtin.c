@@ -20,8 +20,6 @@ int	ft_cd(char **args, char ***env)
 
 	path = getcwd(NULL, 0);
 	home = NULL;
-	if (!path)
-		return (-1);
 	if (args[1] == NULL)
 	{
 		home = get_env("HOME", env);
@@ -84,5 +82,12 @@ int	ft_exit(char **args, char ***env)
 	gc = garbage_collector_add(NULL);
 	if (gc)
 		garbage_collector_free(gc);
+	del_environ(env);
+	// LEAKS (still reachable):
+	// - AST
+	// - token list
+	// - data struct from main
+	// - exec data struct
+	// - parsing stack
 	exit(EXIT_SUCCESS);
 }

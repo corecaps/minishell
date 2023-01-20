@@ -34,13 +34,15 @@ int	gc_check_double(t_garbage *gc, void *ptr)
 void	garbage_collector_free(t_garbage *garbage)
 {
 	t_garbage	*tmp;
-
+	if (!garbage)
+		printf("garbage collector is empty\n");
 	while (garbage)
 	{
 		tmp = garbage;
 		garbage = garbage->next;
 		free(tmp->ptr);
-//		tmp->ptr = NULL;
+		printf("gc - node : %p \t ptr to free : %p\n", tmp, tmp->ptr);
+		//		tmp->ptr = NULL;
 		if (tmp)
 			free(tmp);
 	}

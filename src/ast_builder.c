@@ -77,7 +77,7 @@ int	create_cmd_node(t_data *data, t_token *token)
 	}
 	else if (data->current->type == E_REDIRECTION
 		|| data->current->type == E_COMMAND_ARG)
-		ast_writing(data, token);
+		ast_writing(data, new_node);
 	else if (data->current->type == E_COMMAND
 		&& data->current->parent->type == E_PIPE
 		&& data->current->parent->right == NULL)
