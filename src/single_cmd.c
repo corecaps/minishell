@@ -30,14 +30,15 @@ int	single_cmd(t_exec *exec, char ***env)
 			status = exec_heredoc(exec);
 			if (status < 0)
 				return (status);
-			exec->root->in_pipe = exec->pipes[0];
-			exec_leaf(exec, exec->pipes[1]);
+			exec->root->in_pipe = exec->pipes;
+			exec_leaf(exec);
 		}
 	}
+	else if (check_builtins(exec->current_node->token_node->value)
+		&& exec->current_node->left)
+		status = exec_leaf(exec);
 	else
-	{
-		status = exec_scmd(exec, -1);
-	}
+		status = exec_scmd(exec);
 	if (status < 0)
 		return (-1);
 	waitpid(-1, &status, 0);

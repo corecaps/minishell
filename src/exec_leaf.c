@@ -19,7 +19,7 @@
  * @return status of the command
  **************************************************************************/
 
-int exec_leaf(t_exec *exec, int to_close)
+int exec_leaf(t_exec *exec)
 {
 	t_f_builtin	builtin;
 	int			status;
@@ -34,14 +34,14 @@ int exec_leaf(t_exec *exec, int to_close)
 		if (builtin)
 			run_builtin(exec, builtin);
 		else
-			run_leaf(exec, to_close);
+			run_leaf(exec);
 		exit(0);
 	}
 	exec->n_child ++;
 	return (status);
 }
 
-int exec_scmd(t_exec *exec, int to_close)
+int exec_scmd(t_exec *exec)
 {
 	t_f_builtin	builtin;
 	int			status;
@@ -54,7 +54,7 @@ int exec_scmd(t_exec *exec, int to_close)
 		return (-5);
 	if (status == 0)
 	{
-		run_leaf(exec, to_close);
+		run_leaf(exec);
 		exit(0);
 	}
 	exec->n_child ++;

@@ -42,8 +42,8 @@ t_ast	*add_left(t_ast *parent, t_token *token)
 	new_node->token_node = token;
 	new_node->left = NULL;
 	new_node->right = NULL;
-	new_node->in_pipe = -1;
-	new_node->out_pipe = -1;
+	new_node->in_pipe = NULL;
+	new_node->out_pipe = NULL;
 	new_node->here_doc = -1;
 	new_node->here_doc_list = NULL;
 	new_node->parent = parent;
@@ -69,8 +69,8 @@ t_ast	*add_right(t_ast *parent, t_token *token)
 	new_node->token_node = token;
 	new_node->left = NULL;
 	new_node->right = NULL;
-	new_node->in_pipe = -1;
-	new_node->out_pipe = -1;
+	new_node->in_pipe = NULL;
+	new_node->out_pipe = NULL;
 	new_node->here_doc = -1;
 	new_node->here_doc_list = NULL;
 	new_node->parent = parent;

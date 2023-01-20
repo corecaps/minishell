@@ -30,8 +30,8 @@ t_ast	*ast_node_init(t_token *token, t_token_type token_type)
 	new_node->here_doc_list = NULL;
 	if (token_type == E_COMMAND || token_type == E_PIPE)
 	{
-		new_node->in_pipe = -1;
-		new_node->out_pipe = -1;
+		new_node->in_pipe = NULL;
+		new_node->out_pipe = NULL;
 	}
 	return (new_node);
 }

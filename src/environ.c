@@ -84,7 +84,7 @@ int	realloc_environ(char ***env, size_t size, size_t index)
 		i++;
 		j++;
 	}
-	new_env[i] = NULL;
+	new_env[j] = NULL;
 	free_env(env);
 	*env = new_env;
 	return (0);
