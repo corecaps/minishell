@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 12:50:43 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/12 11:01:31 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/21 02:36:54 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	count_token(t_token *head)
 
 void	del_token_list(t_token *head)
 {
-	t_token	*prev;
+	t_token		*prev;
 	t_garbage	*tmp;
 
 	tmp = garbage_collector_add(NULL);

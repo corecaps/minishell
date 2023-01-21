@@ -6,7 +6,7 @@
 /*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:42:26 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/13 13:42:31 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/21 02:21:48 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,12 @@ static t_exec	*exec_init(t_ast *current_node, char ***env)
 	new_exec->root = current_node;
 	new_exec->envp = *env;
 	new_exec->pipes = init_pipes(current_node);
-//	if (new_exec->pipes != NULL)
-//		garbage_collector_add(new_exec->pipes);
-//	garbage_collector_add(new_exec);
 	new_exec->pipe_i = 0;
 	new_exec->n_child = 0;
 	return (new_exec);
 }
 
-void free_exec(t_exec *exec)
+void	free_exec(t_exec *exec)
 {
 	free(exec->pipes);
 	free(exec);
@@ -105,7 +102,7 @@ int	exec_cmd_line(t_ast *current_node, char ***env)
 	if (exec == NULL)
 		return (-1);
 	if (current_node->type == E_COMMAND)
-		return (single_cmd(exec,env));
+		return (single_cmd(exec, env));
 	else if (current_node->type == E_PIPE)
 		status = traverse_pipe(exec);
 	else

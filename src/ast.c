@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 14:24:54 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/09 18:39:08 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/21 02:11:32 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,13 @@ t_ast	*add_right(t_ast *parent, t_token *token)
 
 void	del_ast(t_ast *top)
 {
-	t_garbage *garbage;
+	t_garbage	*garbage;
+
 	if (top == NULL)
 		return ;
 	del_ast(top->left);
 	del_ast(top->right);
 	garbage = garbage_collector_add(NULL);
-	gc_remove(&garbage,top);
+	gc_remove(&garbage, top);
 	free(top);
 }

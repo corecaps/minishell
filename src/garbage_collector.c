@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:13:41 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/12 13:06:44 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/21 02:28:13 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	gc_check_double(t_garbage *gc, void *ptr)
 {
-	t_garbage 	*tmp;
+	t_garbage	*tmp;
 
 	tmp = gc;
 	while (tmp)
@@ -34,6 +34,7 @@ int	gc_check_double(t_garbage *gc, void *ptr)
 void	garbage_collector_free(t_garbage *garbage)
 {
 	t_garbage	*tmp;
+
 	if (!garbage)
 		printf("garbage collector is empty\n");
 	while (garbage)
@@ -42,7 +43,6 @@ void	garbage_collector_free(t_garbage *garbage)
 		garbage = garbage->next;
 		free(tmp->ptr);
 		printf("gc - node : %p \t ptr to free : %p\n", tmp, tmp->ptr);
-		//		tmp->ptr = NULL;
 		if (tmp)
 			free(tmp);
 	}
@@ -85,7 +85,6 @@ t_garbage	**gc_remove(t_garbage **gc, void *ptr)
 {
 	t_garbage	*tmp;
 	t_garbage	*prev;
-
 
 	if (!gc || !ptr)
 		return (NULL);

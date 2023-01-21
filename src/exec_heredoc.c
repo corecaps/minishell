@@ -6,14 +6,14 @@
 /*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:10:11 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/13 14:10:26 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/21 02:25:04 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec.h"
 
-void free_here_doc_list(t_here_doc *here_doc_list)
+void	free_here_doc_list(t_here_doc *here_doc_list)
 {
 	t_here_doc	*tmp;
 
@@ -40,7 +40,8 @@ static void	here_doc_child(t_exec *exec)
 	cursor = exec->current_node->here_doc_list;
 	while (cursor && cursor->line)
 	{
-		write(exec->pipes[exec->pipe_i + 1], cursor->line, ft_strlen(cursor->line));
+		write(exec->pipes[exec->pipe_i + 1], cursor->line,
+			ft_strlen(cursor->line));
 		write(exec->pipes[exec->pipe_i + 1], "\n", 1);
 		cursor = cursor->next;
 	}

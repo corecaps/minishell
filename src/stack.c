@@ -6,7 +6,7 @@
 /*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 12:05:30 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/10 13:08:10 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/21 02:36:27 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ int	count_stack(t_stack *head)
 
 void	del_stack(t_stack *head)
 {
-	t_stack	*prev;
-	t_garbage *tmp;
+	t_stack		*prev;
+	t_garbage	*tmp;
 
 	if (!head)
 		return ;
@@ -71,7 +71,7 @@ void	del_stack(t_stack *head)
 	{
 		head = head->next;
 		tmp = garbage_collector_add(NULL);
-		gc_remove(&tmp,prev);
+		gc_remove(&tmp, prev);
 		free(prev);
 		prev = head;
 	}

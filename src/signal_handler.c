@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 12:14:18 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/18 14:14:33 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/21 02:34:37 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,4 @@ void	set_signals(void)
 	sigemptyset(&handler.sa_mask);
 	handler.sa_flags = 0;
 	sigaction(SIGINT, &handler, NULL);
-//	sigaction(SIGQUIT, &handler, NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:42:09 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/12 12:58:23 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/21 02:13:59 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int	ft_echo(char **args, char ***env)
 int	ft_pwd(char **args, char ***env)
 {
 	(void) args;
-
 	printf("%s\n", get_env("PWD", env));
 	return (0);
 }

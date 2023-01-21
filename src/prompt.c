@@ -6,7 +6,7 @@
 /*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:54:16 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/19 12:54:28 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/21 02:33:11 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*get_return_code(char ***env)
 	return (open);
 }
 
-char *get_user(char ***env)
+char	*get_user(char ***env)
 {
 	char	*user;
 	char	*tmp;
@@ -55,17 +55,18 @@ char *get_user(char ***env)
 	free(user);
 	return (tmp);
 }
-char *get_prompt(char ***env)
+
+char	*get_prompt(char ***env)
 {
-	char *prompt;
-	char *tmp;
-	char *tmp2;
+	char	*prompt;
+	char	*tmp;
+	char	*tmp2;
 
 	prompt = ft_strdup("\033[0;32m[minishell]");
 	tmp = get_return_code(env);
 	if (tmp)
 	{
-		tmp2 = ft_strjoin(tmp,prompt);
+		tmp2 = ft_strjoin(tmp, prompt);
 		free(prompt);
 		prompt = ft_strdup(tmp2);
 		free(tmp);
@@ -74,13 +75,13 @@ char *get_prompt(char ***env)
 	tmp = get_user(env);
 	if (tmp)
 	{
-		tmp2 = ft_strjoin(prompt,tmp);
+		tmp2 = ft_strjoin(prompt, tmp);
 		free(prompt);
 		free(tmp);
 		prompt = ft_strdup(tmp2);
 		free(tmp2);
 	}
-	tmp2 = getcwd(NULL,0);
+	tmp2 = getcwd(NULL, 0);
 	if (tmp2)
 	{
 		tmp = ft_strjoin(prompt, tmp2);

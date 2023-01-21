@@ -6,7 +6,7 @@
 /*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:18:11 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/13 15:18:25 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/21 02:37:24 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ int	traverse_pipe(t_exec *exec)
 		status = traverse_pipe(exec);
 	}
 	if (pid2 > -1)
-		waitpid(pid2, &status, 0);
+		waitpid(pid2, NULL, 0);
 	close(exec->pipes[pipe_local_idx]);
 	if (pid != -10)
-		waitpid(pid, &status, 0);
+		waitpid(pid, NULL, 0);
 	return (status);
 }

@@ -84,7 +84,7 @@ START_TEST(test_traverse_ast_binary_not_found)
 	parse(&test);
 	result = exec_cmd_line(test.root,&new_env);
 
-	ck_assert_int_eq(result,-3);
+	ck_assert_int_eq(result,3);
 } END_TEST
 
 Suite *exec_test(void)

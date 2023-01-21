@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:20:07 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/12 12:31:25 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/21 02:22:50 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_data(t_data *data)
 {
-	t_garbage *tmp;
+	t_garbage	*tmp;
 
 	tmp = garbage_collector_add(NULL);
 	gc_remove(&tmp, data->line);
@@ -67,7 +67,7 @@ void	free_env(char ***env)
 	tmp_env = *env;
 	while (*(tmp_env + i))
 	{
-		free(*(tmp_env+i));
+		free(*(tmp_env + i));
 		*(tmp_env + i) = NULL;
 		i++;
 	}

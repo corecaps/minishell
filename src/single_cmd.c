@@ -6,7 +6,7 @@
 /*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:48:27 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/13 13:48:55 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/21 02:35:42 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	single_cmd(t_exec *exec, char ***env)
 	else
 		status = exec_scmd(exec);
 	if (status < 0)
-		return (-1);
+		return (status);
 	waitpid(-1, &status, 0);
 	waitpid(-1, &status, 0);
 	*env = exec->envp;

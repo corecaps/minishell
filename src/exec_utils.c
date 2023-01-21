@@ -6,7 +6,7 @@
 /*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:51:44 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/13 14:51:55 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/21 02:26:48 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	apply_dup(int fd1, int fd2)
 	close(fd1);
 }
 
-int		open_redir(char *path,int oflags, t_ast * node,int dest)
+int	open_redir(char *path, int oflags, t_ast *node, int dest)
 {
 	int		fd;
 	t_ast	*cursor;

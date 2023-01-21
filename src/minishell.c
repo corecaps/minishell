@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/18 11:19:17 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/21 02:29:54 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,6 @@ static t_data	*data_init(char ***env)
 		add_history(data->line);
 	return (data);
 }
-// TODO : signal handling
-// TODO : prompt function
-
 
 int	main(int argc, char **argv, char **env)
 {
@@ -62,7 +59,7 @@ int	main(int argc, char **argv, char **env)
 		else
 		{
 			data->status = ft_itoa(status);
-			set_env(&new_env, "?",data->status);
+			set_env(&new_env, "?", data->status);
 		}
 		free_data(data);
 	}

@@ -6,7 +6,7 @@
 /*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:33:51 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/13 14:34:07 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/21 02:25:56 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,29 +19,30 @@
  * @return status of the command
  **************************************************************************/
 
-int exec_leaf(t_exec *exec)
+int	exec_leaf(t_exec *exec)
 {
 	t_f_builtin	builtin;
 	int			status;
+	int			pid;
 
 	builtin = check_builtins(exec->current_node->token_node->value);
-
-	status = fork();
-	if (status < 0)
+	pid = fork();
+	status = 0;
+	if (pid < 0)
 		return (-5);
-	if (status == 0)
+	if (pid == 0)
 	{
 		if (builtin)
-			run_builtin(exec, builtin);
+			status = run_builtin(exec, builtin);
 		else
-			run_leaf(exec);
-		exit(0);
+			status = run_leaf(exec);
+		exit(status);
 	}
 	exec->n_child ++;
 	return (status);
 }
 
-int exec_scmd(t_exec *exec)
+int	exec_scmd(t_exec *exec)
 {
 	t_f_builtin	builtin;
 	int			status;
@@ -54,8 +55,8 @@ int exec_scmd(t_exec *exec)
 		return (-5);
 	if (status == 0)
 	{
-		run_leaf(exec);
-		exit(0);
+		status = run_leaf(exec);
+		exit(status);
 	}
 	exec->n_child ++;
 	return (status);
