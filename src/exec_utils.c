@@ -13,11 +13,20 @@
 #include "minishell.h"
 #include "exec.h"
 
+/*****************************************************************************
+ * Apply dup2 and close to the file descriptor
+ ****************************************************************************/
+
 void	apply_dup(int fd1, int fd2)
 {
 	dup2(fd1, fd2);
 	close(fd1);
 }
+
+/*****************************************************************************
+ * Open a file descriptor for the targeted file in redirection node
+ * and apply dup2 then close to the file descriptor
+ ****************************************************************************/
 
 int	open_redir(char *path, int oflags, t_ast *node, int dest)
 {

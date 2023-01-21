@@ -13,6 +13,10 @@
 #include "minishell.h"
 #include "exec.h"
 
+/**************************************************************************
+ * free memory from the heredoc list
+ *************************************************************************/
+
 void	free_here_doc_list(t_here_doc *here_doc_list)
 {
 	t_here_doc	*tmp;

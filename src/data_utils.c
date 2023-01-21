@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+/******************************************************************************
+ * free memory allocated for data structure,
+ * remove it from the garbage collector
+ *****************************************************************************/
+
 void	free_data(t_data *data)
 {
 	t_garbage	*tmp;
@@ -57,6 +62,10 @@ char	**create_env(char **env, int argc, char **argv)
 	new_env[i] = NULL;
 	return (new_env);
 }
+
+/******************************************************************************
+ * free memory allocated for environment array
+ *****************************************************************************/
 
 void	free_env(char ***env)
 {

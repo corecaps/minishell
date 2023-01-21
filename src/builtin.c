@@ -13,6 +13,10 @@
 #include "minishell.h"
 #include "exec.h"
 
+/*****************************************************************************
+ * Builtin function to change the current working directory.
+ ****************************************************************************/
+
 int	ft_cd(char **args, char ***env)
 {
 	char	*path;
@@ -40,6 +44,10 @@ int	ft_cd(char **args, char ***env)
 	return (0);
 }
 
+/*****************************************************************************
+ * Builtin function to print arguments to the standard output.
+ ****************************************************************************/
+
 int	ft_echo(char **args, char ***env)
 {
 	int	i;
@@ -65,12 +73,20 @@ int	ft_echo(char **args, char ***env)
 	return (0);
 }
 
+/*****************************************************************************
+ * Builtin function to print the current working directory.
+ ****************************************************************************/
+
 int	ft_pwd(char **args, char ***env)
 {
 	(void) args;
 	printf("%s\n", get_env("PWD", env));
 	return (0);
 }
+
+/*****************************************************************************
+ * Builtin function to exit the shell.
+ ****************************************************************************/
 
 int	ft_exit(char **args, char ***env)
 {

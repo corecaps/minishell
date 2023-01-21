@@ -19,7 +19,6 @@
  * @param node an E_COMMAND node
  * @return 0 in case of success, -2 in case of file error
  *****************************************************************************/
-//TODO: extract methods from this function
 
 int	apply_redirections(t_ast *node)
 {
@@ -45,6 +44,10 @@ int	apply_redirections(t_ast *node)
 			return (-2);
 	return (0);
 }
+
+/*****************************************************************************
+ * Check if heredoc is the last redirection in the command
+ *****************************************************************************/
 
 int	check_heredoc_last_in(t_ast *current_node)
 {

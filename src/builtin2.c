@@ -33,6 +33,10 @@ int	ft_env(char **args, char ***env)
 	return (0);
 }
 
+/*****************************************************************************
+ * Builtin function to unset an environment variable
+ ****************************************************************************/
+
 int	ft_unset(char **args, char ***env)
 {
 	int		i;

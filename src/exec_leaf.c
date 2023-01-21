@@ -42,6 +42,11 @@ int	exec_leaf(t_exec *exec)
 	return (status);
 }
 
+/**************************************************************************
+ * Execute a single command, do not fork if command is a builtin
+ * @return status of the command
+ **************************************************************************/
+
 int	exec_scmd(t_exec *exec)
 {
 	t_f_builtin	builtin;

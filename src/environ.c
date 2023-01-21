@@ -90,6 +90,13 @@ int	realloc_environ(char ***env, size_t size, size_t index)
 	return (0);
 }
 
+/*****************************************************************************
+ * get the value of the environment variable key
+ * @param key key of the environment variable
+ * @param env pointer to the environment
+ * @return NULL terminated string with the value of the environment variable
+ ****************************************************************************/
+
 char	*get_env(char *key, char ***env)
 {
 	size_t	i;
