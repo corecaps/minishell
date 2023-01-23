@@ -11,6 +11,14 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "termios.h"
+
+void setup_term(void) {
+	struct termios t;
+	tcgetattr(0, &t);
+	t.c_lflag &= ~ECHOCTL;
+	tcsetattr(0, TCSANOW, &t);
+}
 
 static t_data	*data_init(char ***env)
 {
@@ -38,10 +46,11 @@ int	main(int argc, char **argv, char **env)
 	int		status;
 	char	**new_env;
 
-//	set_signals();
+	set_signals();
+	setup_term();
 	if (!isatty(STDIN_FILENO))
 	{
-		perror("minishell works only in interactive mode\n");
+		write(2,"minishell works only in interactive mode\n", 41);
 		exit(EXIT_FAILURE);
 	}
 	new_env = create_env(env, argc, argv);

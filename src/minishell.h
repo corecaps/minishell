@@ -54,6 +54,7 @@ void			garbage_collector_free(t_garbage *garbage);
 int				set_env(char ***env, char *key, char *value);
 t_ast			*ast_node_init(t_token *token, t_token_type token_type);
 void			set_signals(void);
+void			reset_signals(void);
 int				parse_here_doc(t_ast *node);
 int				exec_cmd_line(t_ast *current_node, char ***env);
 void			print_sorted(char ***env_pointer);
