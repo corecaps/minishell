@@ -42,9 +42,7 @@ void	garbage_collector_free(t_garbage *garbage)
 		tmp = garbage;
 		garbage = garbage->next;
 		free(tmp->ptr);
-		printf("gc - node : %p \t ptr to free : %p\n", tmp, tmp->ptr);
-		if (tmp)
-			free(tmp);
+		free(tmp);
 	}
 }
 
