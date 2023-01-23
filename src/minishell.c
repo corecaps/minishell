@@ -50,9 +50,13 @@ int	main(int argc, char **argv, char **env)
 		data = data_init(&new_env);
 		lexer(data, &new_env);
 		status = parse(data);
+		if (status < 0)
+			parser_error(status);
 		if (data->root && status == 1)
 		{
 			status = exec_cmd_line(data->root, &new_env);
+			if (status < 0)
+				exec_error(status);
 			data->status = ft_itoa(status);
 			set_env(&new_env, "?", data->status);
 		}
