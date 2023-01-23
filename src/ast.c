@@ -83,16 +83,16 @@ t_ast	*add_right(t_ast *parent, t_token *token)
  * Free the entire Abstract Syntax Tree from memory
  * @param node The top of the Abstract Syntax Tree
  ****************************************************************************/
-
-void	del_ast(t_ast *top)
-{
-	t_garbage	*garbage;
-
-	if (top == NULL)
-		return ;
-	del_ast(top->left);
-	del_ast(top->right);
-	garbage = garbage_collector_add(NULL);
-	gc_remove(&garbage, top);
-	free(top);
-}
+//
+//void	del_ast(t_ast *top)
+//{
+//	t_garbage	*garbage;
+//
+//	if (top == NULL)
+//		return ;
+//	del_ast(top->left);
+//	del_ast(top->right);
+//	garbage = garbage_collector_add(NULL);
+//	gc_remove(&garbage, top);
+//	free(top);
+//}

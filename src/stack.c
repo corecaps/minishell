@@ -16,7 +16,7 @@ t_stack	*push(t_token_type type, t_stack *head)
 {
 	t_stack	*new_node;
 
-	new_node = malloc(sizeof(t_stack));
+	new_node = gc_alloc(1,sizeof(t_stack));
 	if (new_node == NULL)
 		return (NULL);
 	new_node->type = type;
@@ -31,11 +31,14 @@ t_token_type	pop(t_stack **head)
 {
 	t_token_type	result;
 	t_stack			*tmp;
+	t_garbage		*gc;
 
 	if ((*head) == NULL)
 		return (E_END_OF_TOKEN);
 	tmp = (*head)->next;
 	result = (*head)->type;
+	gc = garbage_collector_add(NULL);
+	gc_remove(&gc, (*head));
 	free ((*head));
 	*head = tmp;
 	return (result);
@@ -58,22 +61,22 @@ int	count_stack(t_stack *head)
 	}
 	return (i);
 }
-
-void	del_stack(t_stack *head)
-{
-	t_stack		*prev;
-	t_garbage	*tmp;
-
-	if (!head)
-		return ;
-	prev = head;
-	while (head && head->next)
-	{
-		head = head->next;
-		tmp = garbage_collector_add(NULL);
-		gc_remove(&tmp, prev);
-		free(prev);
-		prev = head;
-	}
-	free(head);
-}
+//
+//void	del_stack(t_stack *head)
+//{
+//	t_stack		*prev;
+//	t_garbage	*tmp;
+//
+//	if (!head)
+//		return ;
+//	prev = head;
+//	while (head && head->next)
+//	{
+//		head = head->next;
+//		tmp = garbage_collector_add(NULL);
+//		gc_remove(&tmp, prev);
+//		free(prev);
+//		prev = head;
+//	}
+//	free(head);
+//}

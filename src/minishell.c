@@ -27,7 +27,7 @@ static t_data	*data_init(char ***env)
 	t_data	*data;
 	char	*prompt;
 
-	data = (t_data *)malloc(sizeof(t_data));
+	data = (t_data *)gc_alloc(1,sizeof(t_data));
 	data->open_quote = -1;
 	data->start_token = NULL;
 	prompt = get_prompt(env);
@@ -37,6 +37,7 @@ static t_data	*data_init(char ***env)
 	{
 		exit(EXIT_FAILURE);
 	}
+	garbage_collector_add(data->line);
 	if (ft_strlen(data->line))
 		add_history(data->line);
 	return (data);
@@ -76,6 +77,7 @@ int	main(int argc, char **argv, char **env)
 			data->status = ft_itoa(status);
 			set_env(&new_env, "?", data->status);
 		}
-		free_data(data);
+		garbage_collector_free(garbage_collector_add(NULL));
+//		free_data(data);
 	}
 }

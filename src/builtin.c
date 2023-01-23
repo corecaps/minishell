@@ -97,12 +97,5 @@ int	ft_exit(char **args, char ***env)
 	gc = garbage_collector_add(NULL);
 	if (gc)
 		garbage_collector_free(gc);
-	del_environ(env);
-	// LEAKS (still reachable):
-	// - AST
-	// - token list
-	// - data struct from main
-	// - exec data struct
-	// - parsing stack
 	exit(EXIT_SUCCESS);
 }

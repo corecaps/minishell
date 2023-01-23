@@ -51,6 +51,7 @@ char			**create_env(char **env, int argc, char **argv);
 char			*get_env(char *key, char ***env);
 t_garbage		*garbage_collector_add(void *ptr);
 void			garbage_collector_free(t_garbage *garbage);
+void			*gc_alloc(size_t nmemb, size_t size);
 int				set_env(char ***env, char *key, char *value);
 t_ast			*ast_node_init(t_token *token, t_token_type token_type);
 void			set_signals(void);

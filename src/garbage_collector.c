@@ -42,7 +42,8 @@ void	garbage_collector_free(t_garbage *garbage)
 		tmp = garbage;
 		garbage = garbage->next;
 		free(tmp->ptr);
-		free(tmp);
+		if (tmp)
+			free(tmp);
 	}
 }
 
@@ -103,4 +104,15 @@ t_garbage	**gc_remove(t_garbage **gc, void *ptr)
 		tmp = tmp->next;
 	}
 	return (gc);
+}
+
+void	*gc_alloc(size_t nmemb, size_t size)
+{
+	void	*ptr;
+
+	ptr = ft_calloc(nmemb, size);
+	if (!ptr)
+		return (NULL);
+	garbage_collector_add(ptr);
+	return (ptr);
 }
