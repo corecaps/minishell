@@ -6,11 +6,15 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 16:35:29 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/18 14:05:40 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/23 10:04:24 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*****************************************************************************
+ * Add expanded value to final result
+ ****************************************************************************/
 
 static char	*add_to_res(char *curr_res, char *add_word)
 {
@@ -21,6 +25,10 @@ static char	*add_to_res(char *curr_res, char *add_word)
 	free(add_word);
 	return (res);
 }
+
+/*****************************************************************************
+ * Retrieve expand vaue from env
+ ****************************************************************************/
 
 static char	*retrieve_str(char *tmp, char ***env)
 {
@@ -46,6 +54,10 @@ static char	*retrieve_str(char *tmp, char ***env)
 	return (res);
 }
 
+/*****************************************************************************
+ * Initialisation of indexes to norme
+ ****************************************************************************/
+
 t_exp	exp_init(int i)
 {
 	t_exp	exp;
@@ -55,6 +67,10 @@ t_exp	exp_init(int i)
 	return (exp);
 }
 
+/*****************************************************************************
+ * Get expanded part of word
+ ****************************************************************************/
+
 char	*get_exp_tmp(char *str, int start, int len, char ***env)
 {
 	char	*tmp;
@@ -63,6 +79,10 @@ char	*get_exp_tmp(char *str, int start, int len, char ***env)
 	tmp = retrieve_str(tmp, env);
 	return (tmp);
 }
+
+/*****************************************************************************
+ * Check and expand word token with $
+ ****************************************************************************/
 
 char	*expand(char *str, char ***env)
 {

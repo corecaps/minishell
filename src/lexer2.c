@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 18:20:44 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/18 11:10:15 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/23 10:12:16 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,23 @@
 #include "minishell.h"
 #include "data_structures.h"
 
+/*****************************************************************************
+ *
+ * Add (pipe) token to token list
+ * 
+ ****************************************************************************/
+
 void	add_pipe_token(t_data *data)
 {
 	add_token(data, E_PIPE, "|");
 	data->end++;
 }
+
+/*****************************************************************************
+ *
+ * Add (redir) token to token list
+ * 
+ ****************************************************************************/
 
 void	add_redirect_token(t_data *data)
 {
@@ -47,6 +59,12 @@ void	add_redirect_token(t_data *data)
 	data->end++;
 }
 
+/*****************************************************************************
+ *
+ * Get index of last char in token
+ * 
+ ****************************************************************************/
+
 static void	get_end_index(t_data *data)
 {
 	while ((data->line[data->end] != ' ' && data->line[data->end] != '\t'
@@ -59,6 +77,12 @@ static void	get_end_index(t_data *data)
 		&& data->line[data->end] != 0)
 		data->end++;
 }
+
+/*****************************************************************************
+ *
+ * Add (word) token to linked list
+ * 
+ ****************************************************************************/
 
 void	add_word_token(t_data *data, char sep, char ***env)
 {
@@ -85,6 +109,12 @@ void	add_word_token(t_data *data, char sep, char ***env)
 		add_token(data, E_WORD, rawvalue);
 	}
 }
+
+/*****************************************************************************
+ *
+ * Add (") and (') tokens to linked list 
+ * 
+ ****************************************************************************/
 
 void	add_quoted_token(t_data *data, char ***env)
 {

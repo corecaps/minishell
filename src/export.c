@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/21 02:19:48 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/23 10:07:03 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ static void	to_set_env(char ***env, char *arg, int stop)
 	}
 }
 
+/*****************************************************************************
+ * Get index to split string on key, value
+ ****************************************************************************/
+
 static int	get_stop(const char *str)
 {
 	int	j;
@@ -69,6 +73,10 @@ static int	get_stop(const char *str)
 	return (-1);
 }
 
+/*****************************************************************************
+ * Check arguments passed in ft_export
+ ****************************************************************************/
+
 static int	check_args(char **args)
 {
 	int		i;
@@ -93,6 +101,13 @@ static int	check_args(char **args)
 	}
 	return (0);
 }
+
+/*****************************************************************************
+ *
+ * Export vars to environment. If it recieves zero args, ft_export prints
+ * an envronment in ascending order
+ * 
+ ****************************************************************************/
 
 int	ft_export(char **args, char ***env)
 {
