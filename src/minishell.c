@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/23 10:21:16 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/23 10:52:31 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ static t_data	*data_init(char ***env)
 	return (data);
 }
 
+void	interactive_mode_assert(void)
+{
+	perror("minishell works only in interactive mode\n");
+	exit(EXIT_FAILURE);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_data	*data;
@@ -40,10 +46,7 @@ int	main(int argc, char **argv, char **env)
 
 //	set_signals();
 	if (!isatty(STDIN_FILENO))
-	{
-		perror("minishell works only in interactive mode\n");
-		exit(EXIT_FAILURE);
-	}
+		interactive_mode_assert();
 	new_env = create_env(env, argc, argv);
 	while (1)
 	{
