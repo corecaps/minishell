@@ -79,9 +79,9 @@ int	ft_echo(char **args, char ***env)
 
 int	ft_pwd(char **args, char ***env)
 {
-	(void) args;
 	char *path;
 
+	(void) args;
 	path = get_env("PWD", env);
 	printf("%s\n", path);
 	free(path);

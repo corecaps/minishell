@@ -32,6 +32,7 @@ int	single_cmd(t_exec *exec, char ***env)
 				return (status);
 			exec->root->in_pipe = exec->pipes;
 			exec_leaf(exec);
+			close(exec->pipes[0]);
 		}
 		else
 			return (-9);
