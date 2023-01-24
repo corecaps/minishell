@@ -1,8 +1,20 @@
-//
-// Created by corecaps on 22/01/23.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/23 11:02:10 by jgarcia           #+#    #+#             */
+/*   Updated: 2023/01/23 11:02:14 by jgarcia          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
+
+/*****************************************************************************
+ * print error message to stderr in case of parser error
+ ****************************************************************************/
 
 void	parser_error(int status)
 {
@@ -13,6 +25,10 @@ void	parser_error(int status)
 	else if (status == -3)
 		write(2,"Minishell error: Out of bound token\n", 36);
 }
+
+/*****************************************************************************
+ * print error message to stderr in case of exec error
+ ****************************************************************************/
 
 void	exec_error(int status)
 {
@@ -28,4 +44,6 @@ void	exec_error(int status)
 		write(2,"Minishell error: fork failed\n", 29);
 	else if (status == -6)
 		write(2,"Minishell error: exec failed\n", 29);
+	else if (status == -9)
+		write(2,"Minishell error: Empty Heredoc\n", 31);
 }

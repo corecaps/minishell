@@ -104,7 +104,7 @@ int	ft_export(char **args, char ***env)
 	{
 		if (check_args(args))
 		{
-			printf("Really bad args prevent to write others\n");
+			write(2, "Really bad args prevent to write others\n", 40);
 			return (0);
 		}
 		while (args[i])

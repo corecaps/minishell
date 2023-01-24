@@ -13,33 +13,6 @@
 #include "minishell.h"
 
 /******************************************************************************
- * free memory allocated for data structure,
- * remove it from the garbage collector
- *****************************************************************************/
-
-void	free_data(t_data *data)
-{
-	t_garbage	*tmp;
-
-	tmp = garbage_collector_add(NULL);
-	gc_remove(&tmp, data->line);
-	gc_remove(&tmp, data->status);
-	gc_remove(&tmp, data);
-	if (data->line)
-		free(data->line);
-	if (data->status)
-		free(data->status);
-	if (data->root)
-		del_ast(data->root);
-	if (data->start_token)
-		del_token_list(data->start_token);
-	if (data->parsing_stack)
-		del_stack(data->parsing_stack);
-	if (data)
-		free(data);
-}
-
-/******************************************************************************
  * copy environment array into a new array
  * @param env original environment array
  * @return a freshly allocated array of environment variables
@@ -52,7 +25,7 @@ char	**create_env(char **env, int argc, char **argv)
 
 	(void) argc;
 	(void) argv;
-	new_env = (char **)malloc(sizeof(char *) * (count_env(&env) + 1));
+	new_env = (char **)ft_calloc((count_env(&env) + 1), sizeof(char *));
 	i = 0;
 	while (env[i])
 	{
@@ -81,5 +54,4 @@ void	free_env(char ***env)
 		i++;
 	}
 	free(tmp_env);
-	*env = NULL;
 }

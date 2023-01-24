@@ -15,9 +15,10 @@
 
 void	sig_handler(int signum, siginfo_t *client_info, void *context)
 {
+	extern char	**environ;
+
 	(void) context;
 	(void) client_info;
-	extern char **environ;
 	if (signum == SIGINT)
 	{
 		printf("\n%s", get_prompt(&environ));

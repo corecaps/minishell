@@ -20,7 +20,7 @@ t_ast	*ast_node_init(t_token *token, t_token_type token_type)
 {
 	t_ast	*new_node;
 
-	new_node = malloc(sizeof (t_ast));
+	new_node = gc_alloc(1,sizeof (t_ast));
 	if (new_node == NULL)
 		return (NULL);
 	if (token_type == E_PIPE)

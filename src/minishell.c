@@ -13,19 +13,30 @@
 #include "minishell.h"
 #include "termios.h"
 
-void setup_term(void) {
-	struct termios t;
-	tcgetattr(0, &t);
-	t.c_lflag &= ~ECHOCTL;
-	tcsetattr(0, TCSANOW, &t);
+/******************************************************************************
+ * Setups the terminal to not echo control characters
+ *****************************************************************************/
+
+void	setup_term(void)
+{
+	struct termios	term_info;
+
+	tcgetattr(0, &term_info);
+	term_info.c_lflag &= ~ECHOCTL;
+	tcsetattr(0, TCSANOW, &term_info);
 }
+
+/******************************************************************************
+ * initialize the data struct and read the next command line
+ * add the line to the history if it is not empty
+ *****************************************************************************/
 
 static t_data	*data_init(char ***env)
 {
 	t_data	*data;
 	char	*prompt;
 
-	data = (t_data *)malloc(sizeof(t_data));
+	data = (t_data *)gc_alloc(1,sizeof(t_data));
 	data->open_quote = -1;
 	data->start_token = NULL;
 	prompt = get_prompt(env);
@@ -35,6 +46,7 @@ static t_data	*data_init(char ***env)
 	{
 		exit(EXIT_FAILURE);
 	}
+	gc_add(data->line);
 	if (ft_strlen(data->line))
 		add_history(data->line);
 	return (data);
@@ -46,13 +58,13 @@ int	main(int argc, char **argv, char **env)
 	int		status;
 	char	**new_env;
 
-	set_signals();
-	setup_term();
 	if (!isatty(STDIN_FILENO))
 	{
-		write(2,"minishell works only in interactive mode\n", 41);
+		write(2, "minishell works only in interactive mode\n", 41);
 		exit(EXIT_FAILURE);
 	}
+	set_signals();
+	setup_term();
 	new_env = create_env(env, argc, argv);
 	while (1)
 	{
@@ -67,6 +79,7 @@ int	main(int argc, char **argv, char **env)
 			if (status < 0)
 				exec_error(status);
 			data->status = ft_itoa(status);
+			gc_add(data->status);
 			set_env(&new_env, "?", data->status);
 		}
 		else
@@ -74,6 +87,6 @@ int	main(int argc, char **argv, char **env)
 			data->status = ft_itoa(status);
 			set_env(&new_env, "?", data->status);
 		}
-		free_data(data);
+		gc_free();
 	}
 }

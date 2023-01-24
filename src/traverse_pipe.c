@@ -46,9 +46,13 @@ int	traverse_pipe(t_exec *exec)
 		status = traverse_pipe(exec);
 	}
 	if (pid2 > -1)
-		waitpid(pid2, NULL, 0);
+		waitpid(pid2, &status, 0);
 	close(exec->pipes[pipe_local_idx]);
 	if (pid != -10)
-		waitpid(pid, NULL, 0);
+	{
+		waitpid(pid, &status, 0);
+	}
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
 	return (status);
 }
