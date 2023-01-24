@@ -12,6 +12,13 @@
 
 #include "minishell.h"
 
+/******************************************************************************
+ * Check if a pointer is already in the garbage collector
+ * @param gc Pointer to the garbage collector
+ * @param ptr Pointer to check
+ * @return 1 if the pointer is already in the garbage collector, 0 otherwise
+ *****************************************************************************/
+
 int	gc_check_double(t_garbage *gc, void *ptr)
 {
 	t_garbage	*tmp;
@@ -31,13 +38,13 @@ int	gc_check_double(t_garbage *gc, void *ptr)
  * @param garbage Pointer to the garbage collector
  *****************************************************************************/
 
-void garbage_collector_free()
+void gc_free()
 {
 	t_garbage	*tmp;
 	t_garbage	**garbage;
 
 
-	garbage = garbage_collector_add(NULL);
+	garbage = gc_add(NULL);
 	if (!(*garbage))
 		printf("garbage collector is empty\n");
 	while ((*garbage))
@@ -45,7 +52,6 @@ void garbage_collector_free()
 		tmp = (*garbage);
 		(*garbage) = (*garbage)->next;
 		free(tmp->ptr);
-//		tmp->ptr = NULL;
 		if (tmp)
 			free(tmp);
 	}
@@ -58,7 +64,7 @@ void garbage_collector_free()
  * @return Pointer to the garbage collector
  ****************************************************************************/
 
-t_garbage	**garbage_collector_add(void *ptr)
+t_garbage	**gc_add(void *ptr)
 {
 	static t_garbage	*garbage = NULL;
 	t_garbage			*new;
@@ -79,13 +85,20 @@ t_garbage	**garbage_collector_add(void *ptr)
 	return (&garbage);
 }
 
+/******************************************************************************
+ * Free a specific pointer in the garbage collector and remove it from
+ * the garbage collector
+ * @param ptr Pointer to remove
+ * @return 1 if the pointer was removed, 0 otherwise
+ *****************************************************************************/
+
 int gc_remove(void *ptr)
 {
 	t_garbage	*cursor;
 	t_garbage	**gc;
 	t_garbage	*prev;
 
-	gc = garbage_collector_add(NULL);
+	gc = gc_add(NULL);
 	cursor = *gc;
 	if (!cursor)
 		return (0);
@@ -108,6 +121,13 @@ int gc_remove(void *ptr)
 	return (0);
 }
 
+/******************************************************************************
+ * Allocate memory and add the pointer to the garbage collector
+ * @param nmemb Number of elements
+ * @param size Size of each element
+ * @return Pointer to the allocated memory or NULL if an error occured
+ *****************************************************************************/
+
 void	*gc_alloc(size_t nmemb, size_t size)
 {
 	void	*ptr;
@@ -115,6 +135,6 @@ void	*gc_alloc(size_t nmemb, size_t size)
 	ptr = ft_calloc(nmemb, size);
 	if (!ptr)
 		return (NULL);
-	garbage_collector_add(ptr);
+	gc_add(ptr);
 	return (ptr);
 }

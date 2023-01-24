@@ -78,7 +78,7 @@ void	add_word_token(t_data *data, char sep, char ***env)
 	if (sep == ' ' || sep == '\"')
 	{
 		value = expand(rawvalue, env);
-		garbage_collector_add(value);
+		gc_add(value);
 		add_token(data, E_WORD, value);
 	}
 	else

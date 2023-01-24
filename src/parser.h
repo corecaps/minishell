@@ -14,11 +14,6 @@
 # define PARSER_H
 # include "data_structures.h"
 
-typedef struct s_ast_builder
-{
-	t_ast	*root;
-	t_ast	*current;
-}	t_ast_builder;
 int				cmd_line(t_token **cursor, t_data *data);
 int				piped_cmd(t_token **cursor, t_data *data);
 int				cpl_cmd(t_token **cursor, t_data *data);

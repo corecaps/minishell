@@ -12,6 +12,10 @@
 
 #include "minishell.h"
 
+/*****************************************************************************
+ * print error message to stderr in case of parser error
+ ****************************************************************************/
+
 void	parser_error(int status)
 {
 	if (status == -1)
@@ -21,6 +25,10 @@ void	parser_error(int status)
 	else if (status == -3)
 		write(2,"Minishell error: Out of bound token\n", 36);
 }
+
+/*****************************************************************************
+ * print error message to stderr in case of exec error
+ ****************************************************************************/
 
 void	exec_error(int status)
 {
@@ -36,4 +44,6 @@ void	exec_error(int status)
 		write(2,"Minishell error: fork failed\n", 29);
 	else if (status == -6)
 		write(2,"Minishell error: exec failed\n", 29);
+	else if (status == -9)
+		write(2,"Minishell error: Empty Heredoc\n", 31);
 }

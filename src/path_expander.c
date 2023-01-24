@@ -29,10 +29,10 @@ char	**get_path(void)
 	i = 0;
 	while (path_array[i])
 	{
-		garbage_collector_add(path_array[i]);
+		gc_add(path_array[i]);
 		i++;
 	}
-	garbage_collector_add(path_array);
+	gc_add(path_array);
 	return (path_array);
 }
 
@@ -107,7 +107,7 @@ char	*get_full_path(char *name, char **path)
  * return the full path
  * @param name null terminated string of the name of the command
  * @return full path or NULL if not absolute or relative path
- * [NORME]: DELETED COMMENTED STRING "garbage_collector_add(parent);"
+ * [NORME]: DELETED COMMENTED STRING "gc_add(parent);"
  * 			right before return string
  *****************************************************************************/
 

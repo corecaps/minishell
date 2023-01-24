@@ -42,38 +42,3 @@ void	add_token(t_data *data, t_token_type type, char *value)
 	else
 		get_bottom(data->start_token, new_node);
 }
-
-int	count_token(t_token *head)
-{
-	int	i;
-
-	i = 0;
-	if (head == NULL)
-		return (0);
-	while (head)
-	{
-		head = head->next_token;
-		i ++;
-	}
-	return (i);
-}
-//
-//void	del_token_list(t_token *head)
-//{
-//	t_token		*prev;
-//	t_garbage	*tmp;
-//
-//	tmp = garbage_collector_add(NULL);
-//	prev = head;
-//	while (head)
-//	{
-//		head = head->next_token;
-//		gc_remove(&tmp, prev->value);
-//		if (prev->value && prev->token_type == E_WORD)
-//			free(prev->value);
-//		gc_remove(&tmp, prev);
-//		if (prev)
-//			free(prev);
-//		prev = head;
-//	}
-//}

@@ -80,7 +80,11 @@ int	ft_echo(char **args, char ***env)
 int	ft_pwd(char **args, char ***env)
 {
 	(void) args;
-	printf("%s\n", get_env("PWD", env));
+	char *path;
+
+	path = get_env("PWD", env);
+	printf("%s\n", path);
+	free(path);
 	return (0);
 }
 
@@ -91,7 +95,7 @@ int	ft_pwd(char **args, char ***env)
 int	ft_exit(char **args, char ***env)
 {
 	(void) args;
-	garbage_collector_free();
 	free_env(env);
+	gc_free();
 	exit(EXIT_SUCCESS);
 }

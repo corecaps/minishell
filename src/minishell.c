@@ -13,6 +13,10 @@
 #include "minishell.h"
 #include "termios.h"
 
+/******************************************************************************
+ * Setups the terminal to not echo control characters
+ *****************************************************************************/
+
 void	setup_term(void)
 {
 	struct termios	term_info;
@@ -21,6 +25,11 @@ void	setup_term(void)
 	term_info.c_lflag &= ~ECHOCTL;
 	tcsetattr(0, TCSANOW, &term_info);
 }
+
+/******************************************************************************
+ * initialize the data struct and read the next command line
+ * add the line to the history if it is not empty
+ *****************************************************************************/
 
 static t_data	*data_init(char ***env)
 {
@@ -37,7 +46,7 @@ static t_data	*data_init(char ***env)
 	{
 		exit(EXIT_FAILURE);
 	}
-	garbage_collector_add(data->line);
+	gc_add(data->line);
 	if (ft_strlen(data->line))
 		add_history(data->line);
 	return (data);
@@ -70,7 +79,7 @@ int	main(int argc, char **argv, char **env)
 			if (status < 0)
 				exec_error(status);
 			data->status = ft_itoa(status);
-			garbage_collector_add(data->status);
+			gc_add(data->status);
 			set_env(&new_env, "?", data->status);
 		}
 		else
@@ -78,7 +87,6 @@ int	main(int argc, char **argv, char **env)
 			data->status = ft_itoa(status);
 			set_env(&new_env, "?", data->status);
 		}
-		garbage_collector_free();
-//		free_data(data);
+		gc_free();
 	}
 }

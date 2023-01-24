@@ -37,14 +37,8 @@ t_token_type	pop(t_stack **head)
 	tmp = (*head)->next;
 	result = (*head)->type;
 	gc_remove((*head));
-//	free ((*head));
 	*head = tmp;
 	return (result);
-}
-
-t_token_type	peek(t_stack *head)
-{
-	return (head->type);
 }
 
 int	count_stack(t_stack *head)
@@ -59,22 +53,3 @@ int	count_stack(t_stack *head)
 	}
 	return (i);
 }
-//
-//void	del_stack(t_stack *head)
-//{
-//	t_stack		*prev;
-//	t_garbage	*tmp;
-//
-//	if (!head)
-//		return ;
-//	prev = head;
-//	while (head && head->next)
-//	{
-//		head = head->next;
-//		tmp = garbage_collector_add(NULL);
-//		gc_remove(&tmp, prev);
-//		free(prev);
-//		prev = head;
-//	}
-//	free(head);
-//}

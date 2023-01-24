@@ -32,27 +32,6 @@ size_t	count_env(char ***env)
 }
 
 /******************************************************************************
- * Delete the environment array and all the variables
- * @param env Pointer to Environment
- *****************************************************************************/
-
-//void	del_environ(char ***env)
-//{
-//	size_t	i;
-//
-//	if (*env == NULL)
-//		return ;
-//	i = 0;
-//	while ((*env)[i])
-//	{
-//		free((*env)[i]);
-//		i++;
-//	}
-//	free(*env);
-//	*env = NULL;
-//}
-
-/******************************************************************************
  * Reallocate the environment array to size size
  * [UPDATE]:Recode realloc func to decrease size of env. Index is the env[index]
  * 			element to unset. If we add element, index is -1. (also i deleted
@@ -81,7 +60,6 @@ int	realloc_environ(char ***env, size_t size, size_t index)
 		if (index == i)
 			i++;
 		new_env[j] = ft_strdup((*env)[i]);
-//		garbage_collector_add(new_env[j]);
 		i++;
 		j++;
 	}

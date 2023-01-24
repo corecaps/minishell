@@ -51,7 +51,7 @@ char	**get_args(t_ast *command_node)
 		return (NULL);
 	argc = count_args(command_node);
 	argv = malloc(sizeof(char *) * (argc + 2));
-	garbage_collector_add(argv);
+	gc_add(argv);
 	if (argv == NULL)
 		return (NULL);
 	argv[0] = command_node->token_node->value;
