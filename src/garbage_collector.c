@@ -31,20 +31,25 @@ int	gc_check_double(t_garbage *gc, void *ptr)
  * @param garbage Pointer to the garbage collector
  *****************************************************************************/
 
-void	garbage_collector_free(t_garbage *garbage)
+void garbage_collector_free()
 {
 	t_garbage	*tmp;
+	t_garbage	**garbage;
 
-	if (!garbage)
+
+	garbage = garbage_collector_add(NULL);
+	if (!(*garbage))
 		printf("garbage collector is empty\n");
-	while (garbage)
+	while ((*garbage))
 	{
-		tmp = garbage;
-		garbage = garbage->next;
+		tmp = (*garbage);
+		(*garbage) = (*garbage)->next;
 		free(tmp->ptr);
+//		tmp->ptr = NULL;
 		if (tmp)
 			free(tmp);
 	}
+	(*garbage) = NULL;
 }
 
 /***************************************************************************
@@ -53,57 +58,54 @@ void	garbage_collector_free(t_garbage *garbage)
  * @return Pointer to the garbage collector
  ****************************************************************************/
 
-t_garbage	*garbage_collector_add(void *ptr)
+t_garbage	**garbage_collector_add(void *ptr)
 {
 	static t_garbage	*garbage = NULL;
 	t_garbage			*new;
-	t_garbage			*bottom;
 
 	if (ptr == NULL)
-		return (garbage);
-	if (gc_check_double(garbage, ptr))
-		return (garbage);
+		return (&garbage);
+	if (garbage && gc_check_double(garbage, ptr))
+		return (&garbage);
 	new = malloc(sizeof(t_garbage));
 	if (!new)
 		return (NULL);
 	new->ptr = ptr;
-	new->next = NULL;
 	if (garbage)
-	{
-		bottom = garbage;
-		while (bottom && bottom->next)
-			bottom = bottom->next;
-		bottom->next = new;
-	}
+		new->next = garbage;
 	else
-		garbage = new;
-	return (garbage);
+		new->next = NULL;
+	garbage = new;
+	return (&garbage);
 }
 
-t_garbage	**gc_remove(t_garbage **gc, void *ptr)
+int gc_remove(void *ptr)
 {
-	t_garbage	*tmp;
+	t_garbage	*cursor;
+	t_garbage	**gc;
 	t_garbage	*prev;
 
-	if (!gc || !ptr)
-		return (NULL);
-	tmp = *gc;
+	gc = garbage_collector_add(NULL);
+	cursor = *gc;
+	if (!cursor)
+		return (0);
 	prev = NULL;
-	while (tmp)
+	while (cursor)
 	{
-		if (tmp && tmp->ptr == ptr)
+		if (cursor->ptr == ptr)
 		{
 			if (prev)
-				prev->next = tmp->next;
+				prev->next = cursor->next;
 			else
-				*gc = tmp->next;
-			free(tmp);
-			return (gc);
+				(*gc) = cursor->next;
+			free(cursor->ptr);
+			free(cursor);
+			return (1);
 		}
-		prev = tmp;
-		tmp = tmp->next;
+		prev = cursor;
+		cursor = cursor->next;
 	}
-	return (gc);
+	return (0);
 }
 
 void	*gc_alloc(size_t nmemb, size_t size)

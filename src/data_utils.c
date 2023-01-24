@@ -52,7 +52,7 @@ char	**create_env(char **env, int argc, char **argv)
 
 	(void) argc;
 	(void) argv;
-	new_env = (char **)malloc(sizeof(char *) * (count_env(&env) + 1));
+	new_env = (char **)ft_calloc((count_env(&env) + 1), sizeof(char *));
 	i = 0;
 	while (env[i])
 	{
@@ -81,5 +81,5 @@ void	free_env(char ***env)
 		i++;
 	}
 	free(tmp_env);
-	*env = NULL;
+//	*env = NULL;
 }

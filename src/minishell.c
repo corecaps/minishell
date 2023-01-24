@@ -70,6 +70,7 @@ int	main(int argc, char **argv, char **env)
 			if (status < 0)
 				exec_error(status);
 			data->status = ft_itoa(status);
+			garbage_collector_add(data->status);
 			set_env(&new_env, "?", data->status);
 		}
 		else
@@ -77,7 +78,7 @@ int	main(int argc, char **argv, char **env)
 			data->status = ft_itoa(status);
 			set_env(&new_env, "?", data->status);
 		}
-		garbage_collector_free(garbage_collector_add(NULL));
+		garbage_collector_free();
 //		free_data(data);
 	}
 }

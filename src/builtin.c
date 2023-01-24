@@ -90,12 +90,8 @@ int	ft_pwd(char **args, char ***env)
 
 int	ft_exit(char **args, char ***env)
 {
-	t_garbage	*gc;
-
 	(void) args;
-	(void) env;
-	gc = garbage_collector_add(NULL);
-	if (gc)
-		garbage_collector_free(gc);
+	garbage_collector_free();
+	free_env(env);
 	exit(EXIT_SUCCESS);
 }

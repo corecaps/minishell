@@ -49,7 +49,7 @@ static int	*init_pipes(t_ast *root)
 	n_pipes = count_pipes(root);
 	if (n_pipes == 0)
 		return (NULL);
-	pipefd = malloc(sizeof(int) * n_pipes * 2);
+	pipefd = gc_alloc( n_pipes * 2,sizeof(int));
 	if (pipefd == NULL)
 		return (NULL);
 	return (pipefd);
@@ -66,7 +66,7 @@ static t_exec	*exec_init(t_ast *current_node, char ***env)
 {
 	t_exec	*new_exec;
 
-	new_exec = malloc(sizeof(t_exec));
+	new_exec = gc_alloc(1,sizeof(t_exec));
 	if (new_exec == NULL)
 		return (NULL);
 	new_exec->current_node = current_node;
@@ -110,7 +110,7 @@ int	exec_cmd_line(t_ast *current_node, char ***env)
 		return (-8);
 	}
 	*env = exec->envp;
-	free_exec(exec);
+//	free_exec(exec);
 	if (status < 0)
 	{
 		return (status);

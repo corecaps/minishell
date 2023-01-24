@@ -31,15 +31,13 @@ t_token_type	pop(t_stack **head)
 {
 	t_token_type	result;
 	t_stack			*tmp;
-	t_garbage		*gc;
 
 	if ((*head) == NULL)
 		return (E_END_OF_TOKEN);
 	tmp = (*head)->next;
 	result = (*head)->type;
-	gc = garbage_collector_add(NULL);
-	gc_remove(&gc, (*head));
-	free ((*head));
+	gc_remove((*head));
+//	free ((*head));
 	*head = tmp;
 	return (result);
 }
