@@ -109,7 +109,6 @@ int	exec_cmd_line(t_ast *current_node, char ***env)
 	{
 		return (status);
 	}
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
+	return (status);
 	return (0);
 }

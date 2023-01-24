@@ -12,7 +12,7 @@
 
 NAME = minishell
 CC = gcc
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -Werror
 DEBUG = -g3 -fanalyzer
 LIBFT = libft/libft.a
 LINK = -Llibft -lft -lreadline

@@ -40,7 +40,7 @@ int	exec_leaf(t_exec *exec)
 		exit(status);
 	}
 	exec->n_child ++;
-	return (status);
+	return (pid);
 }
 
 /**************************************************************************
