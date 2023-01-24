@@ -14,16 +14,28 @@
 #include "termios.h"
 
 /******************************************************************************
+ * Assure that the program is running in interactive mode
+ * Set the signal handlers
  * Setups the terminal to not echo control characters
+ * Create the environment
  *****************************************************************************/
 
-void	setup_term(void)
+char **initial_setup(int argc, char **argv, char **env)
 {
+	char **new_env;
 	struct termios	term_info;
 
+	if (!isatty(STDIN_FILENO))
+	{
+		write(2, "minishell works only in interactive mode\n", 41);
+		exit(EXIT_FAILURE);
+	}
+	set_signals();
 	tcgetattr(0, &term_info);
 	term_info.c_lflag &= ~ECHOCTL;
 	tcsetattr(0, TCSANOW, &term_info);
+	new_env = create_env(env, argc, argv);
+	return new_env;
 }
 
 /******************************************************************************
@@ -58,14 +70,7 @@ int	main(int argc, char **argv, char **env)
 	int		status;
 	char	**new_env;
 
-	if (!isatty(STDIN_FILENO))
-	{
-		write(2, "minishell works only in interactive mode\n", 41);
-		exit(EXIT_FAILURE);
-	}
-	set_signals();
-	setup_term();
-	new_env = create_env(env, argc, argv);
+	new_env = initial_setup(argc, argv, env);
 	while (1)
 	{
 		data = data_init(&new_env);
@@ -78,15 +83,10 @@ int	main(int argc, char **argv, char **env)
 			status = exec_cmd_line(data->root, &new_env);
 			if (status < 0)
 				exec_error(status);
-			data->status = ft_itoa(status);
-			gc_add(data->status);
-			set_env(&new_env, "?", data->status);
 		}
-		else
-		{
-			data->status = ft_itoa(status);
-			set_env(&new_env, "?", data->status);
-		}
+		data->status = ft_itoa(status);
+		gc_add(data->status);
+		set_env(&new_env, "?", data->status);
 		gc_free();
 	}
 }
