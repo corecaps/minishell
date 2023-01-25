@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 #include "exec.h"
+#include <sys/stat.h>
 
 /******************************************************************************
  * Find the binary in the path
@@ -21,16 +22,23 @@
 
 char	*find_binary(char *name)
 {
-	char	*final_path;
-	char	**path;
+	char		*final_path;
+	char		**path;
 
 	final_path = check_absolute_relative_path(name);
 	if (final_path)
 		return (final_path);
 	path = get_path();
 	final_path = get_full_path(name, path);
+	if (!final_path)
+	{
+		write(2,"minishell: command not found \n", 29);
+		ft_putstr_fd(name, 2);
+		write(2,"\n", 1);
+		exit(127);
+	}
 	if (final_path && access(final_path, X_OK)  != -1)
 		return (final_path);
 	else
-		return (NULL);
+		exit(1);
 }

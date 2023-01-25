@@ -68,8 +68,10 @@ int	main(int argc, char **argv, char **env)
 {
 	t_data	*data;
 	int		status;
+	int	old_status;
 	char	**new_env;
 
+	old_status = 0;
 	new_env = initial_setup(argc, argv, env);
 	while (1)
 	{
@@ -85,9 +87,10 @@ int	main(int argc, char **argv, char **env)
 				exec_error(status);
 		}
 		else if (status == 1)
-			status = 0;
+			status = old_status;
 		data->status = ft_itoa(status);
 		gc_add(data->status);
+		old_status = status;
 		set_env(&new_env, "?", data->status);
 		gc_free();
 	}
