@@ -37,6 +37,11 @@ int	exec_leaf(t_exec *exec)
 			status = run_builtin(exec, builtin);
 		else
 			status = run_leaf(exec);
+		if (status < 0)
+		{
+			exec_error(status);
+			status = -status;
+		}
 		exit(status);
 	}
 	exec->n_child ++;
@@ -63,6 +68,11 @@ int	exec_scmd(t_exec *exec)
 	{
 		reset_signals();
 		status = run_leaf(exec);
+		if (status < 0)
+		{
+			exec_error(status);
+			status = -status;
+		}
 		exit(status);
 	}
 	exec->n_child ++;

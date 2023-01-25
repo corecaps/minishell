@@ -29,7 +29,7 @@ char	*find_binary(char *name)
 		return (final_path);
 	path = get_path();
 	final_path = get_full_path(name, path);
-	if (final_path && access(final_path, X_OK) != -1)
+	if (final_path && access(final_path, X_OK)  != -1)
 		return (final_path);
 	else
 		return (NULL);

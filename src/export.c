@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/23 10:07:03 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/25 14:17:15 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,18 +102,12 @@ static int	check_args(char **args)
 	return (0);
 }
 
-/*****************************************************************************
- *
- * Export vars to environment. If it recieves zero args, ft_export prints
- * an envronment in ascending order
- * 
- ****************************************************************************/
-
-int	ft_export(char **args, char ***env)
+int	ft_export(char **args, char ***env, char *line)
 {
 	int		i;
 	int		stop;
 
+	(void)line;
 	i = 1;
 	if (args[i])
 	{

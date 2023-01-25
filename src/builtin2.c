@@ -19,10 +19,11 @@
  * 
  *****************************************************************************/
 
-int	ft_env(char **args, char ***env)
+int	ft_env(char **args, char ***env,char *line)
 {
 	int	i;
 
+	(void) line;
 	(void) args;
 	i = 0;
 	while ((*env)[i])
@@ -37,12 +38,13 @@ int	ft_env(char **args, char ***env)
  * Builtin function to unset an environment variable
  ****************************************************************************/
 
-int	ft_unset(char **args, char ***env)
+int	ft_unset(char **args, char ***env, char *line)
 {
 	int		i;
 	int		j;
 	size_t	index;
 
+	(void) line;
 	(void) args;
 	(void) env;
 	i = 1;

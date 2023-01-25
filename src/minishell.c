@@ -90,6 +90,8 @@ int	main(int argc, char **argv, char **env)
 			if (status < 0)
 				exec_error(status);
 		}
+		else if (status == 1)
+			status = 0;
 		data->status = ft_itoa(status);
 		gc_add(data->status);
 		set_env(&new_env, "?", data->status);

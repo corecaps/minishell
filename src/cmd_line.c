@@ -62,7 +62,7 @@ static int	*init_pipes(t_ast *root)
  * @return t_exec_data* the data struct, NULL if error
  *****************************************************************************/
 
-static t_exec	*exec_init(t_ast *current_node, char ***env)
+static t_exec *exec_init(t_ast *current_node, char ***env, char *line)
 {
 	t_exec	*new_exec;
 
@@ -75,6 +75,7 @@ static t_exec	*exec_init(t_ast *current_node, char ***env)
 	new_exec->pipes = init_pipes(current_node);
 	new_exec->pipe_i = 0;
 	new_exec->n_child = 0;
+	new_exec->line = line;
 	return (new_exec);
 }
 
@@ -88,12 +89,12 @@ static t_exec	*exec_init(t_ast *current_node, char ***env)
  * -8 incorrect AST structure
  *****************************************************************************/
 
-int	exec_cmd_line(t_ast *current_node, char ***env)
+int exec_cmd_line(t_ast *current_node, char ***env)
 {
 	t_exec	*exec;
 	int		status;
 
-	exec = exec_init(current_node, env);
+	exec = exec_init(current_node, env, NULL);
 	if (exec == NULL)
 		return (-1);
 	if (current_node->type == E_COMMAND)
@@ -105,10 +106,5 @@ int	exec_cmd_line(t_ast *current_node, char ***env)
 		return (-8);
 	}
 	*env = exec->envp;
-	if (status < 0)
-	{
-		return (status);
-	}
 	return (status);
-	return (0);
 }

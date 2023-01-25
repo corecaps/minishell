@@ -137,4 +137,7 @@ void	add_quoted_token(t_data *data, char ***env)
 	if (data->line[data->end] && data->open_quote > 0
 		&& data->line[data->end] != sep)
 		add_word_token(data, sep, env);
+	else if (data->line[data->end] && data->open_quote > 0
+		&& data->line[data->end] == sep)
+		add_token(data, E_WORD, "");
 }
