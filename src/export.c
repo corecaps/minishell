@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/25 21:14:50 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/25 21:19:16 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,11 +156,7 @@ char	**get_params(char *line, char ***env)
 		if (flag)
 		{
 			if (line[i] == tmp)
-			{
 				--flag;
-				tmp = '0';
-			}
-			i++;
 		}
 		else
 		{
@@ -168,7 +164,6 @@ char	**get_params(char *line, char ***env)
 			{
 				tmp = line[i];
 				++flag;
-				++i;
 			}
 			else
 			{
@@ -177,11 +172,11 @@ char	**get_params(char *line, char ***env)
 				{
 					++counter;
 					i = j;
+					continue ;
 				}
-				else
-					++i;
 			}
 		}
+		++i;
 	}
 	printf("Counter - %d\n", counter);
 	exit(0);
