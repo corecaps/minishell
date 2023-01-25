@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/25 21:19:16 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/25 21:24:56 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,14 +138,13 @@ static int	skip_wsp(char *str, int i)
 	return (i);
 }
 
-char	**get_params(char *line, char ***env)
+static int	get_counter(char *line)
 {
 	int		i;
 	int		j;
 	int		flag;
 	int		counter;
 	char	tmp;
-	char	**params;
 
 	i = 0;
 	flag = 0;
@@ -178,6 +177,16 @@ char	**get_params(char *line, char ***env)
 		}
 		++i;
 	}
+	return (counter);
+}
+
+char	**get_params(char *line, char ***env)
+{
+	int		i;
+	int		counter;
+	char	**params;
+
+	counter = get_counter(line);
 	printf("Counter - %d\n", counter);
 	exit(0);
 	i = 0;
