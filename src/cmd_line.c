@@ -43,16 +43,16 @@ static int	count_pipes(t_ast *root)
 
 static int	*init_pipes(t_ast *root)
 {
-	int	*pipefd;
+	int	*pipe_fd;
 	int	n_pipes;
 
 	n_pipes = count_pipes(root);
 	if (n_pipes == 0)
 		return (NULL);
-	pipefd = malloc(sizeof(int) * n_pipes * 2);
-	if (pipefd == NULL)
+	pipe_fd = gc_alloc(n_pipes * 2, sizeof(int));
+	if (pipe_fd == NULL)
 		return (NULL);
-	return (pipefd);
+	return (pipe_fd);
 }
 
 /******************************************************************************
@@ -66,7 +66,7 @@ static t_exec	*exec_init(t_ast *current_node, char ***env)
 {
 	t_exec	*new_exec;
 
-	new_exec = malloc(sizeof(t_exec));
+	new_exec = gc_alloc(1,sizeof(t_exec));
 	if (new_exec == NULL)
 		return (NULL);
 	new_exec->current_node = current_node;
@@ -78,11 +78,6 @@ static t_exec	*exec_init(t_ast *current_node, char ***env)
 	return (new_exec);
 }
 
-void	free_exec(t_exec *exec)
-{
-	free(exec->pipes);
-	free(exec);
-}
 /******************************************************************************
  * Execute a command line traversing the AST
  * @param current_node starting point in the Abstract Syntax Tree
@@ -110,12 +105,10 @@ int	exec_cmd_line(t_ast *current_node, char ***env)
 		return (-8);
 	}
 	*env = exec->envp;
-	free_exec(exec);
 	if (status < 0)
 	{
 		return (status);
 	}
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
+	return (status);
 	return (0);
 }

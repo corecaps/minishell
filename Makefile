@@ -12,7 +12,7 @@
 
 NAME = minishell
 CC = gcc
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -Werror
 DEBUG = -g3 -fanalyzer
 LIBFT = libft/libft.a
 LINK = -Llibft -lft -lreadline
@@ -20,7 +20,7 @@ RM = rm -f
 SRCDIR = src
 OBJDIR = obj
 BIN = bin
-SRC =	minishell.c				token_list.c			ast.c \
+SRC =	minishell.c				token_list.c \
 		lexer.c					stack.c					parser.c \
 		grammar_production.c	grammar_production_2.c	ast_builder.c \
 		exec.c					path_expander.c			arguments.c \
@@ -31,7 +31,7 @@ SRC =	minishell.c				token_list.c			ast.c \
 		check_builtin.c			cmd_line.c 				print_sorted_env.c\
 		single_cmd.c			exec_heredoc.c			exec_leaf.c \
 		runners.c				exec_utils.c			traverse_pipe.c \
-		prompt.c				export.c
+		prompt.c				export.c				error.c
 
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h data_structures.h

@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:42:09 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/23 10:35:11 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/25 11:43:48 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,12 @@ int	ft_echo(char **args, char ***env)
 
 int	ft_pwd(char **args, char ***env)
 {
-	char	*tmp;
+	char *path;
 
 	(void) args;
-	tmp = get_env("PWD", env);
-	printf("%s\n", tmp);
-	free(tmp);
+	path = get_env("PWD", env);
+	printf("%s\n", path);
+	free(path);
 	return (0);
 }
 
@@ -94,19 +94,8 @@ int	ft_pwd(char **args, char ***env)
 
 int	ft_exit(char **args, char ***env)
 {
-	t_garbage	*gc;
-
 	(void) args;
-	(void) env;
-	gc = garbage_collector_add(NULL);
-	if (gc)
-		garbage_collector_free(gc);
-	del_environ(env);
-	// LEAKS (still reachable):
-	// - AST
-	// - token list
-	// - data struct from main
-	// - exec data struct
-	// - parsing stack
+	free_env(env);
+	gc_free();
 	exit(EXIT_SUCCESS);
 }

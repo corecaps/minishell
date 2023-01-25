@@ -17,10 +17,12 @@ int	traverse_pipe(t_exec *exec)
 {
 	int	pipe_local_idx;
 	int	status;
+	int return_status;
 	int	pid;
 	int	pid2;
 
 	pid2 = -1;
+	status = 0;
 	if (pipe(exec->pipes + exec->pipe_i) < 0)
 		return (-4);
 	pipe_local_idx = exec->pipe_i;
@@ -46,9 +48,16 @@ int	traverse_pipe(t_exec *exec)
 		status = traverse_pipe(exec);
 	}
 	if (pid2 > -1)
-		waitpid(pid2, NULL, 0);
-	close(exec->pipes[pipe_local_idx]);
-	if (pid != -10)
+	{
+		waitpid(pid2, &return_status, 0);
 		waitpid(pid, NULL, 0);
-	return (status);
+		return (WEXITSTATUS(return_status));
+	}
+	else
+	{
+		waitpid(pid, &return_status, 0);
+		if (status > 0)
+			return (status);
+		return (WEXITSTATUS(return_status));
+	}
 }
