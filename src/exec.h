@@ -21,6 +21,7 @@ typedef struct s_exec
 	int		n_child;
 	t_ast	*current_node;
 	t_ast	*root;
+	char	*line;
 }	t_exec;
 
 int			single_cmd(t_exec *exec, char ***env);
@@ -36,13 +37,13 @@ int			parse_here_doc(t_ast *node);
 char		**get_args(t_ast *command_node);
 char		*find_binary(char *name);
 char		**get_path(void);
-int			ft_cd(char **args, char ***env);
-int			ft_echo(char **args, char ***env);
-int			ft_pwd(char **args, char ***env);
-int			ft_exit(char **args, char ***env);
-int			ft_env(char **args, char ***env);
-int			ft_export(char **args, char ***env);
-int			ft_unset(char **args, char ***env);
+int			ft_cd(char **args, char ***env, char *line);
+int			ft_echo(char **args, char ***env, char *line);
+int			ft_pwd(char **args, char ***env, char *line);
+int			ft_exit(char **args, char ***env, char *line);
+int			ft_env(char **args, char ***env, char *line);
+int			ft_export(char **args, char ***env, char *line);
+int			ft_unset(char **args, char ***env, char *line);
 int			realloc_environ(char ***env, size_t size, size_t index);
 char		*check_absolute_relative_path(char *name);
 char		*get_full_path(char *name, char **path);

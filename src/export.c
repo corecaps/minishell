@@ -94,11 +94,12 @@ static int	check_args(char **args)
 	return (0);
 }
 
-int	ft_export(char **args, char ***env)
+int	ft_export(char **args, char ***env, char *line)
 {
 	int		i;
 	int		stop;
 
+	(void)line;
 	i = 1;
 	if (args[i])
 	{
