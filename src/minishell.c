@@ -86,7 +86,7 @@ int	main(int argc, char **argv, char **env)
 			parser_error(status);
 		if (data->root && status == 1)
 		{
-			status = exec_cmd_line(data->root, &new_env);
+			status = exec_cmd_line(data->root, &new_env, data->line);
 			if (status < 0)
 				exec_error(status);
 		}
