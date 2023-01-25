@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 #include "exec.h"
+#include <sys/stat.h>
 
 /******************************************************************************
  * Get all the path in current environment

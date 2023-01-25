@@ -89,12 +89,12 @@ static t_exec *exec_init(t_ast *current_node, char ***env, char *line)
  * -8 incorrect AST structure
  *****************************************************************************/
 
-int exec_cmd_line(t_ast *current_node, char ***env)
+int exec_cmd_line(t_ast *current_node, char ***env, char *line)
 {
 	t_exec	*exec;
 	int		status;
 
-	exec = exec_init(current_node, env, NULL);
+	exec = exec_init(current_node, env, line);
 	if (exec == NULL)
 		return (-1);
 	if (current_node->type == E_COMMAND)
