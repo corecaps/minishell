@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/25 21:41:22 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/25 21:55:57 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,6 @@ static int	get_size(char *line)
 	i = 0;
 	flag = 0;
 	counter = 1;
-	i = skip_wsp(line, i);
 	while (line[i])
 	{
 		if (flag)
@@ -193,9 +192,49 @@ static char	*crop_line(char	*line)
 	return (line);	
 }
 
+static int	get_end(char *line, int start)
+{
+	int		i;
+	int		j;
+	int		flag;
+	char	tmp;
+
+	i = start;
+	flag = 0;
+	while (line[i])
+	{
+		if (flag)
+		{
+			if (line[i] == tmp)
+				--flag;
+		}
+		else
+		{
+			if (line[i] == '\'' || line[i] == '\"')
+			{
+				tmp = line[i];
+				++flag;
+			}
+			else
+			{
+				j = skip_wsp(line, i);
+				if (j != i)
+				{
+					return (j);
+				}
+			}
+		}
+		++i;
+	}
+	return (i);
+	
+}
+
 char	**get_params(char *line, char ***env)
 {
 	int		i;
+	int		start;
+	int		end;
 	int		params_size;
 	char	**params;
 
@@ -203,12 +242,25 @@ char	**get_params(char *line, char ***env)
 	params_size = get_size(line);
 	params = (char **)malloc(sizeof(char *) * (params_size + 1));
 	i = 0;
+	start = 0;
 	while (i < params_size)
 	{
-		
+		end = get_end(line, start);
+		params[i] = ft_substr(line, start, (size_t)(end - start));
+		start = end;
 		++i;
 	}
 	params[params_size] = NULL;
+	//test above
+	i = 0;
+	while (params[i])
+	{
+		printf("[%s]\n", params[i]);
+		i++;
+	}
+	printf("finish\n");
+	exit(0);
+	//
 	i = 0;
 	while (params[i])
 	{
