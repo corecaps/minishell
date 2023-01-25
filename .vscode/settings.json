@@ -50,6 +50,7 @@
     "string_view": "c",
     "initializer_list": "c",
     "ranges": "c",
-    "span": "c"
+    "span": "c",
+    "sstream": "c"
   }
 }

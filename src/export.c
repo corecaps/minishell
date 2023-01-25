@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/25 21:55:57 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/25 22:19:39 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,19 +179,6 @@ static int	get_size(char *line)
 	return (counter);
 }
 
-static char	*crop_line(char	*line)
-{
-	int		i;
-	char	*tmp;
-
-	i = 0;
-	i = skip_wsp(line, i);
-	tmp = line;
-	line = ft_substr(line, i, ft_strlen(line) - (size_t)i);
-	free(tmp);
-	return (line);	
-}
-
 static int	get_end(char *line, int start)
 {
 	int		i;
@@ -218,15 +205,48 @@ static int	get_end(char *line, int start)
 			else
 			{
 				j = skip_wsp(line, i);
-				if (j != i)
+				if (j != i && i != start)
 				{
-					return (j);
+					return (i);
 				}
 			}
 		}
 		++i;
 	}
 	return (i);
+	
+}
+
+static char	*crop_line(char *line)
+{
+	int		start;
+	int		end;
+	int		i;
+	char	*tmp;
+
+	start = skip_wsp(line, 0);
+	tmp = line;
+	i = start;
+	while (line[i])
+	{
+		if (line[i] == ' ' || line[i] == '\t'
+		|| line[i] == '\n' || line[i] == '\v'
+		|| line[i] == '\f' || line[i]== '\r')
+			++i;
+		else
+		{
+			end = i;
+			++i;
+		}
+		
+	}
+	line = ft_substr(line, start, (size_t)(end - start + 1));
+	free(tmp);
+	return (line);
+}
+
+static char	*del_quotes(char *str)
+{
 	
 }
 
@@ -240,6 +260,7 @@ char	**get_params(char *line, char ***env)
 
 	line = crop_line(line);
 	params_size = get_size(line);
+	printf("size - %d\n", params_size);
 	params = (char **)malloc(sizeof(char *) * (params_size + 1));
 	i = 0;
 	start = 0;
@@ -247,10 +268,12 @@ char	**get_params(char *line, char ***env)
 	{
 		end = get_end(line, start);
 		params[i] = ft_substr(line, start, (size_t)(end - start));
-		start = end;
+		params[i] = del_quotes(params[i]);
+		start = skip_wsp(line, end);
 		++i;
 	}
 	params[params_size] = NULL;
+	i = 0;
 	//test above
 	i = 0;
 	while (params[i])
