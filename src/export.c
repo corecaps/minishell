@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/25 14:17:15 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/25 21:14:50 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,114 @@ static int	check_args(char **args)
 	return (0);
 }
 
+// int	ft_export(char **args, char ***env, char *line)
+// {
+// 	int		i;
+// 	int		stop;
+
+// 	i = 1;
+// 	printf("\n%s\n", line);
+// 	if (args[i])
+// 	{
+// 		if (check_args(args))
+// 		{
+// 			write(2, "Really bad args prevent to write others\n", 40);
+// 			return (0);
+// 		}
+// 		while (args[i])
+// 		{
+// 			stop = get_stop(args[i]);
+// 			if (stop != -2)
+// 				to_set_env(env, args[i], stop);
+// 			i++;
+// 		}
+// 	}
+// 	else
+// 		print_sorted(env);
+// 	return (0);
+// }
+
+static int	skip_wsp(char *str, int i)
+{
+	while (str[i] == ' ' || str[i] == '\t'
+		|| str[i] == '\n' || str[i] == '\v'
+		|| str[i] == '\f' || str[i] == '\r')
+		++i;
+	return (i);
+}
+
+char	**get_params(char *line, char ***env)
+{
+	int		i;
+	int		j;
+	int		flag;
+	int		counter;
+	char	tmp;
+	char	**params;
+
+	i = 0;
+	flag = 0;
+	counter = 1;
+	skip_wsp(line, i);
+	while (line[i])
+	{
+		if (flag)
+		{
+			if (line[i] == tmp)
+			{
+				--flag;
+				tmp = '0';
+			}
+			i++;
+		}
+		else
+		{
+			if (line[i] == '\'' || line[i] == '\"')
+			{
+				tmp = line[i];
+				++flag;
+				++i;
+			}
+			else
+			{
+				j = skip_wsp(line, i);
+				if (j != i)
+				{
+					++counter;
+					i = j;
+				}
+				else
+					++i;
+			}
+		}
+	}
+	printf("Counter - %d\n", counter);
+	exit(0);
+	i = 0;
+	while (params[i])
+	{
+		params[i] = expand(params[i], env);
+		++i;
+	}
+	return (params);
+}
+
 int	ft_export(char **args, char ***env, char *line)
 {
 	int		i;
 	int		stop;
+	char	**params;
 
-	(void)line;
+	(void) args;
+	params = get_params(line, env);
+	i = 0;
+	while (params[i])
+	{
+		printf("%s\n", params[i]);
+		i++;
+	}
+	printf("\n%s\n", line);
+	exit(0);
 	i = 1;
 	if (args[i])
 	{
