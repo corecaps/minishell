@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/25 22:19:39 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/25 23:39:55 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,11 @@ static int	check_args(char **args)
 // 	return (0);
 // }
 
+/*****************************************************************************
+ * Skip all whitespaces starting from i index of string
+ * @return i - index of first non whitespace symbol
+ ****************************************************************************/
+
 static int	skip_wsp(char *str, int i)
 {
 	while (str[i] == ' ' || str[i] == '\t'
@@ -137,6 +142,44 @@ static int	skip_wsp(char *str, int i)
 		++i;
 	return (i);
 }
+
+/*****************************************************************************
+ * Cut whitespaces from the start and the end
+ * @return line without whitespaces from begin and end
+ ****************************************************************************/
+
+static char	*crop_line(char *line)
+{
+	int		start;
+	int		end;
+	int		i;
+	char	*tmp;
+
+	start = skip_wsp(line, 0);
+	tmp = line;
+	i = start;
+	while (line[i])
+	{
+		if (line[i] == ' ' || line[i] == '\t'
+		|| line[i] == '\n' || line[i] == '\v'
+		|| line[i] == '\f' || line[i]== '\r')
+			++i;
+		else
+		{
+			end = i;
+			++i;
+		}
+		
+	}
+	line = ft_substr(line, start, (size_t)(end - start + 1));
+	free(tmp);
+	return (line);
+}
+
+/*****************************************************************************
+ * Count the number of args in export line command
+ * @return counter - number on which we have to split export line command
+ ****************************************************************************/
 
 static int	get_size(char *line)
 {
@@ -179,6 +222,11 @@ static int	get_size(char *line)
 	return (counter);
 }
 
+/*****************************************************************************
+ * Find the end index of each new arg
+ * @return i - that index
+ ****************************************************************************/
+
 static int	get_end(char *line, int start)
 {
 	int		i;
@@ -217,37 +265,92 @@ static int	get_end(char *line, int start)
 	
 }
 
-static char	*crop_line(char *line)
-{
-	int		start;
-	int		end;
-	int		i;
-	char	*tmp;
 
-	start = skip_wsp(line, 0);
-	tmp = line;
-	i = start;
-	while (line[i])
+/*****************************************************************************
+ * This func() has to delete needed quotes and expand vars if needed and allowed
+ * @return arg which we have to put in params[i]
+ ****************************************************************************/
+
+static char	*del_quotes(char *str, char ***env)
+{
+	int		i;
+	int		flag;
+	int		start;
+	int		counter;
+	char	tmp;
+	char	*result;
+	char	*res_tmp;
+	char	*value;
+	int		exp_flag = 1;
+
+	i = 0;
+	flag = 0;
+	counter = 0;
+	start = 0;
+	result = ft_strjoin("","");
+	res_tmp = result;
+	while (str[i])
 	{
-		if (line[i] == ' ' || line[i] == '\t'
-		|| line[i] == '\n' || line[i] == '\v'
-		|| line[i] == '\f' || line[i]== '\r')
-			++i;
+		if (flag)
+		{
+			if ((str[i] == '\'' || str[i] == '\"') && str[i] == tmp)
+			{
+				value = ft_substr(str, start + 1, (size_t)(i - start - 1));
+				printf("\tvalueo before exp: [%s]\n", value);
+				if (exp_flag)
+					value = expand(value, env);
+				printf("\tvalue0 after exp: [%s]\n", value);
+				result = ft_strjoin(result, value);
+				free(res_tmp);
+				res_tmp = result;
+				if (str[i] == '\'')
+					exp_flag = 1;
+				flag = 0;
+				start = i;
+			}
+			else
+				++counter;
+		}
 		else
 		{
-			end = i;
-			++i;
+			if (str[i] == '\'' || str[i] == '\"')
+			{
+				if (i != 0)
+				{
+					value = ft_substr(str, start + 1, (size_t)(i - start - 1));
+					printf("\tvalue before exp: [%s]\n", value);
+					if (exp_flag)
+						value = expand(value, env);
+					// printf("\ti = %d, start = %d\n", i, start);
+					// printf("\tresult before: [%s]\n", result);
+					printf("\tvalue1 after exp: [%s]\n", value);
+					result = ft_strjoin(result, value);
+					free(res_tmp);
+					res_tmp = result;
+				}
+				tmp = str[i];
+				flag = 1;
+				if (tmp == '\'')
+					exp_flag = 0;
+				start = i;
+			}
+			else
+				++counter;
 		}
-		
+		++i;
 	}
-	line = ft_substr(line, start, (size_t)(end - start + 1));
-	free(tmp);
-	return (line);
-}
-
-static char	*del_quotes(char *str)
-{
-	
+	if (!ft_strncmp(result, "", 1))
+	{
+		value = ft_substr(str, start, (size_t)(i - start));
+		if (exp_flag)
+			value = expand(value, env);
+		printf("\tvalue2: [%s]\n", value);
+		result = ft_strjoin(result, value);
+		free(value);
+		free(res_tmp);
+	}
+	free(str);
+	return (result);
 }
 
 char	**get_params(char *line, char ***env)
@@ -268,13 +371,14 @@ char	**get_params(char *line, char ***env)
 	{
 		end = get_end(line, start);
 		params[i] = ft_substr(line, start, (size_t)(end - start));
-		params[i] = del_quotes(params[i]);
+		printf("params[%d] = [%s]\n", i, params[i]);
+		params[i] = del_quotes(params[i], env);
+		printf("params[%d] = [%s]\n", i, params[i]);
 		start = skip_wsp(line, end);
 		++i;
 	}
 	params[params_size] = NULL;
-	i = 0;
-	//test above
+	exit(0);
 	i = 0;
 	while (params[i])
 	{
