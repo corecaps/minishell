@@ -56,7 +56,9 @@ static t_data	*data_init(void)
 	free(prompt);
 	if (!data->line)
 	{
-		exit(EXIT_FAILURE);
+		gc_env_free();
+		gc_free();
+		exit(0);
 	}
 	gc_add(data->line);
 	if (ft_strlen(data->line))

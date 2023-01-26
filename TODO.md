@@ -1,7 +1,8 @@
 - [x] use rl_redisplay rl_replace_line, rl_on_new_line in signals and error handling
 - [x] ft_exit should take parameter for exit status
 - [x] gc for environment variables
-- [ ] memory leaks on exit via signals or with failed commands
+- [x] memory leaks on exit via signals
+- [ ] memory leaks with failed commands
 - [ ] correct return code in case of parse error or failed command
 - [ ] fd leaks -> find case 
 - [ ] printing warning in case of ctrl-d inside a heredoc
