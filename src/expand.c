@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 16:35:29 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/26 12:32:27 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/26 13:42:50 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
  * Add expanded value to final result
  ****************************************************************************/
 
-static char	*add_to_res(char *curr_res, char *add_word)
+char	*add_to_res(char *curr_res, char *add_word)
 {
 	char	*res;
 
@@ -81,7 +81,6 @@ char	*expand(char *str, char ***env)
 
 	exp = exp_init(0);
 	result = ft_strjoin("", "");
-	printf("str to exp - \t[%s]\n", str);
 	while (str[exp.i])
 	{
 		c = str[exp.i];
@@ -105,6 +104,5 @@ char	*expand(char *str, char ***env)
 		tmp = retrieve_str(tmp, env);
 	result = add_to_res(result, tmp);
 	free(str);
-	printf("result - \t[%s]\n", result);
 	return (result);
 }

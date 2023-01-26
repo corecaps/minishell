@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/25 23:39:55 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/26 14:02:13 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,10 +153,9 @@ static char	*crop_line(char *line)
 	int		start;
 	int		end;
 	int		i;
-	char	*tmp;
+	char	*res;
 
 	start = skip_wsp(line, 0);
-	tmp = line;
 	i = start;
 	while (line[i])
 	{
@@ -171,9 +170,8 @@ static char	*crop_line(char *line)
 		}
 		
 	}
-	line = ft_substr(line, start, (size_t)(end - start + 1));
-	free(tmp);
-	return (line);
+	res = ft_substr(line, start, (size_t)(end - start + 1));
+	return (res);
 }
 
 /*****************************************************************************
@@ -274,82 +272,51 @@ static int	get_end(char *line, int start)
 static char	*del_quotes(char *str, char ***env)
 {
 	int		i;
-	int		flag;
 	int		start;
-	int		counter;
-	char	tmp;
+	int		flag;
+	char	c;
+	char	*tmp;
+	char	q_type;
 	char	*result;
-	char	*res_tmp;
-	char	*value;
-	int		exp_flag = 1;
 
 	i = 0;
+	start = i;
 	flag = 0;
-	counter = 0;
-	start = 0;
-	result = ft_strjoin("","");
-	res_tmp = result;
-	while (str[i])
+	q_type = '0';
+	result = ft_strjoin("", "");
+	while(str[i])
 	{
-		if (flag)
+		c = str[i];
+		if ((c == '\'' || c == '\"') && flag == 0)
 		{
-			if ((str[i] == '\'' || str[i] == '\"') && str[i] == tmp)
-			{
-				value = ft_substr(str, start + 1, (size_t)(i - start - 1));
-				printf("\tvalueo before exp: [%s]\n", value);
-				if (exp_flag)
-					value = expand(value, env);
-				printf("\tvalue0 after exp: [%s]\n", value);
-				result = ft_strjoin(result, value);
-				free(res_tmp);
-				res_tmp = result;
-				if (str[i] == '\'')
-					exp_flag = 1;
-				flag = 0;
-				start = i;
-			}
-			else
-				++counter;
+			tmp = ft_substr(str, start, (size_t)(i - start));
+			// printf("\ttmp0 - [%s]\n", tmp);
+			tmp = expand(tmp, env);
+			// printf("\ttmp0exp - [%s]\n", tmp);
+			result = add_to_res(result, tmp);
+			flag = 1;
+			q_type = c;
+			start = i + 1;
 		}
-		else
+		else if ((c == '\'' || c == '\"') && flag == 1 && c == q_type)
 		{
-			if (str[i] == '\'' || str[i] == '\"')
-			{
-				if (i != 0)
-				{
-					value = ft_substr(str, start + 1, (size_t)(i - start - 1));
-					printf("\tvalue before exp: [%s]\n", value);
-					if (exp_flag)
-						value = expand(value, env);
-					// printf("\ti = %d, start = %d\n", i, start);
-					// printf("\tresult before: [%s]\n", result);
-					printf("\tvalue1 after exp: [%s]\n", value);
-					result = ft_strjoin(result, value);
-					free(res_tmp);
-					res_tmp = result;
-				}
-				tmp = str[i];
-				flag = 1;
-				if (tmp == '\'')
-					exp_flag = 0;
-				start = i;
-			}
-			else
-				++counter;
+			tmp = ft_substr(str, start, (size_t)(i - start));
+			// printf("\ttmp1 - [%s]\n", tmp);
+			if (q_type == '\"')
+				tmp = expand(tmp, env);
+			// printf("\ttmp1exp - [%s]\n", tmp);
+			result = add_to_res(result, tmp);
+			flag = 0;
+			start = i + 1;
 		}
-		++i;
+		i++;
 	}
-	if (!ft_strncmp(result, "", 1))
-	{
-		value = ft_substr(str, start, (size_t)(i - start));
-		if (exp_flag)
-			value = expand(value, env);
-		printf("\tvalue2: [%s]\n", value);
-		result = ft_strjoin(result, value);
-		free(value);
-		free(res_tmp);
-	}
-	free(str);
+	tmp = ft_substr(str, start, (size_t)(i - start));
+	// printf("\ttmp2 - [%s]\n", tmp);
+	tmp = expand(tmp, env);
+	// printf("\ttmp2 - [%s]\n", tmp);
+	result = add_to_res(result, tmp);
+	// printf("\tresult - [%s]\n", result);
 	return (result);
 }
 
@@ -359,41 +326,38 @@ char	**get_params(char *line, char ***env)
 	int		start;
 	int		end;
 	int		params_size;
+	char	*tmp_line;
 	char	**params;
 
-	line = crop_line(line);
-	params_size = get_size(line);
+	tmp_line = crop_line(line);
+	printf("Line to get_size - [%s]\n", tmp_line);
+	params_size = get_size(tmp_line);
 	printf("size - %d\n", params_size);
 	params = (char **)malloc(sizeof(char *) * (params_size + 1));
 	i = 0;
 	start = 0;
 	while (i < params_size)
 	{
-		end = get_end(line, start);
-		params[i] = ft_substr(line, start, (size_t)(end - start));
-		printf("params[%d] = [%s]\n", i, params[i]);
+		end = get_end(tmp_line, start);
+		params[i] = ft_substr(tmp_line, start, (size_t)(end - start));
+		// printf("params[%d] = [%s]\n", i, params[i]);
 		params[i] = del_quotes(params[i], env);
-		printf("params[%d] = [%s]\n", i, params[i]);
-		start = skip_wsp(line, end);
+		// printf("params[%d] = [%s]\n", i, params[i]);
+		start = skip_wsp(tmp_line, end);
 		++i;
 	}
 	params[params_size] = NULL;
-	exit(0);
-	i = 0;
-	while (params[i])
-	{
-		printf("[%s]\n", params[i]);
-		i++;
-	}
-	printf("finish\n");
-	exit(0);
+	// exit(0);
+	// i = 0;
+	// while (params[i])
+	// {
+	// 	printf("[%s]\n", params[i]);
+	// 	i++;
+	// }
+	// printf("finish\n");
+	// exit(0);
 	//
-	i = 0;
-	while (params[i])
-	{
-		params[i] = expand(params[i], env);
-		++i;
-	}
+	free(tmp_line);
 	return (params);
 }
 
@@ -411,8 +375,7 @@ int	ft_export(char **args, char ***env, char *line)
 		printf("%s\n", params[i]);
 		i++;
 	}
-	printf("\n%s\n", line);
-	exit(0);
+	// exit(0);
 	i = 1;
 	if (args[i])
 	{
