@@ -35,6 +35,8 @@ char	*find_binary(char *name)
 		write(2,"minishell: command not found \n", 29);
 		ft_putstr_fd(name, 2);
 		write(2,"\n", 1);
+		gc_env_free();
+		gc_free();
 		exit(127);
 	}
 	if (final_path && access(final_path, X_OK)  != -1)

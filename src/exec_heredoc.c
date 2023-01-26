@@ -38,6 +38,7 @@ void	free_here_doc_list(t_here_doc *here_doc_list)
 static void	here_doc_child(t_exec *exec)
 {
 	t_here_doc	*cursor;
+	int			i;
 
 	close(exec->pipes[exec->pipe_i]);
 	dup2(exec->pipes[exec->pipe_i + 1], STDOUT_FILENO);
@@ -50,6 +51,19 @@ static void	here_doc_child(t_exec *exec)
 		cursor = cursor->next;
 	}
 	close(exec->pipes[exec->pipe_i + 1]);
+	if (exec->n_pipes > 1)
+	{
+		i = 0;
+		while (i < exec->n_pipes * 2)
+		{
+			if (i != exec->pipe_i)
+			{
+				close(exec->pipes[i]);
+				close(exec->pipes[i + 1]);
+			}
+			i+=2;
+		}
+	}
 	gc_env_free();
 	free_here_doc_list(exec->current_node->here_doc_list);
 	gc_free();
@@ -82,6 +96,7 @@ int	exec_heredoc(t_exec *exec)
 	else
 	{
 		close(exec->pipes[exec->pipe_i + 1]);
+
 		exec->pipe_i += 2;
 		free_here_doc_list(exec->current_node->here_doc_list);
 	}

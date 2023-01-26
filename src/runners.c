@@ -53,6 +53,8 @@ int	run_leaf(t_exec *exec)
 		write(2,"minishell: ", 11);
 		ft_putstr_fd(full_path,2);
 		write(2," is a directory\n", 16);
+		gc_env_free();
+		gc_free();
 		exit (126);
 	}
 	if (exec->current_node->in_pipe != NULL)
@@ -63,6 +65,7 @@ int	run_leaf(t_exec *exec)
 		&& (apply_redirections(exec->current_node) < 0))
 		return (-2);
 	execve(full_path, argv, exec->envp);
+	gc_env_free();
 	gc_free();
 	exit (6);
 }

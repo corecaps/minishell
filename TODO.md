@@ -2,9 +2,9 @@
 - [x] ft_exit should take parameter for exit status
 - [x] gc for environment variables
 - [x] memory leaks on exit via signals
-- [ ] memory leaks with failed commands
+- [x] memory leaks with failed commands
 - [ ] correct return code in case of parse error or failed command
-- [ ] fd leaks (heredoc)
+- [x] fd leaks (heredoc)
 - [x] printing warning in case of ctrl-d inside a heredoc
 - [ ] handling return code when ctrl-c of that command 
 - [ ] ctrl-c in case of heredoc

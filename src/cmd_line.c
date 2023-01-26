@@ -19,7 +19,7 @@
  * @return number of pipes needed
  *****************************************************************************/
 
-static int	count_pipes(t_ast *root)
+static int count_pipes(t_ast *root)
 {
 	int	n_pipes;
 
@@ -41,15 +41,14 @@ static int	count_pipes(t_ast *root)
  * @return an array of pipes, or NULL if an error occured
  ****************************************************************************/
 
-static int	*init_pipes(t_ast *root)
+static int *init_pipes(t_ast *root, t_exec *exec)
 {
 	int	*pipe_fd;
-	int	n_pipes;
 
-	n_pipes = count_pipes(root);
-	if (n_pipes == 0)
+	exec->n_pipes = count_pipes(root);
+	if (exec->n_pipes == 0)
 		return (NULL);
-	pipe_fd = gc_alloc(n_pipes * 2, sizeof(int));
+	pipe_fd = gc_alloc(exec->n_pipes * 2, sizeof(int));
 	if (pipe_fd == NULL)
 		return (NULL);
 	return (pipe_fd);
@@ -72,7 +71,7 @@ static t_exec *exec_init(t_ast *current_node, char ***env, char *line)
 	new_exec->current_node = current_node;
 	new_exec->root = current_node;
 	new_exec->envp = *env;
-	new_exec->pipes = init_pipes(current_node);
+	new_exec->pipes = init_pipes(current_node, new_exec);
 	new_exec->pipe_i = 0;
 	new_exec->n_child = 0;
 	new_exec->line = line;
