@@ -6,11 +6,12 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/26 19:14:29 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/26 20:20:23 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "export.h"
 
 /******************************************************************************
  * find index of '=' separator to split on key-value
@@ -44,92 +45,6 @@ static void	to_set_env(char ***env, char *arg, int stop)
 }
 
 /*****************************************************************************
- * Get index to split string on key, value
- ****************************************************************************/
-
-// static int	get_stop(const char *str)
-// {
-// 	int	j;
-
-// 	j = 0;
-// 	while (str[j])
-// 	{
-// 		if (str[0] == '?' && str[1] == '=')
-// 			return (1);
-// 		else if (str[j] == '=' && j != 0)
-// 			return (j);
-// 		else if (str[j] < 48
-// 			|| (str[j] >= '0' && str[j] <= '9' && j == 0)
-// 			|| (str[j] > '9' && str[j] < 'A')
-// 			|| (str[j] > 'Z' && str[j] < 'a')
-// 			|| (str[j] > 'z'))
-// 			return (-2);
-// 		else if (str[j + 1] == '\0' && str[j] == '=')
-// 			return (j);
-// 		else if (str[j + 1] == '\0' && str[j] != '=')
-// 			return (j + 1);
-// 		j++;
-// 	}
-// 	return (-1);
-// }
-
-/*****************************************************************************
- * Check arguments passed in ft_export
- ****************************************************************************/
-
-// static int	check_args(char **args)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	tmp;
-
-// 	i = 1;
-// 	while (args[i])
-// 	{
-// 		j = 0;
-// 		if (args[i][0] == '=' && args[i][1] != '\0')
-// 			return (1);
-// 		while (args[i][j] != '=' && args[i][j] != '\0')
-// 		{
-// 			tmp = args[i][j];
-// 			if (tmp == '?' || tmp == '*'
-// 				|| tmp == '!' || tmp == '&')
-// 				return (1);
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-// int	ft_export(char **args, char ***env, char *line)
-// {
-// 	int		i;
-// 	int		stop;
-
-// 	i = 1;
-// 	printf("\n%s\n", line);
-// 	if (args[i])
-// 	{
-// 		if (check_args(args))
-// 		{
-// 			write(2, "Really bad args prevent to write others\n", 40);
-// 			return (0);
-// 		}
-// 		while (args[i])
-// 		{
-// 			stop = get_stop(args[i]);
-// 			if (stop != -2)
-// 				to_set_env(env, args[i], stop);
-// 			i++;
-// 		}
-// 	}
-// 	else
-// 		print_sorted(env);
-// 	return (0);
-// }
-
-/*****************************************************************************
  * Skip all whitespaces starting from i index of string
  * @return i - index of first non whitespace symbol
  ****************************************************************************/
@@ -160,15 +75,14 @@ static char	*crop_line(char *line)
 	while (line[i])
 	{
 		if (line[i] == ' ' || line[i] == '\t'
-		|| line[i] == '\n' || line[i] == '\v'
-		|| line[i] == '\f' || line[i]== '\r')
+			|| line[i] == '\n' || line[i] == '\v'
+			|| line[i] == '\f' || line[i] == '\r')
 			++i;
 		else
 		{
 			end = i;
 			++i;
 		}
-		
 	}
 	res = ft_substr(line, start, (size_t)(end - start + 1));
 	return (res);
@@ -178,6 +92,22 @@ static char	*crop_line(char *line)
  * Count the number of args in export line command
  * @return counter - number on which we have to split export line command
  ****************************************************************************/
+
+static t_export	t_export_init(void)
+{
+	t_export	export;
+
+	export.i = 0;
+	export.flag = 0;
+	export.counter = 1;
+	export.ch_tmp = '0';
+	return (export);
+}
+
+static t_export	update_counter(t_export export)
+{
+	
+}
 
 static int	get_size(char *line)
 {
@@ -260,9 +190,7 @@ static int	get_end(char *line, int start)
 		++i;
 	}
 	return (i);
-	
 }
-
 
 /*****************************************************************************
  * This func() has to delete needed quotes and expand vars if needed and allowed
@@ -378,7 +306,7 @@ static int	check_params(char *str)
 	{
 		if (str[i] == '=')
 			return (i);
-		else if (str[i] <= 47 || (str[i] >=58 && str[i] <= 64)
+		else if (str[i] <= 47 || (str[i] >= 58 && str[i] <= 64)
 			|| (str[i] >= 91 && str[i] <= 96) || str[i] >= 123)
 			return (0);
 		else if (str[i + 1] == '\0')

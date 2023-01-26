@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:55 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/26 13:42:42 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/26 20:14:13 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ size_t			count_env(char ***env);
 char			**create_env(char **env, int argc, char **argv);
 char			*get_env(char *key, char ***env);
 t_garbage		**gc_add(void *ptr);
-void			gc_free();
+void			gc_free(void);
 void			*gc_alloc(size_t nmemb, size_t size);
 int				gc_remove(void *ptr);
 int				set_env(char ***env, char *key, char *value);
