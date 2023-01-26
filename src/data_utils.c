@@ -22,15 +22,17 @@ int create_env(char **env, int argc, char **argv)
 {
 	char	***new_env;
 	int		i;
+	int		size;
 
 	(void) argc;
 	(void) argv;
 //	new_env = (char **)ft_calloc((count_env(&env) + 1), sizeof(char *));
-	new_env = gc_env_alloc(count_env(&env) + 1);
+	size = count_env(&env) + 1;
+	new_env = gc_env_alloc(size);
 	if (new_env == NULL)
 		return (0);
 	i = 0;
-	while (env[i])
+	while (i < size - 1)
 	{
 		(*new_env)[i] = ft_strdup(env[i]);
 		gc_env_add((*new_env)[i]);

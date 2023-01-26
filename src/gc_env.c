@@ -63,7 +63,6 @@ int	gc_env_del(void *ptr)
 	t_garbage	**gc;
 	t_garbage	*prev;
 
-	printf("gc_env_del\n");
 	gc =  gc_env_add(NULL);
 	cursor = *gc;
 	if (!cursor)
@@ -90,17 +89,16 @@ void	gc_env_free(void)
 {
 	t_garbage	*tmp;
 	t_garbage	**garbage;
+	t_garbage	*cursor;
 
 	garbage = gc_env_add(NULL);
-
-	printf("gc_env_free\n");
 	if (!(*garbage))
 		return ;
-	while ((*garbage))
+	cursor = (*garbage);
+	while (cursor)
 	{
-		printf("freeing %p:\n", (*garbage)->ptr);
-		tmp = (*garbage);
-		(*garbage) = (*garbage)->next;
+		tmp = cursor;
+		cursor = cursor->next;
 		free(tmp->ptr);
 		free(tmp);
 	}

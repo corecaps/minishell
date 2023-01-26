@@ -60,8 +60,12 @@ int realloc_environ(size_t size, size_t index)
 	while (j < size && (*env)[i])
 	{
 		if (index == i)
+		{
+//			gc_env_del((*env)[i]);
 			i++;
-		new_env[j] = ft_strdup((*env)[i]);
+		}
+		else
+			new_env[j] = ft_strdup((*env)[i]);
 		i++;
 		j++;
 	}
@@ -70,7 +74,7 @@ int realloc_environ(size_t size, size_t index)
 	(*env)[j] = NULL;
 	gc_env_add(*env);
 	i = 0;
-	while ((*env)[i])
+	while (i < size)
 	{
 		gc_env_add((*env)[i]);
 		i++;

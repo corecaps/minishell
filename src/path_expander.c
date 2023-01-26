@@ -24,7 +24,7 @@ char	**get_path(void)
 	char	**path_array;
 	int		i;
 
-	env_path = getenv("PATH");
+	env_path = get_env("PATH", gc_env_alloc(-1));
 	path_array = ft_split(env_path, ':');
 	i = 0;
 	while (path_array[i])
