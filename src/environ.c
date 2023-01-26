@@ -19,9 +19,9 @@
  * @return Number of variables in environment
  *****************************************************************************/
 
-size_t	count_env(char ***env)
+int	count_env(char ***env)
 {
-	size_t	i;
+	int	i;
 
 	if (env == NULL || *env == NULL)
 		return (0);
@@ -42,12 +42,14 @@ size_t	count_env(char ***env)
  * @return 0 if success, -1 if error
  *****************************************************************************/
 
-int	realloc_environ(char ***env, size_t size, size_t index)
+int realloc_environ(size_t size, size_t index)
 {
 	char	**new_env;
+	char 	***env;
 	size_t	i;
 	size_t	j;
 
+	env = gc_env_alloc(-1);
 	if (env == NULL || size == 0)
 		return (-1);
 	new_env = ft_calloc((size + 1), sizeof(char *));
@@ -63,9 +65,16 @@ int	realloc_environ(char ***env, size_t size, size_t index)
 		i++;
 		j++;
 	}
-	new_env[j] = NULL;
-	free_env(env);
-	*env = new_env;
+	gc_env_free();
+	(*env) = new_env;
+	(*env)[j] = NULL;
+	gc_env_add(*env);
+	i = 0;
+	while ((*env)[i])
+	{
+		gc_env_add((*env)[i]);
+		i++;
+	}
 	return (0);
 }
 

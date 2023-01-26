@@ -92,7 +92,7 @@ t_garbage	**gc_add(void *ptr)
  * @return 1 if the pointer was removed, 0 otherwise
  *****************************************************************************/
 
-int gc_remove(void *ptr)
+int gc_del(void *ptr)
 {
 	t_garbage	*cursor;
 	t_garbage	**gc;

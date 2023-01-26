@@ -39,7 +39,7 @@ int	ft_cd(char **args, char ***env,char *line)
 		free(home);
 	free (path);
 	path = getcwd(NULL, 0);
-	if (set_env(env, "PWD", path) == -1)
+	if (set_env("PWD", path) == -1)
 		return (-2);
 	free(path);
 	return (0);
@@ -99,7 +99,9 @@ int	ft_exit(char **args, char ***env,char *line)
 {
 	(void) line;
 	(void) args;
-	free_env(env);
+	(void) env;
+	printf("call to gc_env_free()\n");
+	gc_env_free();
 	gc_free();
 	exit(EXIT_SUCCESS);
 }

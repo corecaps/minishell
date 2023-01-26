@@ -50,7 +50,7 @@ static void	here_doc_child(t_exec *exec)
 		cursor = cursor->next;
 	}
 	close(exec->pipes[exec->pipe_i + 1]);
-	free_env(&exec->envp);
+	gc_env_free();
 	free_here_doc_list(exec->current_node->here_doc_list);
 	gc_free();
 	exit(0);

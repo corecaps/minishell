@@ -20,9 +20,8 @@
  * Create the environment
  *****************************************************************************/
 
-char **initial_setup(int argc, char **argv, char **env)
+static int	initial_setup(int argc, char **argv, char **env)
 {
-	char **new_env;
 	struct termios	term_info;
 
 	if (!isatty(STDIN_FILENO))
@@ -34,8 +33,9 @@ char **initial_setup(int argc, char **argv, char **env)
 	tcgetattr(0, &term_info);
 	term_info.c_lflag &= ~ECHOCTL;
 	tcsetattr(0, TCSANOW, &term_info);
-	new_env = create_env(env, argc, argv);
-	return new_env;
+	if (!create_env(env, argc, argv))
+		return (0);
+	return (1);
 }
 
 /******************************************************************************
@@ -43,7 +43,7 @@ char **initial_setup(int argc, char **argv, char **env)
  * add the line to the history if it is not empty
  *****************************************************************************/
 
-static t_data	*data_init(char ***env)
+static t_data	*data_init(void)
 {
 	t_data	*data;
 	char	*prompt;
@@ -51,7 +51,7 @@ static t_data	*data_init(char ***env)
 	data = (t_data *)gc_alloc(1,sizeof(t_data));
 	data->open_quote = -1;
 	data->start_token = NULL;
-	prompt = get_prompt(env);
+	prompt = get_prompt(gc_env_alloc(-1));
 	data->line = readline(prompt);
 	free(prompt);
 	if (!data->line)
@@ -69,20 +69,20 @@ int	main(int argc, char **argv, char **env)
 	t_data	*data;
 	int		status;
 	int	old_status;
-	char	**new_env;
 
 	old_status = 0;
-	new_env = initial_setup(argc, argv, env);
+	if (!initial_setup(argc, argv, env))
+		return (EXIT_FAILURE);
 	while (1)
 	{
-		data = data_init(&new_env);
-		lexer(data, &new_env);
+		data = data_init();
+		lexer(data, gc_env_alloc(-1));
 		status = parse(data);
 		if (status < 0)
 			parser_error(status);
 		if (data->root && status == 1)
 		{
-			status = exec_cmd_line(data->root, &new_env, data->line);
+			status = exec_cmd_line(data->root, gc_env_alloc(-1), data->line);
 			if (status < 0)
 				exec_error(status);
 		}
@@ -91,7 +91,7 @@ int	main(int argc, char **argv, char **env)
 		data->status = ft_itoa(status);
 		gc_add(data->status);
 		old_status = status;
-		set_env(&new_env, "?", data->status);
+		set_env("?", data->status);
 		gc_free();
 	}
 }
