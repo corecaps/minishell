@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 16:35:29 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/23 10:04:24 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/26 11:11:02 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ t_exp	exp_init(int i)
 
 	exp.i = i;
 	exp.start = i;
+	exp.flag = 0;
 	return (exp);
 }
 
@@ -89,25 +90,38 @@ char	*expand(char *str, char ***env)
 	t_exp	exp;
 	char	*result;
 	char	*tmp;
+	char	c;
 
 	exp = exp_init(0);
 	result = ft_strjoin("", "");
+	printf("str to exp - [%s]\n", str);
 	while (str[exp.i])
 	{
 		if (str[exp.i] == '$')
 		{
-			tmp = get_exp_tmp(str, exp.start, exp.i - exp.start, env);
+			tmp = ft_substr(str, exp.start, (size_t)(exp.i - exp.start));
+			printf("\ttmp to add before $ - [%s]\n", tmp);
 			result = add_to_res(result, tmp);
-			exp.start = exp.i;
+			exp.start = exp.i + 1;
+			exp.flag  = 1;
 		}
-		if (str[exp.i + 1] == '\0')
+		c = str[exp.i];
+		if ((c == ' ' || c == '\t'
+			|| c == '\n' || c == '\v'
+			|| c == '\f' || c == '\r') && exp.flag)
 		{
-			tmp = get_exp_tmp(str, exp.start, exp.i - exp.start + 1, env);
+			printf("\ttmp before exp - [%s]\n", tmp);
+			tmp = get_exp_tmp(str, exp.start, exp.i - exp.start, env);
+			printf("\ttmp after exp - [%s]\n", tmp);
 			result = add_to_res(result, tmp);
 			exp.start = exp.i;
+			exp.flag = 0;
 		}
 		++exp.i;
 	}
+	tmp = get_exp_tmp(str, exp.start, exp.i - exp.start, env);
+	result = add_to_res(result, tmp);
 	free(str);
+	printf("result - [%s]\n", result);
 	return (result);
 }
