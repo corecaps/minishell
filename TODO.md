@@ -4,11 +4,13 @@
 - [x] memory leaks on exit via signals
 - [ ] memory leaks with failed commands
 - [ ] correct return code in case of parse error or failed command
-- [ ] fd leaks -> find case 
+- [ ] fd leaks (heredoc)
 - [x] printing warning in case of ctrl-d inside a heredoc
 - [ ] handling return code when ctrl-c of that command 
 - [ ] ctrl-c in case of heredoc
 - [x] char	**get_path(void) uses the wrong env variable
 - [ ] **NORME**
 - [x] export refactoring
-- return code for failed execution
+- [ ] return code for failed execution
+- [ ] cd error code and message
+- [ ] error msg and break when incorrect file permission on redirect------
