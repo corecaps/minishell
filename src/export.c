@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/26 19:03:06 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/26 19:14:29 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,6 +317,8 @@ static char	*del_quotes(char *str, char ***env)
 	// printf("\ttmp2 - [%s]\n", tmp);
 	result = add_to_res(result, tmp);
 	// printf("\tresult - [%s]\n", result);
+	free(str);
+	str = NULL;
 	return (result);
 }
 
@@ -376,13 +378,29 @@ static int	check_params(char *str)
 	{
 		if (str[i] == '=')
 			return (i);
-		else if (str[i] <= 47 || (str[i] >=58 && str[i] <= 64) || (str[i] >= 91 && str[i] <= 96) || str[i] >= 123)
+		else if (str[i] <= 47 || (str[i] >=58 && str[i] <= 64)
+			|| (str[i] >= 91 && str[i] <= 96) || str[i] >= 123)
 			return (0);
 		else if (str[i + 1] == '\0')
 			return (i + 1);
 		++i;
 	}
 	return (0);
+}
+
+static void	free_params(char **params)
+{
+	int	i;
+
+	i = 0;
+	while (params[i])
+	{
+		free(params[i]);
+		params[i] = NULL;
+		++i;
+	}
+	free(params);
+	params = NULL;
 }
 
 int	ft_export(char **args, char ***env, char *line)
@@ -408,5 +426,6 @@ int	ft_export(char **args, char ***env, char *line)
 	}
 	else
 		print_sorted(env);
+	free_params(params);
 	return (0);
 }
