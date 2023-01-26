@@ -20,7 +20,7 @@ RM = rm -f
 SRCDIR = src
 OBJDIR = obj
 BIN = bin
-SRC =	minishell.c				token_list.c \
+SRC =	minishell.c				token_list.c			gc_env.c\
 		lexer.c					stack.c					parser.c \
 		grammar_production.c	grammar_production_2.c	ast_builder.c \
 		exec.c					path_expander.c			arguments.c \

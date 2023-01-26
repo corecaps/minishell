@@ -27,7 +27,10 @@ int	gc_check_double(t_garbage *gc, void *ptr)
 	while (tmp)
 	{
 		if (tmp->ptr == ptr)
+		{
+			printf("double pointer\n");
 			return (1);
+		}
 		tmp = tmp->next;
 	}
 	return (0);
@@ -42,18 +45,19 @@ void gc_free()
 {
 	t_garbage	*tmp;
 	t_garbage	**garbage;
+	t_garbage	*cursor;
 
 
 	garbage = gc_add(NULL);
 	if (!(*garbage))
 		printf("garbage collector is empty\n");
-	while ((*garbage))
+	cursor = *garbage;
+	while (cursor)
 	{
-		tmp = (*garbage);
-		(*garbage) = (*garbage)->next;
+		tmp = cursor;
+		cursor = cursor->next;
 		free(tmp->ptr);
-		if (tmp)
-			free(tmp);
+		free(tmp);
 	}
 	(*garbage) = NULL;
 }
@@ -92,7 +96,7 @@ t_garbage	**gc_add(void *ptr)
  * @return 1 if the pointer was removed, 0 otherwise
  *****************************************************************************/
 
-int gc_remove(void *ptr)
+int gc_del(void *ptr)
 {
 	t_garbage	*cursor;
 	t_garbage	**gc;

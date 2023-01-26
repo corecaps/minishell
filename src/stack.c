@@ -36,7 +36,7 @@ t_token_type	pop(t_stack **head)
 		return (E_END_OF_TOKEN);
 	tmp = (*head)->next;
 	result = (*head)->type;
-	gc_remove((*head));
+	gc_del((*head));
 	*head = tmp;
 	return (result);
 }

@@ -25,6 +25,7 @@ static void	to_set_env(char ***env, char *arg, int stop)
 	char	*key;
 	char	*value;
 
+	(void)env;
 	if (stop > -1)
 	{
 		key = ft_substr(arg, 0, stop);
@@ -35,7 +36,7 @@ static void	to_set_env(char ***env, char *arg, int stop)
 		key = arg;
 		value = "";
 	}
-	set_env(env, key, value);
+	set_env(key, value);
 	if (stop > -1)
 	{
 		free(key);
