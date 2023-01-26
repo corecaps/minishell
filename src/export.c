@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/26 14:02:13 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/26 14:13:45 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -372,23 +372,23 @@ int	ft_export(char **args, char ***env, char *line)
 	i = 0;
 	while (params[i])
 	{
-		printf("%s\n", params[i]);
+		printf("[%s]\n", params[i]);
 		i++;
 	}
 	// exit(0);
 	i = 1;
-	if (args[i])
+	if (params[i])
 	{
-		if (check_args(args))
+		if (check_args(params))
 		{
 			write(2, "Really bad args prevent to write others\n", 40);
 			return (0);
 		}
-		while (args[i])
+		while (params[i])
 		{
-			stop = get_stop(args[i]);
+			stop = get_stop(params[i]);
 			if (stop != -2)
-				to_set_env(env, args[i], stop);
+				to_set_env(env, params[i], stop);
 			i++;
 		}
 	}
