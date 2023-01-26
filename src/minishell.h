@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:55 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/19 10:04:42 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/26 12:32:55 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_ast			*ast_node_init(t_token *token, t_token_type token_type);
 void			set_signals(void);
 void			reset_signals(void);
 int				parse_here_doc(t_ast *node);
-int exec_cmd_line(t_ast *current_node, char ***env, char *line);
+int             exec_cmd_line(t_ast *current_node, char ***env, char *line);
 void			print_sorted(char ***env_pointer);
 char			*get_prompt(char ***env);
 void			parser_error(int status);
