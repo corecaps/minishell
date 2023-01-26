@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/26 14:13:45 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/26 19:03:06 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,60 +47,60 @@ static void	to_set_env(char ***env, char *arg, int stop)
  * Get index to split string on key, value
  ****************************************************************************/
 
-static int	get_stop(const char *str)
-{
-	int	j;
+// static int	get_stop(const char *str)
+// {
+// 	int	j;
 
-	j = 0;
-	while (str[j])
-	{
-		if (str[0] == '?' && str[1] == '=')
-			return (1);
-		else if (str[j] == '=' && j != 0)
-			return (j);
-		else if (str[j] < 48
-			|| (str[j] >= '0' && str[j] <= '9' && j == 0)
-			|| (str[j] > '9' && str[j] < 'A')
-			|| (str[j] > 'Z' && str[j] < 'a')
-			|| (str[j] > 'z'))
-			return (-2);
-		else if (str[j + 1] == '\0' && str[j] == '=')
-			return (j);
-		else if (str[j + 1] == '\0' && str[j] != '=')
-			return (j + 1);
-		j++;
-	}
-	return (-1);
-}
+// 	j = 0;
+// 	while (str[j])
+// 	{
+// 		if (str[0] == '?' && str[1] == '=')
+// 			return (1);
+// 		else if (str[j] == '=' && j != 0)
+// 			return (j);
+// 		else if (str[j] < 48
+// 			|| (str[j] >= '0' && str[j] <= '9' && j == 0)
+// 			|| (str[j] > '9' && str[j] < 'A')
+// 			|| (str[j] > 'Z' && str[j] < 'a')
+// 			|| (str[j] > 'z'))
+// 			return (-2);
+// 		else if (str[j + 1] == '\0' && str[j] == '=')
+// 			return (j);
+// 		else if (str[j + 1] == '\0' && str[j] != '=')
+// 			return (j + 1);
+// 		j++;
+// 	}
+// 	return (-1);
+// }
 
 /*****************************************************************************
  * Check arguments passed in ft_export
  ****************************************************************************/
 
-static int	check_args(char **args)
-{
-	int		i;
-	int		j;
-	char	tmp;
+// static int	check_args(char **args)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	tmp;
 
-	i = 1;
-	while (args[i])
-	{
-		j = 0;
-		if (args[i][0] == '=' && args[i][1] != '\0')
-			return (1);
-		while (args[i][j] != '=' && args[i][j] != '\0')
-		{
-			tmp = args[i][j];
-			if (tmp == '?' || tmp == '*'
-				|| tmp == '!' || tmp == '&')
-				return (1);
-			j++;
-		}
-		i++;
-	}
-	return (0);
-}
+// 	i = 1;
+// 	while (args[i])
+// 	{
+// 		j = 0;
+// 		if (args[i][0] == '=' && args[i][1] != '\0')
+// 			return (1);
+// 		while (args[i][j] != '=' && args[i][j] != '\0')
+// 		{
+// 			tmp = args[i][j];
+// 			if (tmp == '?' || tmp == '*'
+// 				|| tmp == '!' || tmp == '&')
+// 				return (1);
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	return (0);
+// }
 
 // int	ft_export(char **args, char ***env, char *line)
 // {
@@ -361,6 +361,30 @@ char	**get_params(char *line, char ***env)
 	return (params);
 }
 
+static int	check_params(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[0] == '?') 
+		if (str[1] == '=')
+			if (str[2] == '\0')
+				return (1);
+	if ((str[0] >= '0' && str[0] <= '9') || str[0] == '=')
+		return (0);
+	while (str[i])
+	{
+		if (str[i] == '=')
+			return (i);
+		else if (str[i] <= 47 || (str[i] >=58 && str[i] <= 64) || (str[i] >= 91 && str[i] <= 96) || str[i] >= 123)
+			return (0);
+		else if (str[i + 1] == '\0')
+			return (i + 1);
+		++i;
+	}
+	return (0);
+}
+
 int	ft_export(char **args, char ***env, char *line)
 {
 	int		i;
@@ -369,26 +393,16 @@ int	ft_export(char **args, char ***env, char *line)
 
 	(void) args;
 	params = get_params(line, env);
-	i = 0;
-	while (params[i])
-	{
-		printf("[%s]\n", params[i]);
-		i++;
-	}
-	// exit(0);
 	i = 1;
 	if (params[i])
 	{
-		if (check_args(params))
-		{
-			write(2, "Really bad args prevent to write others\n", 40);
-			return (0);
-		}
 		while (params[i])
 		{
-			stop = get_stop(params[i]);
-			if (stop != -2)
+			stop = check_params(params[i]);
+			if (stop)
 				to_set_env(env, params[i], stop);
+			else
+				printf("invalid argument: %s\n", params[i]);
 			i++;
 		}
 	}
