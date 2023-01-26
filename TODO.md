@@ -5,7 +5,7 @@
 - [ ] memory leaks with failed commands
 - [ ] correct return code in case of parse error or failed command
 - [ ] fd leaks -> find case 
-- [ ] printing warning in case of ctrl-d inside a heredoc
+- [x] printing warning in case of ctrl-d inside a heredoc
 - [ ] handling return code when ctrl-c of that command 
 - [ ] ctrl-c in case of heredoc
 - [x] char	**get_path(void) uses the wrong env variable
