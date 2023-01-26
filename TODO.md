@@ -3,7 +3,7 @@
 - [x] gc for environment variables
 - [x] memory leaks on exit via signals
 - [x] memory leaks with failed commands
-- [ ] correct return code in case of parse error or failed command
+- [x] correct return code in case of parse error or failed command
 - [x] fd leaks (heredoc)
 - [x] printing warning in case of ctrl-d inside a heredoc
 - [ ] handling return code when ctrl-c of that command 

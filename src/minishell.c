@@ -81,7 +81,10 @@ int	main(int argc, char **argv, char **env)
 		lexer(data, gc_env_alloc(-1));
 		status = parse(data);
 		if (status < 0)
+		{
 			parser_error(status);
+			status = 2;
+		}
 		if (data->root && status == 1)
 		{
 			status = exec_cmd_line(data->root, gc_env_alloc(-1), data->line);
