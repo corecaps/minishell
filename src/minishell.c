@@ -89,7 +89,10 @@ int	main(int argc, char **argv, char **env)
 		{
 			status = exec_cmd_line(data->root, gc_env_alloc(-1), data->line);
 			if (status < 0)
+			{
 				exec_error(status);
+				status = 2;
+			}
 		}
 		else if (status == 1)
 			status = old_status;

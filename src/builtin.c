@@ -36,6 +36,7 @@ int	ft_cd(char **args, char ***env,char *line)
 		write(2, "minishell: cd: ", 15);
 		write(2, args[1], ft_strlen(args[1]));
 		write(2, ": Not a directory\n", 18);
+		return (1);
 	}
 	else if (chdir(args[1]) == -1)
 	{
