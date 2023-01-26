@@ -12,5 +12,5 @@
 - [ ] **NORME**
 - [x] export refactoring
 - [ ] return code for failed execution
-- [ ] cd error code and message
+- [x] cd error code and message
 - [ ] error msg and break when incorrect file permission on redirect------

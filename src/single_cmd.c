@@ -43,6 +43,9 @@ int	single_cmd(t_exec *exec, char ***env)
 		status = exec_leaf(exec);
 	else
 		status = exec_scmd(exec);
+	if (check_builtins(exec->current_node->token_node->value)
+		&& !exec->current_node->left)
+		return (status);
 	if (status < 0)
 		return (status);
 	waitpid(-1, &status, 0);

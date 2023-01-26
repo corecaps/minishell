@@ -24,6 +24,8 @@ int is_dir(const char *path)
 
 int	run_builtin(t_exec *exec, t_f_builtin builtin)
 {
+	int	status;
+
 	if (exec->current_node->in_pipe != NULL)
 		apply_dup(exec->current_node->in_pipe[0], STDIN_FILENO);
 	if (exec->current_node->out_pipe != NULL)
@@ -31,8 +33,9 @@ int	run_builtin(t_exec *exec, t_f_builtin builtin)
 	if (exec->current_node->left
 		&& (apply_redirections(exec->current_node) < 0))
 		return (-2);
-	builtin(get_args(exec->current_node), &exec->envp,exec->line);
-	return (0);
+	status = builtin(get_args(exec->current_node),
+		&exec->envp,exec->line);
+	return (status);
 }
 
 int	run_leaf(t_exec *exec)
@@ -67,5 +70,5 @@ int	run_leaf(t_exec *exec)
 	execve(full_path, argv, exec->envp);
 	gc_env_free();
 	gc_free();
-	exit (6);
+	exit (1);
 }

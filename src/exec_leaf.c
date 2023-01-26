@@ -34,7 +34,10 @@ int	exec_leaf(t_exec *exec)
 	{
 //		reset_signals();
 		if (builtin)
+		{
 			status = run_builtin(exec, builtin);
+			return (status);
+		}
 		else
 			status = run_leaf(exec);
 		if (status < 0)

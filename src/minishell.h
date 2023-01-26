@@ -36,6 +36,7 @@ int				parse(t_data *data);
 char			*find_binary(char *name);
 char			**get_args(t_ast *command_node);
 int				count_env(char ***env);
+int				is_dir(const char *path);
 int create_env(char **env, int argc, char **argv);
 char			*get_env(char *key, char ***env);
 t_garbage		**gc_add(void *ptr);
