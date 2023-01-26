@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/26 20:20:23 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/26 20:25:08 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,50 +104,45 @@ static t_export	t_export_init(void)
 	return (export);
 }
 
-static t_export	update_counter(t_export export)
+static t_export	update_counter(char *line, t_export vars)
 {
-	
+	if (vars.flag)
+	{
+		if (line[vars.i] == vars.ch_tmp)
+			--vars.flag;
+	}
+	else
+	{
+		if (line[vars.i] == '\'' || line[vars.i] == '\"')
+		{
+			vars.ch_tmp = line[vars.i];
+			++vars.flag;
+		}
+		else
+		{
+			vars.j = skip_wsp(line, vars.i);
+			if (vars.j != vars.i)
+			{
+				++vars.counter;
+				vars.i = vars.j;
+				return (vars);
+			}
+		}
+	}
+	++vars.i;
+	return (vars);
 }
 
 static int	get_size(char *line)
 {
-	int		i;
-	int		j;
-	int		flag;
-	int		counter;
-	char	tmp;
+	t_export	vars;
 
-	i = 0;
-	flag = 0;
-	counter = 1;
-	while (line[i])
+	vars = t_export_init();
+	while (line[vars.i])
 	{
-		if (flag)
-		{
-			if (line[i] == tmp)
-				--flag;
-		}
-		else
-		{
-			if (line[i] == '\'' || line[i] == '\"')
-			{
-				tmp = line[i];
-				++flag;
-			}
-			else
-			{
-				j = skip_wsp(line, i);
-				if (j != i)
-				{
-					++counter;
-					i = j;
-					continue ;
-				}
-			}
-		}
-		++i;
+		vars = update_counter(line, vars);
 	}
-	return (counter);
+	return (vars.counter);
 }
 
 /*****************************************************************************
