@@ -15,13 +15,16 @@
 
 void	sig_handler(int signum, siginfo_t *client_info, void *context)
 {
-	extern char	**environ;
+
 
 	(void) context;
 	(void) client_info;
 	if (signum == SIGINT)
 	{
-		printf("\n%s", get_prompt(&environ));
+		printf("\n");
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
 		return ;
 	}
 }
