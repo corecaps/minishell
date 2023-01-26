@@ -1,5 +1,5 @@
 - [x] use rl_redisplay rl_replace_line, rl_on_new_line in signals and error handling
-- [ ] ft_exit should take parameter for exit status
+- [x] ft_exit should take parameter for exit status
 - [x] gc for environment variables
 - [ ] memory leaks on exit via signals or with failed commands
 - [ ] correct return code in case of parse error or failed command

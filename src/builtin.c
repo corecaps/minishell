@@ -98,10 +98,13 @@ int	ft_pwd(char **args, char ***env,char *line)
 int	ft_exit(char **args, char ***env,char *line)
 {
 	(void) line;
-	(void) args;
 	(void) env;
-	printf("call to gc_env_free()\n");
+	int	exit_status;
+
+	exit_status = 0;
+	if (args[1])
+		exit_status = ft_atoi(args[1]);
 	gc_env_free();
 	gc_free();
-	exit(EXIT_SUCCESS);
+	exit(exit_status);
 }
