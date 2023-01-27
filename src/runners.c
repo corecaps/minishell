@@ -33,8 +33,7 @@ int	run_builtin(t_exec *exec, t_f_builtin builtin)
 	if (exec->current_node->left
 		&& (apply_redirections(exec->current_node) < 0))
 		return (-2);
-	status = builtin(get_args(exec->current_node),
-		&exec->envp,exec->line);
+	status = builtin(get_args(exec->current_node), exec->line);
 	return (status);
 }
 

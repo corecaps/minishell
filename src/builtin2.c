@@ -15,16 +15,18 @@
 
 /******************************************************************************
  * 
- * Need to test ft_export(), ft_env(), ft_unset()
+ *  print every environment variable
  * 
  *****************************************************************************/
 
-int	ft_env(char **args, char ***env,char *line)
+int	ft_env(char **args, char *line)
 {
 	int	i;
+	char ***env;
 
 	(void) line;
 	(void) args;
+	env = gc_env_alloc(-1);
 	i = 0;
 	while ((*env)[i])
 	{
@@ -38,7 +40,7 @@ int	ft_env(char **args, char ***env,char *line)
  * Builtin function to unset an environment variable
  ****************************************************************************/
 
-int	ft_unset(char **args, char ***env, char *line)
+int	ft_unset(char **args, char *line)
 {
 	int		i;
 	int		j;
@@ -47,7 +49,6 @@ int	ft_unset(char **args, char ***env, char *line)
 
 	(void) line;
 	(void) args;
-	(void) env;
 	i = 1;
 	envp = gc_env_alloc(-1);
 	while (args[i])

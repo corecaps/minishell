@@ -326,13 +326,15 @@ static void	free_params(char **params)
 	params = NULL;
 }
 
-int	ft_export(char **args, char ***env, char *line)
+int	ft_export(char **args, char *line)
 {
 	int		i;
 	int		stop;
 	char	**params;
+	char	***env;
 
 	(void) args;
+	env = gc_env_alloc(-1);
 	params = get_params(line, env);
 	//test
 	i = 0;
@@ -342,7 +344,6 @@ int	ft_export(char **args, char ***env, char *line)
 		printf("[%s]\n", params[i]);
 		++i;
 	}
-	//
 	i = 1;
 	if (params[i])
 	{
