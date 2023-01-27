@@ -6,7 +6,7 @@
 #    By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/04 12:18:46 by jgarcia           #+#    #+#              #
-#    Updated: 2023/01/17 10:26:12 by latahbah         ###   ########.fr        #
+#    Updated: 2023/01/27 18:04:58 by latahbah         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ SRC =	minishell.c				token_list.c			gc_env.c\
 		check_builtin.c			cmd_line.c 				print_sorted_env.c\
 		single_cmd.c			exec_heredoc.c			exec_leaf.c \
 		runners.c				exec_utils.c			traverse_pipe.c \
-		prompt.c				export.c				error.c
+		prompt.c				export.c				error.c \
+		del_quotes.c			get_end.c				get_params.c \
 
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h data_structures.h
