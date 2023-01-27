@@ -23,6 +23,7 @@
 static int	initial_setup(int argc, char **argv, char **env)
 {
 	struct termios	term_info;
+	char	*cwd;
 
 	if (!isatty(STDIN_FILENO))
 	{
@@ -35,7 +36,18 @@ static int	initial_setup(int argc, char **argv, char **env)
 	tcsetattr(0, TCSANOW, &term_info);
 	if (!create_env(env, argc, argv))
 		return (0);
-	return (1);
+	cwd = get_env("PWD", gc_env_alloc(-1));
+	if (!cwd)
+	{
+		cwd = getcwd(NULL, 0);
+		set_env("PWD", cwd);
+		free(cwd);
+	}
+	else
+	{
+		free(cwd);
+	}
+		return (1);
 }
 
 /******************************************************************************
