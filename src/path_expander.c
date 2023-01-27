@@ -25,7 +25,10 @@ char	**get_path(void)
 	int		i;
 
 	env_path = get_env("PATH", gc_env_alloc(-1));
+	if (!env_path)
+		return (NULL);
 	path_array = ft_split(env_path, ':');
+	free(env_path);
 	i = 0;
 	while (path_array[i])
 	{
@@ -83,6 +86,8 @@ char	*get_full_path(char *name, char **path)
 	struct dirent	*entry;
 
 	i = 0;
+	if (!path)
+		return (NULL);
 	while (path[i] != 0)
 	{
 		dp = opendir(path[i]);
@@ -99,6 +104,7 @@ char	*get_full_path(char *name, char **path)
 		closedir(dp);
 		i ++;
 	}
+	gc_add(path);
 	return (NULL);
 }
 
