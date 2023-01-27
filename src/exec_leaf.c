@@ -6,12 +6,21 @@
 /*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:33:51 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 15:32:32 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/27 17:21:15 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec.h"
+
+void	end_leaf(int status)
+{
+	close(0);
+	close(1);
+	gc_env_free();
+	gc_free();
+	exit(status);
+}
 
 /**************************************************************************
  * Execute a leaf of the tree
@@ -42,13 +51,8 @@ int	exec_leaf(t_exec *exec)
 			exec_error(&status);
 			status = -status;
 		}
-		close(0);
-		close(1);
-		gc_env_free();
-		gc_free();
-		exit(status);
+		end_leaf(status);
 	}
-	exec->n_child ++;
 	return (pid);
 }
 
@@ -70,7 +74,7 @@ int	exec_scmd(t_exec *exec)
 		return (-5);
 	if (status == 0)
 	{
-//		reset_signals();
+		reset_signals();
 		status = run_leaf(exec);
 		if (status < 0)
 		{

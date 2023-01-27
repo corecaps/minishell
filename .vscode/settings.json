@@ -51,6 +51,7 @@
     "initializer_list": "c",
     "ranges": "c",
     "span": "c",
-    "sstream": "c"
+    "sstream": "c",
+    "fstream": "c"
   }
 }
