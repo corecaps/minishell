@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 19:33:32 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/26 20:04:42 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 12:53:58 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,17 @@ typedef struct s_export
 	char	ch_tmp;
 	int		counter;
 }t_export;
+
+
+typedef struct s_exp_dyn
+{
+	int		i;
+	int		start;
+	int		flag;
+	char	c;
+	char	q_type;
+	char	*tmp;
+	char	*result;
+}	t_exp_dyn;
 
 #endif
