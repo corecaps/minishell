@@ -499,7 +499,7 @@ configure:11789: gcc -shared  -fPIC -DPIC conftest.o  -v -Wl,-soname -Wl,conftes
 configure:11792: $? = 0
 configure:11806: result: no
 configure:11966: checking dynamic linker characteristics
-configure:12547: gcc -o conftest -g -O2   -Wl,-rpath -Wl,/foo conftest.c  >&5
+configure:12547: gcc -o conftest -g -O2   -Wl,-rpath -Wl,/cmd_node conftest.c  >&5
 configure:12547: $? = 0
 configure:12784: result: GNU/Linux ld.so
 configure:12906: checking how to hardcode library paths into programs

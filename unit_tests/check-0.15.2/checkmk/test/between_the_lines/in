@@ -9,4 +9,4 @@ int bar;
 int baz;
 
 #test C
-    fail_unless(foo | bar | baz == 0);
+    fail_unless(cmd_node | bar | baz == 0);
