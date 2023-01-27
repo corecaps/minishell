@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 11:20:07 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 12:49:01 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,41 +151,47 @@ static int	get_size(char *line)
  * @return i - that index
  ****************************************************************************/
 
-static int	get_end(char *line, int start)
+static t_export	find_end(char *line, t_export vars, int start)
 {
-	int		i;
-	int		j;
-	int		flag;
-	char	tmp;
-
-	i = start;
-	flag = 0;
-	while (line[i])
+	if (vars.flag)
 	{
-		if (flag)
+		if (line[vars.i] == vars.ch_tmp)
+			--vars.flag;
+	}
+	else
+	{
+		if (line[vars.i] == '\'' || line[vars.i] == '\"')
 		{
-			if (line[i] == tmp)
-				--flag;
+			vars.ch_tmp = line[vars.i];
+			++vars.flag;
 		}
 		else
 		{
-			if (line[i] == '\'' || line[i] == '\"')
+			vars.j = skip_wsp(line, vars.i);
+			if (vars.j != vars.i && vars.i != start)
 			{
-				tmp = line[i];
-				++flag;
-			}
-			else
-			{
-				j = skip_wsp(line, i);
-				if (j != i && i != start)
-				{
-					return (i);
-				}
+				vars.counter = 0;
+				return (vars);
 			}
 		}
-		++i;
 	}
-	return (i);
+	return (vars);
+}
+
+static int	get_end(char *line, int start)
+{
+	t_export	vars;
+
+	vars = t_export_init();
+	vars.i = start;
+	while (line[vars.i])
+	{
+		vars = find_end(line, vars, start);
+		if (vars.counter == 0)
+			return (vars.i);
+		++vars.i;
+	}
+	return (vars.i);
 }
 
 /*****************************************************************************
@@ -208,15 +214,13 @@ static char	*del_quotes(char *str, char ***env)
 	flag = 0;
 	q_type = '0';
 	result = ft_strjoin("", "");
-	while(str[i])
+	while (str[i])
 	{
 		c = str[i];
 		if ((c == '\'' || c == '\"') && flag == 0)
 		{
 			tmp = ft_substr(str, start, (size_t)(i - start));
-			// printf("\ttmp0 - [%s]\n", tmp);
 			tmp = expand(tmp, env);
-			// printf("\ttmp0exp - [%s]\n", tmp);
 			result = add_to_res(result, tmp);
 			flag = 1;
 			q_type = c;
@@ -225,10 +229,8 @@ static char	*del_quotes(char *str, char ***env)
 		else if ((c == '\'' || c == '\"') && flag == 1 && c == q_type)
 		{
 			tmp = ft_substr(str, start, (size_t)(i - start));
-			// printf("\ttmp1 - [%s]\n", tmp);
 			if (q_type == '\"')
 				tmp = expand(tmp, env);
-			// printf("\ttmp1exp - [%s]\n", tmp);
 			result = add_to_res(result, tmp);
 			flag = 0;
 			start = i + 1;
@@ -236,11 +238,8 @@ static char	*del_quotes(char *str, char ***env)
 		i++;
 	}
 	tmp = ft_substr(str, start, (size_t)(i - start));
-	// printf("\ttmp2 - [%s]\n", tmp);
 	tmp = expand(tmp, env);
-	// printf("\ttmp2 - [%s]\n", tmp);
 	result = add_to_res(result, tmp);
-	// printf("\tresult - [%s]\n", result);
 	free(str);
 	str = NULL;
 	return (result);
@@ -335,6 +334,15 @@ int	ft_export(char **args, char ***env, char *line)
 
 	(void) args;
 	params = get_params(line, env);
+	//test
+	i = 0;
+	printf("PRINT PARAMS:\n");
+	while (params[i])
+	{
+		printf("[%s]\n", params[i]);
+		++i;
+	}
+	//
 	i = 1;
 	if (params[i])
 	{
