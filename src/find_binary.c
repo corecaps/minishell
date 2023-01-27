@@ -3,16 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   find_binary.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 18:09:01 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/27 15:01:17 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 16:13:22 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec.h"
 #include <sys/stat.h>
+
+void	find_binary_error(int code, char *name)
+{
+	if (code == 1)
+		write(2, "minishell: permission denied \n", 29);
+	else if (code == 2)
+		write(2, "minishell: command not found \n", 29);
+	ft_putstr_fd(name, 2);
+	write(2, "\n", 1);
+	gc_env_free();
+	gc_free();
+	if (code == 1)
+		exit (126);
+	else
+		exit (127);
+}
 
 /******************************************************************************
  * Find the binary in the path
@@ -30,41 +46,21 @@ char	*find_binary(char *name)
 	if (final_path && access(final_path, X_OK) != -1)
 		return (final_path);
 	else if (final_path && access(final_path, X_OK) == -1)
-	{
-		write(2, "minishell: permission denied \n", 29);
-		ft_putstr_fd(name, 2);
-		write(2, "\n", 1);
-		gc_env_free();
-		gc_free();
-		exit(126);
-	}
+		find_binary_error(1, name);
 	path = get_path();
 	final_path = get_full_path(name, path);
 	if (!final_path)
-	{
-		write(2, "minishell: command not found \n", 29);
-		ft_putstr_fd(name, 2);
-		write(2, "\n", 1);
-		gc_env_free();
-		gc_free();
-		exit(127);
-	}
+		find_binary_error(2, name);
 	else
 		gc_add(final_path);
 	if (final_path && access(final_path, X_OK) != -1)
 		return (final_path);
 	else if (final_path && access(final_path, X_OK) == -1)
-	{
-		write(2, "minishell: permission denied \n", 29);
-		ft_putstr_fd(name, 2);
-		write(2, "\n", 1);
-		gc_env_free();
-		gc_free();
-		exit(126);
-	}
+		find_binary_error(1, name);
 	else
 	{
 		gc_add(final_path);
 		exit(1);
 	}
+	return (NULL);
 }

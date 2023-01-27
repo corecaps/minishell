@@ -3,15 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   builtin2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 12:07:37 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/27 15:06:19 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 16:06:04 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec.h"
+
+char	***remove_var(int j, char ***envp)
+{
+	size_t	index;
+
+	index = (size_t) j;
+	realloc_environ(count_env(envp) - 1, index);
+	envp = gc_env_alloc(-1);
+	return (envp);
+}
 
 /******************************************************************************
  * 
@@ -44,7 +54,6 @@ int	ft_unset(char **args, char *line)
 {
 	int		i;
 	int		j;
-	size_t	index;
 	char	***envp;
 
 	(void) line;
@@ -59,10 +68,8 @@ int	ft_unset(char **args, char *line)
 			if (!ft_strncmp(args[i], (const char *)(*envp)[j],
 				ft_strlen(args[i])))
 			{
-				index = (size_t) j;
-				realloc_environ(count_env(envp) - 1, index);
+				envp = remove_var(j, envp);
 				break ;
-				envp = gc_env_alloc(-1);
 			}
 			j++;
 		}

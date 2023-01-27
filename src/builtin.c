@@ -3,15 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:42:09 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 15:13:30 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 16:01:09 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec.h"
+
+static int	change_dir(char *const *args, char *path, char *home)
+{
+	if (access(args[1], F_OK) == 0 && !is_dir(args[1]))
+	{
+		write(2, "minishell: cd: ", 15);
+		write(2, args[1], ft_strlen(args[1]));
+		write(2, ": Not a directory\n", 18);
+		if (path)
+			free(path);
+		if (home)
+			free(home);
+		return (1);
+	}
+	else if (chdir(args[1]) == -1)
+	{
+		write (2, "minishell: cd: ", 15);
+		write (2, args[1], ft_strlen(args[1]));
+		write (2, ": No such file or directory\n", 28);
+		if (path)
+			free(path);
+		if (home)
+			free(home);
+		return (1);
+	}
+	return (0);
+}
 
 /*****************************************************************************
  * Builtin function to change the current working directory.
@@ -33,20 +60,8 @@ int	ft_cd(char **args, char *line)
 		if (chdir(home) == -1)
 			return (1);
 	}
-	else if (access(args[1], F_OK) == 0 && !is_dir(args[1]))
-	{
-		write(2, "minishell: cd: ", 15);
-		write(2, args[1], ft_strlen(args[1]));
-		write(2, ": Not a directory\n", 18);
+	else if (change_dir(args, path, home) == 1)
 		return (1);
-	}
-	else if (chdir(args[1]) == -1)
-	{
-		write (2, "minishell: cd: ", 15);
-		write (2, args[1], ft_strlen(args[1]));
-		write (2, ": No such file or directory\n", 28);
-		return (1);
-	}
 	if (home)
 		free(home);
 	free (path);

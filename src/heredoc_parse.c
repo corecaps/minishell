@@ -3,15 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_parse.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:28:46 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 14:56:17 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 16:17:24 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec.h"
+
+int	eof_before_heredoc(t_here_doc *prev, t_here_doc *current_line,
+	char *end)
+{
+	write(2,
+		"minishell error: here-document delimited by EOF", 47);
+	write(2, " (wanted `", 10);
+	ft_putstr_fd(end, 2);
+	write(2, "')\n", 3);
+	if (prev)
+		prev->next = NULL;
+	free(current_line->line);
+	free(current_line);
+	return (-7);
+}
 
 /*****************************************************************************
  * test if the current line equals the heredoc strings, if yes
@@ -86,18 +101,7 @@ int	parse_here_doc(t_ast *node)
 			return (-1);
 		current_line->line = readline("heredoc> ");
 		if (current_line->line == NULL)
-		{
-			write(2,
-				"minishell error: here-document delimited by EOF", 47);
-			write(2, " (wanted `", 10);
-			ft_putstr_fd(end, 2);
-			write(2, "')\n", 3);
-			if (prev)
-				prev->next = NULL;
-			free(current_line->line);
-			free(current_line);
-			return (-7);
-		}
+			return (eof_before_heredoc(prev, current_line, end));
 		current_line->next = NULL;
 		store_heredoc(node, current_line);
 		if (end_heredoc(node, prev, current_line, end))
