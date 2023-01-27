@@ -3,15 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   environ.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 01:11:08 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 15:14:10 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:41:16 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec.h"
+
+size_t	copy_env(size_t size, size_t index, char **new_env, char **const *env)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	while (j < size && (*env)[i])
+	{
+		if (index == i)
+			i++;
+		else
+			new_env[j] = ft_strdup((*env)[i]);
+		i++;
+		j++;
+	}
+	return (j);
+}
 
 /******************************************************************************
  * Count the variables in environment
@@ -55,17 +74,7 @@ int	realloc_environ(size_t size, size_t index)
 	new_env = ft_calloc((size + 1), sizeof(char *));
 	if (new_env == NULL)
 		return (-1);
-	i = 0;
-	j = 0;
-	while (j < size && (*env)[i])
-	{
-		if (index == i)
-			i++;
-		else
-			new_env[j] = ft_strdup((*env)[i]);
-		i++;
-		j++;
-	}
+	j = copy_env(size, index, new_env, env);
 	gc_env_free();
 	(*env) = new_env;
 	(*env)[j] = NULL;
