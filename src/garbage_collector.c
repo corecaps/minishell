@@ -27,10 +27,7 @@ int	gc_check_double(t_garbage *gc, void *ptr)
 	while (tmp)
 	{
 		if (tmp->ptr == ptr)
-		{
-			printf("double pointer\n");
 			return (1);
-		}
 		tmp = tmp->next;
 	}
 	return (0);
@@ -50,7 +47,7 @@ void gc_free()
 
 	garbage = gc_add(NULL);
 	if (!(*garbage))
-		printf("garbage collector is empty\n");
+		return ;
 	cursor = *garbage;
 	while (cursor)
 	{

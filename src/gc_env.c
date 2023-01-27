@@ -70,19 +70,14 @@ int	gc_env_del(void *ptr)
 	prev = NULL;
 	while (cursor)
 	{
-		printf("cursor->ptr = %p, looking for %p\n", cursor->ptr, ptr);
 		if (cursor->ptr == ptr)
 		{
-			printf("found it in node %p prev is %p gc is %p\n", cursor, prev, *gc );
 			if (prev)
 				prev->next = cursor->next;
 			else
 				(*gc) = cursor->next;
 			free(cursor->ptr);
 			free(cursor);
-			printf("gc is now %p \n", *gc);
-			gc = gc_env_add(NULL);
-			printf("gc is now %p \n", *gc);
 			return (1);
 		}
 		prev = cursor;

@@ -24,7 +24,7 @@ int	single_cmd(t_exec *exec, char ***env)
 	int	status;
 
 	(void)env;
-	if (exec->root->here_doc == 1)
+	if (exec->root->here_doc == 1 && check_heredoc_last_in(exec->current_node))
 	{
 		if (exec->root->here_doc_list)
 		{
@@ -50,7 +50,6 @@ int	single_cmd(t_exec *exec, char ***env)
 		return (status);
 	waitpid(-1, &status, 0);
 	waitpid(-1, &status, 0);
-//	*env = exec->envp;
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	return (0);

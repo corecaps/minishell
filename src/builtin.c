@@ -17,12 +17,14 @@
  * Builtin function to change the current working directory.
  ****************************************************************************/
 
-int	ft_cd(char **args, char ***env,char *line)
+int	ft_cd(char **args, char *line)
 {
 	char	*path;
 	char	*home;
+	char	***env;
 
 	(void) line;
+	env = gc_env_alloc(-1);
 	path = getcwd(NULL, 0);
 	home = NULL;
 	if (args[1] == NULL)
@@ -60,12 +62,11 @@ int	ft_cd(char **args, char ***env,char *line)
  * Builtin function to print arguments to the standard output.
  ****************************************************************************/
 
-int	ft_echo(char **args, char ***env,char *line)
+int	ft_echo(char **args, char *line)
 {
 	int	i;
 	int	trailing_newline;
 
-	(void) env;
 	(void) line;
 	trailing_newline = 1;
 	i = 1;
@@ -76,12 +77,15 @@ int	ft_echo(char **args, char ***env,char *line)
 	}
 	while (args[i])
 	{
+//		ft_putstr_fd(args[i], 1);
 		printf("%s", args[i]);
 		if (args[i + 1])
+//			ft_putstr_fd(" ", 1);
 			printf(" ");
 		i++;
 	}
 	if (trailing_newline == 1)
+//		ft_putstr_fd("\n", 1);
 		printf("\n");
 	return (0);
 }
@@ -90,12 +94,14 @@ int	ft_echo(char **args, char ***env,char *line)
  * Builtin function to print the current working directory.
  ****************************************************************************/
 
-int	ft_pwd(char **args, char ***env,char *line)
+int	ft_pwd(char **args, char *line)
 {
 	char *path;
+	char ***env;
 
 	(void) args;
 	(void) line;
+	env = gc_env_alloc(-1);
 	path = get_env("PWD", env);
 	printf("%s\n", path);
 	free(path);
@@ -106,10 +112,9 @@ int	ft_pwd(char **args, char ***env,char *line)
  * Builtin function to exit the shell.
  ****************************************************************************/
 
-int	ft_exit(char **args, char ***env,char *line)
+int	ft_exit(char **args, char *line)
 {
 	(void) line;
-	(void) env;
 	int	exit_status;
 
 	exit_status = 0;
