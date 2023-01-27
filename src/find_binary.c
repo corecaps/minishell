@@ -26,8 +26,18 @@ char	*find_binary(char *name)
 	char		**path;
 
 	final_path = check_absolute_relative_path(name);
-	if (final_path)
+	gc_add(final_path);
+	if (final_path && access(final_path, X_OK)  != -1)
 		return (final_path);
+	else if (final_path && access(final_path,X_OK) == -1)
+	{
+		write(2,"minishell: permission denied \n", 29);
+		ft_putstr_fd(name, 2);
+		write(2,"\n", 1);
+		gc_env_free();
+		gc_free();
+		exit(126);
+	}
 	path = get_path();
 	final_path = get_full_path(name, path);
 	if (!final_path)
@@ -39,8 +49,22 @@ char	*find_binary(char *name)
 		gc_free();
 		exit(127);
 	}
+	else
+		gc_add(final_path);
 	if (final_path && access(final_path, X_OK)  != -1)
 		return (final_path);
+	else if (final_path && access(final_path, X_OK)  == -1)
+	{
+		write(2,"minishell: permission denied \n", 29);
+		ft_putstr_fd(name, 2);
+		write(2,"\n", 1);
+		gc_env_free();
+		gc_free();
+		exit(126);
+	}
 	else
+	{
+		gc_add(final_path);
 		exit(1);
+	}
 }

@@ -29,7 +29,8 @@ int	traverse_pipe(t_exec *exec)
 	exec->pipe_i += 2;
 	exec->current_node = exec->current_node->left;
 	exec->current_node->out_pipe = exec->pipes + pipe_local_idx;
-	if (exec->current_node->here_doc > 0 && exec_heredoc(exec) < 0)
+	if (exec->current_node->here_doc > 0
+		&& check_heredoc_last_in(exec->current_node) && exec_heredoc(exec) < 0)
 		return (-5);
 	pid = exec_leaf(exec);
 	close(exec->pipes[pipe_local_idx + 1]);
@@ -37,9 +38,15 @@ int	traverse_pipe(t_exec *exec)
 	if (exec->current_node->type == E_COMMAND)
 	{
 		exec->current_node->in_pipe = exec->pipes + pipe_local_idx;
-		if (exec->current_node->here_doc > 0 && exec_heredoc(exec) < 0)
+		if (exec->current_node->here_doc > 0
+			&& check_heredoc_last_in(exec->current_node) && exec_heredoc(exec) < 0)
 			return (-5);
 		pid2 = exec_leaf(exec);
+		if (pid2 < 0)
+		{
+			close(exec->pipes[pipe_local_idx]);
+			return (2);
+		}
 		close(exec->pipes[pipe_local_idx + 1]);
 	}
 	else

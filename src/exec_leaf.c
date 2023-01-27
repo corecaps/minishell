@@ -78,6 +78,8 @@ int	exec_scmd(t_exec *exec)
 			exec_error(status);
 			status = -status;
 		}
+		gc_env_free();
+		gc_free();
 		exit(status);
 	}
 	exec->n_child ++;

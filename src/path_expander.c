@@ -124,10 +124,15 @@ char	*check_absolute_relative_path(char *name)
 	if (name[0] == '/')
 		return (name);
 	else if (name[0] == '.' && name[1] == '/')
-		return (ft_strjoin(getcwd(NULL, 0), name + 1));
+	{
+		parent = getcwd(NULL, 0);
+		gc_add(parent);
+		return (ft_strjoin(parent, name + 1));
+	}
 	else if (name[0] == '.' && name[1] == '.' && name[2] == '/')
 	{
 		parent = get_parent(getcwd(NULL, 0));
+		gc_add(parent);
 		return (ft_strjoin(parent, name + 2));
 	}
 	else
