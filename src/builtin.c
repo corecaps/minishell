@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:42:09 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/25 11:43:48 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:13:30 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	ft_cd(char **args, char *line)
 	}
 	else if (chdir(args[1]) == -1)
 	{
-
 		write (2, "minishell: cd: ", 15);
 		write (2, args[1], ft_strlen(args[1]));
 		write (2, ": No such file or directory\n", 28);
@@ -77,15 +76,12 @@ int	ft_echo(char **args, char *line)
 	}
 	while (args[i])
 	{
-//		ft_putstr_fd(args[i], 1);
 		printf("%s", args[i]);
 		if (args[i + 1])
-//			ft_putstr_fd(" ", 1);
 			printf(" ");
 		i++;
 	}
 	if (trailing_newline == 1)
-//		ft_putstr_fd("\n", 1);
 		printf("\n");
 	return (0);
 }
@@ -96,8 +92,8 @@ int	ft_echo(char **args, char *line)
 
 int	ft_pwd(char **args, char *line)
 {
-	char *path;
-	char ***env;
+	char	*path;
+	char	***env;
 
 	(void) args;
 	(void) line;
@@ -114,9 +110,9 @@ int	ft_pwd(char **args, char *line)
 
 int	ft_exit(char **args, char *line)
 {
-	(void) line;
 	int	exit_status;
 
+	(void)line;
 	exit_status = 0;
 	if (args[1])
 		exit_status = ft_atoi(args[1]);

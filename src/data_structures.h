@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:13:13 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/26 10:58:53 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 13:57:13 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,12 @@ typedef int		(*t_f_builtin)(char **args, char *line);
 
 typedef struct s_exp
 {
-	int	i;
-	int	start;
-	int	flag;
+	int		i;
+	int		start;
+	int		flag;
+	char	c;
+	char	*tmp;
+	char	*result;
 }	t_exp;
 
 typedef struct s_garbage

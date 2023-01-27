@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:20:07 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/25 11:43:56 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:13:53 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * @return a freshly allocated array of environment variables
  *****************************************************************************/
 
-int create_env(char **env, int argc, char **argv)
+int	create_env(char **env, int argc, char **argv)
 {
 	char	***new_env;
 	int		i;
@@ -26,7 +26,6 @@ int create_env(char **env, int argc, char **argv)
 
 	(void) argc;
 	(void) argv;
-//	new_env = (char **)ft_calloc((count_env(&env) + 1), sizeof(char *));
 	size = count_env(&env) + 1;
 	new_env = gc_env_alloc(size);
 	if (new_env == NULL)

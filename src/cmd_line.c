@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_line.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:42:26 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/21 02:21:48 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/27 15:06:01 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * @return number of pipes needed
  *****************************************************************************/
 
-static int count_pipes(t_ast *root)
+static int	count_pipes(t_ast *root)
 {
 	int	n_pipes;
 
@@ -41,7 +41,7 @@ static int count_pipes(t_ast *root)
  * @return an array of pipes, or NULL if an error occured
  ****************************************************************************/
 
-static int *init_pipes(t_ast *root, t_exec *exec)
+static int	*init_pipes(t_ast *root, t_exec *exec)
 {
 	int	*pipe_fd;
 
@@ -61,11 +61,11 @@ static int *init_pipes(t_ast *root, t_exec *exec)
  * @return t_exec_data* the data struct, NULL if error
  *****************************************************************************/
 
-static t_exec *exec_init(t_ast *current_node, char ***env, char *line)
+static t_exec	*exec_init(t_ast *current_node, char ***env, char *line)
 {
 	t_exec	*new_exec;
 
-	new_exec = gc_alloc(1,sizeof(t_exec));
+	new_exec = gc_alloc(1, sizeof(t_exec));
 	if (new_exec == NULL)
 		return (NULL);
 	new_exec->current_node = current_node;
@@ -88,7 +88,7 @@ static t_exec *exec_init(t_ast *current_node, char ***env, char *line)
  * -8 incorrect AST structure
  *****************************************************************************/
 
-int exec_cmd_line(t_ast *current_node, char ***env, char *line)
+int	exec_cmd_line(t_ast *current_node, char ***env, char *line)
 {
 	t_exec	*exec;
 	int		status;

@@ -3,20 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   gc_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 10:05:06 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/26 10:05:20 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/27 14:59:13 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-
 char	***gc_env_alloc(int size)
 {
-	static char **env = NULL;
+	static char	**env = NULL;
 
 	if (size < 0 && env)
 	{
@@ -28,7 +26,7 @@ char	***gc_env_alloc(int size)
 		gc_env_free();
 	else if (size > 0)
 	{
-		env = (char **) ft_calloc(size+1,sizeof(char *));
+		env = (char **) ft_calloc(size + 1, sizeof(char *));
 		if (!env)
 			env = NULL;
 	}
@@ -63,7 +61,7 @@ int	gc_env_del(void *ptr)
 	t_garbage	**gc;
 	t_garbage	*prev;
 
-	gc =  gc_env_add(NULL);
+	gc = gc_env_add(NULL);
 	cursor = *gc;
 	if (!cursor)
 		return (0);

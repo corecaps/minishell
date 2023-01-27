@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   runners.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:48:10 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/21 02:34:00 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/27 14:53:31 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 #include "exec.h"
 #include <sys/stat.h>
 
-int is_dir(const char *path)
+int	is_dir(const char *path)
 {
-	struct stat path_stat;
+	struct stat	path_stat;
 
 	stat(path, &path_stat);
-	return S_ISDIR(path_stat.st_mode);
+	return (S_ISDIR(path_stat.st_mode));
 }
 
 int	run_builtin(t_exec *exec, t_f_builtin builtin)
@@ -52,9 +52,9 @@ int	run_leaf(t_exec *exec)
 		exit (126);
 	if (is_dir(full_path))
 	{
-		write(2,"minishell: ", 11);
-		ft_putstr_fd(full_path,2);
-		write(2," is a directory\n", 16);
+		write(2, "minishell: ", 11);
+		ft_putstr_fd(full_path, 2);
+		write(2, " is a directory\n", 16);
 		gc_env_free();
 		gc_free();
 		exit (126);

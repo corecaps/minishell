@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stack.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 12:05:30 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/21 02:36:27 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/27 15:10:57 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_stack	*push(t_token_type type, t_stack *head)
 {
 	t_stack	*new_node;
 
-	new_node = gc_alloc(1,sizeof(t_stack));
+	new_node = gc_alloc(1, sizeof(t_stack));
 	if (new_node == NULL)
 		return (NULL);
 	new_node->type = type;

@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 12:50:43 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/21 02:36:54 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/27 15:11:04 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	add_token(t_data *data, t_token_type type, char *value)
 {
 	t_token	*new_node;
 
-	new_node = (t_token *)gc_alloc(1,sizeof(t_token));
+	new_node = (t_token *)gc_alloc(1, sizeof(t_token));
 	if (new_node == NULL)
 		exit(EXIT_FAILURE);
 	new_node->next_token = NULL;

@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:13:41 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/21 02:28:13 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/27 15:09:50 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,11 @@ int	gc_check_double(t_garbage *gc, void *ptr)
  * @param garbage Pointer to the garbage collector
  *****************************************************************************/
 
-void gc_free()
+void	gc_free(void)
 {
 	t_garbage	*tmp;
 	t_garbage	**garbage;
 	t_garbage	*cursor;
-
 
 	garbage = gc_add(NULL);
 	if (!(*garbage))
@@ -93,7 +92,7 @@ t_garbage	**gc_add(void *ptr)
  * @return 1 if the pointer was removed, 0 otherwise
  *****************************************************************************/
 
-int gc_del(void *ptr)
+int	gc_del(void *ptr)
 {
 	t_garbage	*cursor;
 	t_garbage	**gc;

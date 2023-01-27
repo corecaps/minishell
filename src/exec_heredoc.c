@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:10:11 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/23 10:17:52 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:09:22 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	here_doc_child(t_exec *exec)
 				close(exec->pipes[i]);
 				close(exec->pipes[i + 1]);
 			}
-			i+=2;
+			i += 2;
 		}
 	}
 	gc_env_free();
@@ -96,7 +96,6 @@ int	exec_heredoc(t_exec *exec)
 	else
 	{
 		close(exec->pipes[exec->pipe_i + 1]);
-
 		exec->pipe_i += 2;
 		free_here_doc_list(exec->current_node->here_doc_list);
 	}

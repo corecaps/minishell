@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 12:49:01 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 14:22:55 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,70 +194,81 @@ static int	get_end(char *line, int start)
 	return (vars.i);
 }
 
+static t_exp_dyn	*t_exp_dyn_init(void)
+{
+	t_exp_dyn	*dvars;
+
+	dvars = malloc(sizeof(t_exp_dyn));
+	dvars->i = 0;
+	dvars->start = 0;
+	dvars->flag = 0;
+	dvars->q_type = '0';
+	dvars->tmp = NULL;
+	dvars->result = NULL;
+	return (dvars);
+}
+
 /*****************************************************************************
  * This func() has to delete needed quotes and expand vars if needed and allowed
  * @return arg which we have to put in params[i]
  ****************************************************************************/
 
-static char	*del_quotes(char *str, char ***env)
+static void	update_res(t_exp_dyn *dvars, char *str, char ***env)
 {
-	int		i;
-	int		start;
-	int		flag;
-	char	c;
-	char	*tmp;
-	char	q_type;
-	char	*result;
-
-	i = 0;
-	start = i;
-	flag = 0;
-	q_type = '0';
-	result = ft_strjoin("", "");
-	while (str[i])
+	dvars->tmp = ft_substr(str, dvars->start,
+			(size_t)(dvars->i - dvars->start));
+	if (dvars->flag == 0 || (dvars->flag == 1 && dvars->q_type == '\"')
+		|| str[dvars->i] == '\0')
+		dvars->tmp = expand(dvars->tmp, env);
+	dvars->result = add_to_res(dvars->result, dvars->tmp);
+	if (dvars->flag == 0)
 	{
-		c = str[i];
-		if ((c == '\'' || c == '\"') && flag == 0)
-		{
-			tmp = ft_substr(str, start, (size_t)(i - start));
-			tmp = expand(tmp, env);
-			result = add_to_res(result, tmp);
-			flag = 1;
-			q_type = c;
-			start = i + 1;
-		}
-		else if ((c == '\'' || c == '\"') && flag == 1 && c == q_type)
-		{
-			tmp = ft_substr(str, start, (size_t)(i - start));
-			if (q_type == '\"')
-				tmp = expand(tmp, env);
-			result = add_to_res(result, tmp);
-			flag = 0;
-			start = i + 1;
-		}
-		i++;
+		dvars->flag = 1;
+		dvars->q_type = dvars->c;
 	}
-	tmp = ft_substr(str, start, (size_t)(i - start));
-	tmp = expand(tmp, env);
-	result = add_to_res(result, tmp);
-	free(str);
-	str = NULL;
-	return (result);
+	else if (dvars->flag == 1)
+	{
+		dvars->flag = 0;
+		dvars->q_type = '0';
+	}
+	dvars->start = dvars->i + 1;
 }
 
-char	**get_params(char *line, char ***env)
+static char	*del_quotes(char *str, char ***env)
 {
-	int		i;
-	int		start;
+	t_exp_dyn	*dvars;
+	char		*res;
+
+	dvars = t_exp_dyn_init();
+	dvars->result = ft_strjoin("", "");
+	while (str[dvars->i])
+	{
+		dvars->c = str[dvars->i];
+		if ((dvars->c == '\'' || dvars->c == '\"') && dvars->flag == 0)
+			update_res(dvars, str, env);
+		else if ((dvars->c == '\'' || dvars->c == '\"')
+			&& dvars->flag == 1 && dvars->c == dvars->q_type)
+			update_res(dvars, str, env);
+		dvars->i++;
+	}
+	update_res(dvars, str, env);
+	res = ft_strdup(dvars->result);
+	free(dvars->result);
+	free(dvars);
+	free(str);
+	str = NULL;
+	return (res);
+}
+
+char	**get_params(char *line, char ***env, int i, int start)
+{
 	int		end;
 	int		params_size;
 	char	*tmp_line;
 	char	**params;
 
 	tmp_line = crop_line(line);
-	printf("Line to get_size - [%s]\n", tmp_line);
 	params_size = get_size(tmp_line);
-	printf("size - %d\n", params_size);
 	params = (char **)malloc(sizeof(char *) * (params_size + 1));
 	i = 0;
 	start = 0;
@@ -265,23 +276,11 @@ char	**get_params(char *line, char ***env)
 	{
 		end = get_end(tmp_line, start);
 		params[i] = ft_substr(tmp_line, start, (size_t)(end - start));
-		// printf("params[%d] = [%s]\n", i, params[i]);
 		params[i] = del_quotes(params[i], env);
-		// printf("params[%d] = [%s]\n", i, params[i]);
 		start = skip_wsp(tmp_line, end);
 		++i;
 	}
 	params[params_size] = NULL;
-	// exit(0);
-	// i = 0;
-	// while (params[i])
-	// {
-	// 	printf("[%s]\n", params[i]);
-	// 	i++;
-	// }
-	// printf("finish\n");
-	// exit(0);
-	//
 	free(tmp_line);
 	return (params);
 }
@@ -291,7 +290,7 @@ static int	check_params(char *str)
 	int	i;
 
 	i = 0;
-	if (str[0] == '?') 
+	if (str[0] == '?')
 		if (str[1] == '=')
 			if (str[2] == '\0')
 				return (1);
@@ -335,15 +334,7 @@ int	ft_export(char **args, char *line)
 
 	(void) args;
 	env = gc_env_alloc(-1);
-	params = get_params(line, env);
-	//test
-	i = 0;
-	printf("PRINT PARAMS:\n");
-	while (params[i])
-	{
-		printf("[%s]\n", params[i]);
-		++i;
-	}
+	params = get_params(line, env, 0, 0);
 	i = 1;
 	if (params[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 18:09:01 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/12 12:04:34 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:01:17 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ char	*find_binary(char *name)
 
 	final_path = check_absolute_relative_path(name);
 	gc_add(final_path);
-	if (final_path && access(final_path, X_OK)  != -1)
+	if (final_path && access(final_path, X_OK) != -1)
 		return (final_path);
-	else if (final_path && access(final_path,X_OK) == -1)
+	else if (final_path && access(final_path, X_OK) == -1)
 	{
-		write(2,"minishell: permission denied \n", 29);
+		write(2, "minishell: permission denied \n", 29);
 		ft_putstr_fd(name, 2);
-		write(2,"\n", 1);
+		write(2, "\n", 1);
 		gc_env_free();
 		gc_free();
 		exit(126);
@@ -42,22 +42,22 @@ char	*find_binary(char *name)
 	final_path = get_full_path(name, path);
 	if (!final_path)
 	{
-		write(2,"minishell: command not found \n", 29);
+		write(2, "minishell: command not found \n", 29);
 		ft_putstr_fd(name, 2);
-		write(2,"\n", 1);
+		write(2, "\n", 1);
 		gc_env_free();
 		gc_free();
 		exit(127);
 	}
 	else
 		gc_add(final_path);
-	if (final_path && access(final_path, X_OK)  != -1)
+	if (final_path && access(final_path, X_OK) != -1)
 		return (final_path);
-	else if (final_path && access(final_path, X_OK)  == -1)
+	else if (final_path && access(final_path, X_OK) == -1)
 	{
-		write(2,"minishell: permission denied \n", 29);
+		write(2, "minishell: permission denied \n", 29);
 		ft_putstr_fd(name, 2);
-		write(2,"\n", 1);
+		write(2, "\n", 1);
 		gc_env_free();
 		gc_free();
 		exit(126);
