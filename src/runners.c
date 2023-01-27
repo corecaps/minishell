@@ -37,17 +37,8 @@ int	run_builtin(t_exec *exec, t_f_builtin builtin)
 	return (status);
 }
 
-int	run_leaf(t_exec *exec)
+void	chk_access(char *full_path)
 {
-	char	**argv;
-	char	*full_path;
-
-	if (exec->current_node->in_pipe != NULL)
-		close(exec->current_node->in_pipe[1]);
-	if (exec->current_node->out_pipe != NULL)
-		close(exec->current_node->out_pipe[0]);
-	argv = get_args(exec->current_node);
-	full_path = find_binary(exec->current_node->token_node->value);
 	if (!full_path)
 		exit (126);
 	if (is_dir(full_path))
@@ -59,6 +50,20 @@ int	run_leaf(t_exec *exec)
 		gc_free();
 		exit (126);
 	}
+}
+
+int	run_leaf(t_exec *exec)
+{
+	char	**argv;
+	char	*full_path;
+
+	if (exec->current_node->in_pipe != NULL)
+		close(exec->current_node->in_pipe[1]);
+	if (exec->current_node->out_pipe != NULL)
+		close(exec->current_node->out_pipe[0]);
+	argv = get_args(exec->current_node);
+	full_path = find_binary(exec->current_node->token_node->value);
+	chk_access(full_path);
 	if (exec->current_node->in_pipe != NULL)
 		apply_dup(exec->current_node->in_pipe[0], STDIN_FILENO);
 	if (exec->current_node->out_pipe != NULL)
