@@ -6,12 +6,19 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 13:08:09 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 15:15:23 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 19:08:17 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXEC_H
 # define EXEC_H
+
+typedef struct s_single_cmd
+{
+	int	status;
+	int	flag;
+	int	tmp;
+}	t_single_cmd;
 
 typedef struct s_exec
 {
