@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:13:41 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 14:59:34 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:09:50 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	gc_free(void)
 	t_garbage	*tmp;
 	t_garbage	**garbage;
 	t_garbage	*cursor;
-
 
 	garbage = gc_add(NULL);
 	if (!(*garbage))

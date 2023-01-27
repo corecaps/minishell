@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:18:11 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 14:49:48 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:11:14 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	traverse_pipe(t_exec *exec)
 {
 	int	pipe_local_idx;
 	int	status;
-	int return_status;
+	int	return_status;
 	int	pid;
 	int	pid2;
 

@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 14:55:55 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:10:17 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static t_data	*data_init(void)
 	t_data	*data;
 	char	*prompt;
 
-	data = (t_data *)gc_alloc(1,sizeof(t_data));
+	data = (t_data *)gc_alloc(1, sizeof(t_data));
 	data->open_quote = -1;
 	data->start_token = NULL;
 	prompt = get_prompt(gc_env_alloc(-1));
