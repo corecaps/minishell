@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:10:11 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 15:09:22 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 16:51:00 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,28 +29,11 @@ void	free_here_doc_list(t_here_doc *here_doc_list)
 		free(tmp);
 	}
 }
-/**************************************************************************
- * Output the heredoc to the pipe
- * SHOULD BE EXECUTED IN CHILD PROCESS
- * @param exec
- *************************************************************************/
 
-static void	here_doc_child(t_exec *exec)
+static void	close_pipes(const t_exec *exec)
 {
-	t_here_doc	*cursor;
-	int			i;
+	int	i;
 
-	close(exec->pipes[exec->pipe_i]);
-	dup2(exec->pipes[exec->pipe_i + 1], STDOUT_FILENO);
-	cursor = exec->current_node->here_doc_list;
-	while (cursor && cursor->line)
-	{
-		write(exec->pipes[exec->pipe_i + 1], cursor->line,
-			ft_strlen(cursor->line));
-		write(exec->pipes[exec->pipe_i + 1], "\n", 1);
-		cursor = cursor->next;
-	}
-	close(exec->pipes[exec->pipe_i + 1]);
 	if (exec->n_pipes > 1)
 	{
 		i = 0;
@@ -64,6 +47,30 @@ static void	here_doc_child(t_exec *exec)
 			i += 2;
 		}
 	}
+}
+
+/**************************************************************************
+ * Output the heredoc to the pipe
+ * SHOULD BE EXECUTED IN CHILD PROCESS
+ * @param exec
+ *************************************************************************/
+
+static void	here_doc_child(t_exec *exec)
+{
+	t_here_doc	*cursor;
+
+	close(exec->pipes[exec->pipe_i]);
+	dup2(exec->pipes[exec->pipe_i + 1], STDOUT_FILENO);
+	cursor = exec->current_node->here_doc_list;
+	while (cursor && cursor->line)
+	{
+		write(exec->pipes[exec->pipe_i + 1], cursor->line,
+			ft_strlen(cursor->line));
+		write(exec->pipes[exec->pipe_i + 1], "\n", 1);
+		cursor = cursor->next;
+	}
+	close(exec->pipes[exec->pipe_i + 1]);
+	close_pipes(exec);
 	gc_env_free();
 	free_here_doc_list(exec->current_node->here_doc_list);
 	gc_free();
