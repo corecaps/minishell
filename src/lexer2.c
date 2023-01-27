@@ -107,7 +107,7 @@ void	add_word_token(t_data *data, char sep, char ***env)
 	else
 	{
 		add_token(data, E_WORD, rawvalue);
-		free(rawvalue);
+		gc_add(rawvalue);
 	}
 }
 
