@@ -17,22 +17,25 @@ static int	empty_env(char ***env, char *key, char *value)
 {
 	char	*tmp;
 
-	(*env) = ft_calloc(sizeof(char *), 2);
+//	(*env) = ft_calloc(sizeof(char *), 2);
+	env = gc_env_alloc(2);
 	if ((*env) == NULL)
 		return (-1);
 	tmp = ft_strjoin(key, "=");
 	(*env)[0] = ft_strjoin(tmp, value);
 	(*env)[1] = NULL;
+	gc_env_add((*env)[0]);
 	free(tmp);
 	return (0);
 }
 
 static int	update_env(char ***env, size_t size, char *tmp, char *value)
 {
-	realloc_environ(env, size + 1, -1);
+	realloc_environ(size + 1, -1);
 	if (!(*env))
 		return (-1);
 	(*env)[size] = ft_strjoin(tmp, value);
+	gc_env_add((*env)[size]);
 	return (0);
 }
 
@@ -58,12 +61,14 @@ static int	find_var_index(char ***env, char *tmp)
  * @return 0 if success, -1 if error
  *****************************************************************************/
 
-int	set_env(char ***env, char *key, char *value)
+int set_env(char *key, char *value)
 {
 	size_t	i;
 	size_t	size;
 	char	*tmp;
+	char	***env;
 
+	env = gc_env_alloc(-1);
 	tmp = ft_strjoin(key, "=");
 	if (tmp == NULL)
 		return (-1);
@@ -76,8 +81,9 @@ int	set_env(char ***env, char *key, char *value)
 	else
 	{
 		if ((*env)[i])
-			free((*env)[i]);
+			gc_env_del((*env)[i]);
 		(*env)[i] = ft_strjoin(tmp, value);
+		gc_env_add((*env)[i]);
 	}
 	free(tmp);
 	return (0);

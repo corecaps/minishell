@@ -51,11 +51,15 @@ int	traverse_pipe(t_exec *exec)
 	{
 		waitpid(pid2, &return_status, 0);
 		waitpid(pid, NULL, 0);
+		close(exec->pipes[pipe_local_idx]);
+		close(exec->pipes[pipe_local_idx + 1]);
 		return (WEXITSTATUS(return_status));
 	}
 	else
 	{
 		waitpid(pid, &return_status, 0);
+		close(exec->pipes[pipe_local_idx]);
+		close(exec->pipes[pipe_local_idx + 1]);
 		if (status > 0)
 			return (status);
 		return (WEXITSTATUS(return_status));

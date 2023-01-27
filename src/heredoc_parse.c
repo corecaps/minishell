@@ -86,7 +86,18 @@ int	parse_here_doc(t_ast *node)
 			return (-1);
 		current_line->line = readline("heredoc> ");
 		if (current_line->line == NULL)
+		{
+			write(2,
+				"minishell error: here-document delimited by EOF", 47);
+			write(2, " (wanted `", 10);
+			ft_putstr_fd(end, 2);
+			write(2, "')\n", 3);
+			if (prev)
+				prev->next = NULL;
+			free(current_line->line);
+			free(current_line);
 			return (-7);
+		}
 		current_line->next = NULL;
 		store_heredoc(node, current_line);
 		if (end_heredoc(node, prev, current_line, end))

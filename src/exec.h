@@ -17,6 +17,7 @@ typedef struct s_exec
 {
 	int		*pipes;
 	int		pipe_i;
+	int		n_pipes;
 	char	**envp;
 	int		n_child;
 	t_ast	*current_node;
@@ -44,7 +45,7 @@ int			ft_exit(char **args, char ***env, char *line);
 int			ft_env(char **args, char ***env, char *line);
 int			ft_export(char **args, char ***env, char *line);
 int			ft_unset(char **args, char ***env, char *line);
-int			realloc_environ(char ***env, size_t size, size_t index);
+int realloc_environ(size_t size, size_t index);
 char		*check_absolute_relative_path(char *name);
 char		*get_full_path(char *name, char **path);
 int			check_heredoc_last_in(t_ast *current_node);

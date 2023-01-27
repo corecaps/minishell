@@ -57,7 +57,7 @@ int	ft_unset(char **args, char ***env, char *line)
 				ft_strlen(args[i])))
 			{
 				index = (size_t) j;
-				realloc_environ(env, count_env(env) - 1, index);
+				realloc_environ(count_env(env) - 1, index);
 				break ;
 			}
 			j++;

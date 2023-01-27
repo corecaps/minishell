@@ -23,6 +23,7 @@ int	single_cmd(t_exec *exec, char ***env)
 {
 	int	status;
 
+	(void)env;
 	if (exec->root->here_doc == 1)
 	{
 		if (exec->root->here_doc_list)
@@ -42,11 +43,14 @@ int	single_cmd(t_exec *exec, char ***env)
 		status = exec_leaf(exec);
 	else
 		status = exec_scmd(exec);
+	if (check_builtins(exec->current_node->token_node->value)
+		&& !exec->current_node->left)
+		return (status);
 	if (status < 0)
 		return (status);
 	waitpid(-1, &status, 0);
 	waitpid(-1, &status, 0);
-	*env = exec->envp;
+//	*env = exec->envp;
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	return (0);
