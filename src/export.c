@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 13:34:44 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 13:49:56 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,19 +260,15 @@ static char	*del_quotes(char *str, char ***env)
 	return (res);
 }
 
-char	**get_params(char *line, char ***env)
+char	**get_params(char *line, char ***env, int i, int start)
 {
-	int		i;
-	int		start;
 	int		end;
 	int		params_size;
 	char	*tmp_line;
 	char	**params;
 
 	tmp_line = crop_line(line);
-	printf("Line to get_size - [%s]\n", tmp_line);
 	params_size = get_size(tmp_line);
-	printf("size - %d\n", params_size);
 	params = (char **)malloc(sizeof(char *) * (params_size + 1));
 	i = 0;
 	start = 0;
@@ -280,23 +276,11 @@ char	**get_params(char *line, char ***env)
 	{
 		end = get_end(tmp_line, start);
 		params[i] = ft_substr(tmp_line, start, (size_t)(end - start));
-		// printf("params[%d] = [%s]\n", i, params[i]);
 		params[i] = del_quotes(params[i], env);
-		// printf("params[%d] = [%s]\n", i, params[i]);
 		start = skip_wsp(tmp_line, end);
 		++i;
 	}
 	params[params_size] = NULL;
-	// exit(0);
-	// i = 0;
-	// while (params[i])
-	// {
-	// 	printf("[%s]\n", params[i]);
-	// 	i++;
-	// }
-	// printf("finish\n");
-	// exit(0);
-	//
 	free(tmp_line);
 	return (params);
 }
@@ -306,7 +290,7 @@ static int	check_params(char *str)
 	int	i;
 
 	i = 0;
-	if (str[0] == '?') 
+	if (str[0] == '?')
 		if (str[1] == '=')
 			if (str[2] == '\0')
 				return (1);
@@ -348,16 +332,7 @@ int	ft_export(char **args, char ***env, char *line)
 	char	**params;
 
 	(void) args;
-	params = get_params(line, env);
-	//test
-	i = 0;
-	printf("PRINT PARAMS:\n");
-	while (params[i])
-	{
-		printf("[%s]\n", params[i]);
-		++i;
-	}
-	//
+	params = get_params(line, env, 0, 0);
 	i = 1;
 	if (params[i])
 	{
