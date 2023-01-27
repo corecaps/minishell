@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 16:35:29 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/26 13:42:50 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/26 20:45:45 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ char	*expand(char *str, char ***env)
 	while (str[exp.i])
 	{
 		c = str[exp.i];
-		if (c == '$'  || c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r')
+		if (c == '$' || c == ' ' || c == '\t'
+			|| c == '\n' || c == '\v' || c == '\f' || c == '\r')
 		{
 			tmp = ft_substr(str, exp.start, (size_t)(exp.i - exp.start));
 			if (exp.flag == 1)
@@ -96,10 +97,9 @@ char	*expand(char *str, char ***env)
 			else
 				exp.flag = 0;
 		}
-		
 		++exp.i;
 	}
-	tmp = ft_substr(str, exp.start, (size_t)(exp.i - exp.start ));
+	tmp = ft_substr(str, exp.start, (size_t)(exp.i - exp.start));
 	if (exp.flag == 1)
 		tmp = retrieve_str(tmp, env);
 	result = add_to_res(result, tmp);
