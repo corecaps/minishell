@@ -401,7 +401,7 @@ AC_SUBST([AR])dnl
 # with or without modifications, as long as this notice is preserved.
 
 # For projects using AC_CONFIG_AUX_DIR([foo]), Autoconf sets
-# $ac_aux_dir to '$srcdir/foo'.  In other projects, it is set to
+# $ac_aux_dir to '$srcdir/cmd_node'.  In other projects, it is set to
 # '$srcdir', '$srcdir/..', or '$srcdir/../..'.
 #
 # Of course, Automake must honor this variable whenever it calls a

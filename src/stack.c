@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stack.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 12:05:30 by jgarcia           #+#    #+#             */
-/*   Updated: 2022/12/10 13:08:10 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/27 15:10:57 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_stack	*push(t_token_type type, t_stack *head)
 {
 	t_stack	*new_node;
 
-	new_node = malloc(sizeof(t_stack));
+	new_node = gc_alloc(1, sizeof(t_stack));
 	if (new_node == NULL)
 		return (NULL);
 	new_node->type = type;
@@ -36,14 +36,9 @@ t_token_type	pop(t_stack **head)
 		return (E_END_OF_TOKEN);
 	tmp = (*head)->next;
 	result = (*head)->type;
-	free ((*head));
+	gc_del((*head));
 	*head = tmp;
 	return (result);
-}
-
-t_token_type	peek(t_stack *head)
-{
-	return (head->type);
 }
 
 int	count_stack(t_stack *head)
@@ -57,23 +52,4 @@ int	count_stack(t_stack *head)
 		head = head->next;
 	}
 	return (i);
-}
-
-void	del_stack(t_stack *head)
-{
-	t_stack	*prev;
-	t_garbage *tmp;
-
-	if (!head)
-		return ;
-	prev = head;
-	while (head && head->next)
-	{
-		head = head->next;
-		tmp = garbage_collector_add(NULL);
-		gc_remove(&tmp,prev);
-		free(prev);
-		prev = head;
-	}
-	free(head);
 }

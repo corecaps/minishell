@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 01:11:08 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/12 12:29:29 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:14:10 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
  * @return Number of variables in environment
  *****************************************************************************/
 
-size_t	count_env(char ***env)
+int	count_env(char ***env)
 {
-	size_t	i;
+	int	i;
 
 	if (env == NULL || *env == NULL)
 		return (0);
@@ -29,27 +29,6 @@ size_t	count_env(char ***env)
 	while ((*env)[i])
 		i++;
 	return (i);
-}
-
-/******************************************************************************
- * Delete the environment array and all the variables
- * @param env Pointer to Environment
- *****************************************************************************/
-
-void	del_environ(char ***env)
-{
-	size_t	i;
-
-	if (*env == NULL)
-		return ;
-	i = 0;
-	while ((*env)[i])
-	{
-		free((*env)[i]);
-		i++;
-	}
-	free(*env);
-	*env = NULL;
 }
 
 /******************************************************************************
@@ -63,15 +42,17 @@ void	del_environ(char ***env)
  * @return 0 if success, -1 if error
  *****************************************************************************/
 
-int	realloc_environ(char ***env, size_t size, size_t index)
+int	realloc_environ(size_t size, size_t index)
 {
 	char	**new_env;
+	char	***env;
 	size_t	i;
 	size_t	j;
 
+	env = gc_env_alloc(-1);
 	if (env == NULL || size == 0)
 		return (-1);
-	new_env = ft_calloc( (size + 1),sizeof(char *));
+	new_env = ft_calloc((size + 1), sizeof(char *));
 	if (new_env == NULL)
 		return (-1);
 	i = 0;
@@ -80,15 +61,30 @@ int	realloc_environ(char ***env, size_t size, size_t index)
 	{
 		if (index == i)
 			i++;
-		new_env[j] = ft_strdup((*env)[i]);
+		else
+			new_env[j] = ft_strdup((*env)[i]);
 		i++;
 		j++;
 	}
-	new_env[i] = NULL;
-	free_env(env);
-	*env = new_env;
+	gc_env_free();
+	(*env) = new_env;
+	(*env)[j] = NULL;
+	gc_env_add(*env);
+	i = 0;
+	while (i < size)
+	{
+		gc_env_add((*env)[i]);
+		i++;
+	}
 	return (0);
 }
+
+/*****************************************************************************
+ * get the value of the environment variable key
+ * @param key key of the environment variable
+ * @param env pointer to the environment
+ * @return NULL terminated string with the value of the environment variable
+ ****************************************************************************/
 
 char	*get_env(char *key, char ***env)
 {

@@ -6,106 +6,118 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/18 11:19:17 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:10:17 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "termios.h"
+
+/******************************************************************************
+ * Assure that the program is running in interactive mode
+ * Set the signal handlers
+ * Setups the terminal to not echo control characters
+ * Create the environment
+ *****************************************************************************/
+
+static int	initial_setup(int argc, char **argv, char **env)
+{
+	struct termios	term_info;
+	char			*cwd;
+
+	if (!isatty(STDIN_FILENO))
+	{
+		write(2, "minishell works only in interactive mode\n", 41);
+		exit(EXIT_FAILURE);
+	}
+	set_signals();
+	tcgetattr(0, &term_info);
+	term_info.c_lflag &= ~ECHOCTL;
+	tcsetattr(0, TCSANOW, &term_info);
+	if (!create_env(env, argc, argv))
+		return (0);
+	cwd = get_env("PWD", gc_env_alloc(-1));
+	if (!cwd)
+	{
+		cwd = getcwd(NULL, 0);
+		set_env("PWD", cwd);
+		free(cwd);
+	}
+	else
+	{
+		free(cwd);
+	}
+	return (1);
+}
+
+/******************************************************************************
+ * initialize the data struct and read the next command line
+ * add the line to the history if it is not empty
+ *****************************************************************************/
 
 static t_data	*data_init(void)
 {
 	t_data	*data;
+	char	*prompt;
 
-	data = (t_data *)malloc(sizeof(t_data));
+	data = (t_data *)gc_alloc(1, sizeof(t_data));
 	data->open_quote = -1;
 	data->start_token = NULL;
-	data->line = readline(PS1);
+	prompt = get_prompt(gc_env_alloc(-1));
+	data->line = readline(prompt);
+	free(prompt);
 	if (!data->line)
 	{
-		exit(EXIT_FAILURE);
+		gc_env_free();
+		gc_free();
+		exit(0);
 	}
+	gc_add(data->line);
 	if (ft_strlen(data->line))
 		add_history(data->line);
-//	garbage_collector_add(data->line);
-//	garbage_collector_add(data);
 	return (data);
 }
-// TODO : signal handling
-// TODO : prompt function
-void gc_ast_del(t_ast *current)
-{
-	if (current->left)
-		gc_ast_del(current->left);
-	if (current->right)
-		gc_ast_del(current->right);
-	garbage_collector_add(current);
-}
 
-void gc_pre_exec(t_data * data)
+void	interactive_mode_assert(void)
 {
-	t_token	*token_cursor;
-	t_stack	*stack_cursor;
-
-//	token_cursor = data->start_token;
-//	while (token_cursor)
-//	{
-////	garbage_collector_add(token_cursor->value);
-//	garbage_collector_add(token_cursor);
-//	token_cursor = token_cursor->next_token;
-//	}
-//	garbage_collector_add(data->line);
-//	gc_ast_del(data->root);
-//	stack_cursor = data->parsing_stack;
-//	while (stack_cursor)
-//	{
-//		garbage_collector_add(stack_cursor);
-//		stack_cursor = stack_cursor->next;
-//	}
-////	garbage_collector_add(data);
+	perror("minishell works only in interactive mode\n");
+	exit(EXIT_FAILURE);
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	t_data	*data;
 	int		status;
-	char	**new_env;
+	int		old_status;
 
-//	set_signals();
-	new_env = create_env(env, argc, argv);
+	old_status = 0;
+	if (!initial_setup(argc, argv, env))
+		return (EXIT_FAILURE);
 	while (1)
 	{
 		data = data_init();
-		lexer(data, &new_env);
-		//FOR TEST
-		// printf("Token List:\n");
-		// while (data->start_token)
-		// {
-		// 	printf("[%s]\n", data->start_token->value);
-		// 	data->start_token = data->start_token->next_token;
-		// }
-		// exit(0);
-		//
+		lexer(data, gc_env_alloc(-1));
 		status = parse(data);
+		if (status < 0)
+		{
+			parser_error(status);
+			status = 2;
+		}
 		if (data->root && status == 1)
 		{
-			gc_pre_exec(data);
-			status = exec_cmd_line(data->root, &new_env);
-			data->status = ft_itoa(status);
-			set_env(&new_env, "?", data->status);
+			status = exec_cmd_line(data->root, gc_env_alloc(-1), data->line);
+			if (status < 0)
+			{
+				exec_error(status);
+				status = 2;
+			}
 		}
-		else
-		{
-			data->status = ft_itoa(status);
-			set_env(&new_env, "?",data->status);
-		}
-//		if (data->status)
-//		{
-//			printf("add from main\n");
-//			free(data->status);
-//		}
-//		garbage_collector_free(garbage_collector_add(NULL));
-		free_data(data);
+		else if (status == 1)
+			status = old_status;
+		data->status = ft_itoa(status);
+		gc_add(data->status);
+		old_status = status;
+		set_env("?", data->status);
+		gc_free();
 	}
-	free_env(&new_env);
-	return (0);
 }

@@ -6,15 +6,22 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:13:41 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/12 13:06:44 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:09:50 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/******************************************************************************
+ * Check if a pointer is already in the garbage collector
+ * @param gc Pointer to the garbage collector
+ * @param ptr Pointer to check
+ * @return 1 if the pointer is already in the garbage collector, 0 otherwise
+ *****************************************************************************/
+
 int	gc_check_double(t_garbage *gc, void *ptr)
 {
-	t_garbage 	*tmp;
+	t_garbage	*tmp;
 
 	tmp = gc;
 	while (tmp)
@@ -31,19 +38,24 @@ int	gc_check_double(t_garbage *gc, void *ptr)
  * @param garbage Pointer to the garbage collector
  *****************************************************************************/
 
-void	garbage_collector_free(t_garbage *garbage)
+void	gc_free(void)
 {
 	t_garbage	*tmp;
+	t_garbage	**garbage;
+	t_garbage	*cursor;
 
-	while (garbage)
+	garbage = gc_add(NULL);
+	if (!(*garbage))
+		return ;
+	cursor = *garbage;
+	while (cursor)
 	{
-		tmp = garbage;
-		garbage = garbage->next;
+		tmp = cursor;
+		cursor = cursor->next;
 		free(tmp->ptr);
-//		tmp->ptr = NULL;
-		if (tmp)
-			free(tmp);
+		free(tmp);
 	}
+	(*garbage) = NULL;
 }
 
 /***************************************************************************
@@ -52,56 +64,77 @@ void	garbage_collector_free(t_garbage *garbage)
  * @return Pointer to the garbage collector
  ****************************************************************************/
 
-t_garbage	*garbage_collector_add(void *ptr)
+t_garbage	**gc_add(void *ptr)
 {
 	static t_garbage	*garbage = NULL;
 	t_garbage			*new;
-	t_garbage			*bottom;
 
 	if (ptr == NULL)
-		return (garbage);
-	if (gc_check_double(garbage, ptr))
-		return (garbage);
+		return (&garbage);
+	if (garbage && gc_check_double(garbage, ptr))
+		return (&garbage);
 	new = malloc(sizeof(t_garbage));
 	if (!new)
 		return (NULL);
 	new->ptr = ptr;
-	new->next = NULL;
 	if (garbage)
-	{
-		bottom = garbage;
-		while (bottom && bottom->next)
-			bottom = bottom->next;
-		bottom->next = new;
-	}
+		new->next = garbage;
 	else
-		garbage = new;
-	return (garbage);
+		new->next = NULL;
+	garbage = new;
+	return (&garbage);
 }
 
-t_garbage	**gc_remove(t_garbage **gc, void *ptr)
+/******************************************************************************
+ * Free a specific pointer in the garbage collector and remove it from
+ * the garbage collector
+ * @param ptr Pointer to remove
+ * @return 1 if the pointer was removed, 0 otherwise
+ *****************************************************************************/
+
+int	gc_del(void *ptr)
 {
-	t_garbage	*tmp;
+	t_garbage	*cursor;
+	t_garbage	**gc;
 	t_garbage	*prev;
 
-
-	if (!gc || !ptr)
-		return (NULL);
-	tmp = *gc;
+	gc = gc_add(NULL);
+	cursor = *gc;
+	if (!cursor)
+		return (0);
 	prev = NULL;
-	while (tmp)
+	while (cursor)
 	{
-		if (tmp && tmp->ptr == ptr)
+		if (cursor->ptr == ptr)
 		{
 			if (prev)
-				prev->next = tmp->next;
+				prev->next = cursor->next;
 			else
-				*gc = tmp->next;
-			free(tmp);
-			return (gc);
+				(*gc) = cursor->next;
+			free(cursor->ptr);
+			free(cursor);
+			return (1);
 		}
-		prev = tmp;
-		tmp = tmp->next;
+		prev = cursor;
+		cursor = cursor->next;
 	}
-	return (gc);
+	return (0);
+}
+
+/******************************************************************************
+ * Allocate memory and add the pointer to the garbage collector
+ * @param nmemb Number of elements
+ * @param size Size of each element
+ * @return Pointer to the allocated memory or NULL if an error occured
+ *****************************************************************************/
+
+void	*gc_alloc(size_t nmemb, size_t size)
+{
+	void	*ptr;
+
+	ptr = ft_calloc(nmemb, size);
+	if (!ptr)
+		return (NULL);
+	gc_add(ptr);
+	return (ptr);
 }

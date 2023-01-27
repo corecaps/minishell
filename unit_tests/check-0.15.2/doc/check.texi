@@ -2131,7 +2131,7 @@ class ShellTests(subunit.ExecTestCase):
 
 In this example, running the test suite ShellTests in python (using any test
 runner - unittest.py, tribunal, trial, nose or others) will run
-./foo/check_driver and ./foo/other_driver and report on their result.
+./foo/check_driver and ./cmd_node/other_driver and report on their result.
 
 Subunit is hosted on launchpad - the @uref{https://launchpad.net/subunit/,
 subunit} project there contains bug tracker, future plans, and source code

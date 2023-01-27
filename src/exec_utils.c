@@ -3,15 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:51:44 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/13 14:51:55 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/23 10:17:56 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec.h"
+
+/*****************************************************************************
+ * Apply dup2 and close to the file descriptor
+ ****************************************************************************/
 
 void	apply_dup(int fd1, int fd2)
 {
@@ -19,7 +23,12 @@ void	apply_dup(int fd1, int fd2)
 	close(fd1);
 }
 
-int		open_redir(char *path,int oflags, t_ast * node,int dest)
+/*****************************************************************************
+ * Open a file descriptor for the targeted file in redirection node
+ * and apply dup2 then close to the file descriptor
+ ****************************************************************************/
+
+int	open_redir(char *path, int oflags, t_ast *node, int dest)
 {
 	int		fd;
 	t_ast	*cursor;

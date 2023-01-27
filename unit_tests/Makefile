@@ -28,11 +28,11 @@ MS_SRCDIR	= ../src
 MS_SOURCE	= ../src/arguments.c ../src/ast.c ../src/ast_builder.c ../src/ast_node_init.c ../src/builtin.c
 MS_SOURCE	+= ../src/builtin2.c ../src/check_builtin.c ../src/cmd_line.c ../src/data_utils.c
 MS_SOURCE	+= ../src/environ.c ../src/exec.c ../src/exec_heredoc.c ../src/exec_leaf.c
-MS_SOURCE	+= ../src/exec_utils.c ../src/expand.c ../src/expand.c ../src/find_binary.c
+MS_SOURCE	+= ../src/exec_utils.c ../src/expand.c ../src/find_binary.c
 MS_SOURCE	+= ../src/garbage_collector.c ../src/grammar_production.c ../src/grammar_production_2.c
-MS_SOURCE	+= ../src/heredoc_parse.c ../src/lexer.c ../src/lexer2.c
-MS_SOURCE	+= ../src/parser.c ../src/path_expander.c ../src/runners.c ../src/set_env.c
-MS_SOURCE	+= ../src/signal_handler.c ../src/signal_handler.c ../src/single_cmd.c
+MS_SOURCE	+= ../src/heredoc_parse.c ../src/lexer.c ../src/lexer2.c ../src/print_sorted_env.c
+MS_SOURCE	+= ../src/prompt.c ../src/parser.c ../src/path_expander.c ../src/runners.c ../src/set_env.c
+MS_SOURCE	+= ../src/signal_handler.c ../src/single_cmd.c
 MS_SOURCE	+= ../src/stack.c ../src/token_list.c ../src/traverse_pipe.c
 MS_OBJ		= $(subst ../src/,../obj/,$(MS_SOURCE:.c=.o))
 MS_COV		= $(subst ../src/,../obj/,$(MS_SOURCE:.c=.gcno))

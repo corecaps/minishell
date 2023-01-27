@@ -6,21 +6,21 @@
 #    By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/04 12:18:46 by jgarcia           #+#    #+#              #
-#    Updated: 2023/01/17 10:26:12 by latahbah         ###   ########.fr        #
+#    Updated: 2023/01/27 10:51:01 by jgarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
+NAME = leakbuster
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra 
 DEBUG = -g3 -fanalyzer
-LIBFT = libft/libft.a
-LINK = -Llibft -lft -lreadline
+LIBFT = ../libft/libft.a
+LINK = -L../libft -lft -lreadline
 RM = rm -f
-SRCDIR = src
-OBJDIR = obj
+SRCDIR = ../src
+OBJDIR = ../obj
 BIN = bin
-SRC =	minishell.c				token_list.c			gc_env.c\
+SRC =					token_list.c			gc_env.c\
 		lexer.c					stack.c					parser.c \
 		grammar_production.c	grammar_production_2.c	ast_builder.c \
 		exec.c					path_expander.c			arguments.c \
@@ -39,6 +39,7 @@ SOURCE = $(addprefix $(SRCDIR)/,$(SRC))
 OBJECT = $(addprefix $(OBJDIR)/,$(OBJ))
 HEADERS = $(addprefix $(SRCDIR)/,$(HEADER))
 UNITTESTS = unit_tests/unit_tests
+OBJ += main.o
 
 all: $(BIN)/$(NAME)
 
@@ -49,6 +50,9 @@ $(BIN)/$(NAME): $(OBJECT) $(LIBFT)
 
 debug:	CFLAGS += -g
 debug: all
+
+../obj/main.o : main.c
+	$(CC) $(CFLAGS) -c main.c -o ../obj/main.o
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@echo '====>COMPILATION<===='

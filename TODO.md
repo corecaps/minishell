@@ -1,0 +1,22 @@
+- [x] use rl_redisplay rl_replace_line, rl_on_new_line in signals and error handling
+- [x] ft_exit should take parameter for exit status
+- [x] gc for environment variables
+- [x] memory leaks on exit via signals
+- [x] memory leaks with failed commands
+- [x] correct return code in case of parse error or failed command
+- [x] fd leaks (heredoc)
+- [x] printing warning in case of ctrl-d inside a heredoc
+- [ ] handling return code when ctrl-c of that command 
+- [ ] ctrl-c in case of heredoc
+- [x] char	**get_path(void) uses the wrong env variable
+- [ ] **NORME**
+- [x] export refactoring
+- [x] return code for failed execution
+- [x] cd error code and message
+- [ ] error msg and break when incorrect file permission on redirect
+---
+- [ ] fd leaks in child when command not found 
+- [x] get path not protected when unset path (Segfault) 
+- [x] leaks when child segfault 
+- [x] leaks when path set to nonsense in get_env: 106
+

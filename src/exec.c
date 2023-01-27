@@ -19,21 +19,20 @@
  * @param node an E_COMMAND node
  * @return 0 in case of success, -2 in case of file error
  *****************************************************************************/
-//TODO: extract methods from this function
 
 int	apply_redirections(t_ast *node)
 {
 	if (node->type == E_REDIRECTION)
 	{
-		if (ft_strncmp(node->token_node->value, ">>",3) == 0)
+		if (ft_strncmp(node->token_node->value, ">>", 3) == 0)
 			open_redir(node->token_node->next_token->value,
 				O_WRONLY | O_CREAT | O_APPEND, node, STDOUT_FILENO);
-		else if (ft_strncmp(node->token_node->value, "<<",3) == 0)
-			open_redir(NULL,0, node, 0);
-		else if (ft_strncmp(node->token_node->value, "<",2) == 0)
+		else if (ft_strncmp(node->token_node->value, "<<", 3) == 0)
+			open_redir(NULL, 0, node, 0);
+		else if (ft_strncmp(node->token_node->value, "<", 2) == 0)
 			open_redir(node->token_node->next_token->value,
 				O_RDONLY, node, STDIN_FILENO);
-		else if (ft_strncmp(node->token_node->value, ">",2) == 0)
+		else if (ft_strncmp(node->token_node->value, ">", 2) == 0)
 			open_redir(node->token_node->next_token->value,
 				O_WRONLY | O_CREAT | O_TRUNC, node, STDOUT_FILENO);
 	}
@@ -46,9 +45,13 @@ int	apply_redirections(t_ast *node)
 	return (0);
 }
 
+/*****************************************************************************
+ * Check if heredoc is the last redirection in the command
+ *****************************************************************************/
+
 int	check_heredoc_last_in(t_ast *current_node)
 {
-	t_ast *cursor;
+	t_ast	*cursor;
 
 	cursor = current_node;
 	while (cursor && ft_strncmp(cursor->token_node->value, "<<", 3) != 0)

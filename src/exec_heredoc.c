@@ -3,17 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:10:11 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/13 14:10:26 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/27 15:09:22 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec.h"
 
-void free_here_doc_list(t_here_doc *here_doc_list)
+/**************************************************************************
+ * free memory from the heredoc list
+ *************************************************************************/
+
+void	free_here_doc_list(t_here_doc *here_doc_list)
 {
 	t_here_doc	*tmp;
 
@@ -34,17 +38,35 @@ void free_here_doc_list(t_here_doc *here_doc_list)
 static void	here_doc_child(t_exec *exec)
 {
 	t_here_doc	*cursor;
+	int			i;
 
 	close(exec->pipes[exec->pipe_i]);
 	dup2(exec->pipes[exec->pipe_i + 1], STDOUT_FILENO);
 	cursor = exec->current_node->here_doc_list;
 	while (cursor && cursor->line)
 	{
-		write(exec->pipes[exec->pipe_i + 1], cursor->line, ft_strlen(cursor->line));
+		write(exec->pipes[exec->pipe_i + 1], cursor->line,
+			ft_strlen(cursor->line));
 		write(exec->pipes[exec->pipe_i + 1], "\n", 1);
 		cursor = cursor->next;
 	}
 	close(exec->pipes[exec->pipe_i + 1]);
+	if (exec->n_pipes > 1)
+	{
+		i = 0;
+		while (i < exec->n_pipes * 2)
+		{
+			if (i != exec->pipe_i)
+			{
+				close(exec->pipes[i]);
+				close(exec->pipes[i + 1]);
+			}
+			i += 2;
+		}
+	}
+	gc_env_free();
+	free_here_doc_list(exec->current_node->here_doc_list);
+	gc_free();
 	exit(0);
 }
 
@@ -61,7 +83,7 @@ int	exec_heredoc(t_exec *exec)
 
 	if (pipe(exec->pipes + exec->pipe_i) == -1)
 		return (-4);
-	exec->current_node->in_pipe = exec->pipes[exec->pipe_i];
+	exec->current_node->in_pipe = (exec->pipes + exec->pipe_i);
 	status = fork();
 	if (status == -1)
 	{

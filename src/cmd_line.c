@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_line.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:42:26 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/13 13:42:31 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/27 15:06:01 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,17 @@ static int	count_pipes(t_ast *root)
  * @return an array of pipes, or NULL if an error occured
  ****************************************************************************/
 
-static int	*init_pipes(t_ast *root)
+static int	*init_pipes(t_ast *root, t_exec *exec)
 {
-	int	*pipefd;
-	int	n_pipes;
+	int	*pipe_fd;
 
-	n_pipes = count_pipes(root);
-	if (n_pipes == 0)
+	exec->n_pipes = count_pipes(root);
+	if (exec->n_pipes == 0)
 		return (NULL);
-	pipefd = malloc(sizeof(int) * n_pipes * 2);
-	if (pipefd == NULL)
+	pipe_fd = gc_alloc(exec->n_pipes * 2, sizeof(int));
+	if (pipe_fd == NULL)
 		return (NULL);
-	return (pipefd);
+	return (pipe_fd);
 }
 
 /******************************************************************************
@@ -62,30 +61,23 @@ static int	*init_pipes(t_ast *root)
  * @return t_exec_data* the data struct, NULL if error
  *****************************************************************************/
 
-static t_exec	*exec_init(t_ast *current_node, char ***env)
+static t_exec	*exec_init(t_ast *current_node, char ***env, char *line)
 {
 	t_exec	*new_exec;
 
-	new_exec = malloc(sizeof(t_exec));
+	new_exec = gc_alloc(1, sizeof(t_exec));
 	if (new_exec == NULL)
 		return (NULL);
 	new_exec->current_node = current_node;
 	new_exec->root = current_node;
 	new_exec->envp = *env;
-	new_exec->pipes = init_pipes(current_node);
-//	if (new_exec->pipes != NULL)
-//		garbage_collector_add(new_exec->pipes);
-//	garbage_collector_add(new_exec);
+	new_exec->pipes = init_pipes(current_node, new_exec);
 	new_exec->pipe_i = 0;
 	new_exec->n_child = 0;
+	new_exec->line = line;
 	return (new_exec);
 }
 
-void free_exec(t_exec *exec)
-{
-	free(exec->pipes);
-	free(exec);
-}
 /******************************************************************************
  * Execute a command line traversing the AST
  * @param current_node starting point in the Abstract Syntax Tree
@@ -96,16 +88,16 @@ void free_exec(t_exec *exec)
  * -8 incorrect AST structure
  *****************************************************************************/
 
-int	exec_cmd_line(t_ast *current_node, char ***env)
+int	exec_cmd_line(t_ast *current_node, char ***env, char *line)
 {
 	t_exec	*exec;
 	int		status;
 
-	exec = exec_init(current_node, env);
+	exec = exec_init(current_node, env, line);
 	if (exec == NULL)
 		return (-1);
 	if (current_node->type == E_COMMAND)
-		return (single_cmd(exec,env));
+		return (single_cmd(exec, env));
 	else if (current_node->type == E_PIPE)
 		status = traverse_pipe(exec);
 	else
@@ -113,12 +105,5 @@ int	exec_cmd_line(t_ast *current_node, char ***env)
 		return (-8);
 	}
 	*env = exec->envp;
-	free_exec(exec);
-	if (status < 0)
-	{
-		return (status);
-	}
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (0);
+	return (status);
 }

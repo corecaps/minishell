@@ -6,48 +6,67 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:42:09 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/12 12:58:23 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:13:30 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec.h"
 
-int	ft_cd(char **args, char ***env)
+/*****************************************************************************
+ * Builtin function to change the current working directory.
+ ****************************************************************************/
+
+int	ft_cd(char **args, char *line)
 {
 	char	*path;
 	char	*home;
+	char	***env;
 
+	(void) line;
+	env = gc_env_alloc(-1);
 	path = getcwd(NULL, 0);
 	home = NULL;
-	if (!path)
-		return (-1);
 	if (args[1] == NULL)
 	{
 		home = get_env("HOME", env);
 		if (chdir(home) == -1)
-			return (-1);
+			return (1);
+	}
+	else if (access(args[1], F_OK) == 0 && !is_dir(args[1]))
+	{
+		write(2, "minishell: cd: ", 15);
+		write(2, args[1], ft_strlen(args[1]));
+		write(2, ": Not a directory\n", 18);
+		return (1);
 	}
 	else if (chdir(args[1]) == -1)
 	{
-		return (-1);
+		write (2, "minishell: cd: ", 15);
+		write (2, args[1], ft_strlen(args[1]));
+		write (2, ": No such file or directory\n", 28);
+		return (1);
 	}
 	if (home)
 		free(home);
 	free (path);
 	path = getcwd(NULL, 0);
-	if (set_env(env, "PWD", path) == -1)
-		return (-2);
+	if (set_env("PWD", path) == -1)
+		return (1);
 	free(path);
 	return (0);
 }
 
-int	ft_echo(char **args, char ***env)
+/*****************************************************************************
+ * Builtin function to print arguments to the standard output.
+ ****************************************************************************/
+
+int	ft_echo(char **args, char *line)
 {
 	int	i;
 	int	trailing_newline;
 
-	(void) env;
+	(void) line;
 	trailing_newline = 1;
 	i = 1;
 	if (args[1] && !ft_strncmp(args[1], "-n", 3))
@@ -67,23 +86,37 @@ int	ft_echo(char **args, char ***env)
 	return (0);
 }
 
-int	ft_pwd(char **args, char ***env)
-{
-	(void) args;
+/*****************************************************************************
+ * Builtin function to print the current working directory.
+ ****************************************************************************/
 
-	printf("%s\n", get_env("PWD", env));
+int	ft_pwd(char **args, char *line)
+{
+	char	*path;
+	char	***env;
+
+	(void) args;
+	(void) line;
+	env = gc_env_alloc(-1);
+	path = get_env("PWD", env);
+	printf("%s\n", path);
+	free(path);
 	return (0);
 }
 
-int	ft_exit(char **args, char ***env)
-{
-	t_garbage	*gc;
+/*****************************************************************************
+ * Builtin function to exit the shell.
+ ****************************************************************************/
 
-	(void) args;
-	gc = garbage_collector_add(NULL);
-	if (gc)
-		garbage_collector_free(gc);
-//	free_env(env);
-	exit(EXIT_SUCCESS);
-	return (0);
+int	ft_exit(char **args, char *line)
+{
+	int	exit_status;
+
+	(void)line;
+	exit_status = 0;
+	if (args[1])
+		exit_status = ft_atoi(args[1]);
+	gc_env_free();
+	gc_free();
+	exit(exit_status);
 }

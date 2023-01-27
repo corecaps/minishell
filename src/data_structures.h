@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:13:13 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/18 10:24:35 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 13:57:13 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,17 @@ typedef enum e_token_type {
 	E_END_OF_TOKEN
 }	t_token_type;
 
-typedef int		(*t_f_builtin)(char **args, char ***env);
+typedef int		(*t_f_builtin)(char **args, char *line);
+
+typedef struct s_exp
+{
+	int		i;
+	int		start;
+	int		flag;
+	char	c;
+	char	*tmp;
+	char	*result;
+}	t_exp;
 
 typedef struct s_garbage
 {
@@ -63,8 +73,8 @@ typedef struct s_ast
 	struct s_ast	*parent;
 	struct s_ast	*left;
 	struct s_ast	*right;
-	int				in_pipe;
-	int				out_pipe;
+	int				*in_pipe;
+	int				*out_pipe;
 	int				here_doc;
 	t_here_doc		*here_doc_list;
 }	t_ast;

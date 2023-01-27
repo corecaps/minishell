@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:26:51 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/09 18:31:46 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/18 14:11:01 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,6 @@ int	cmd_arg(t_token **cursor, t_data *data)
 	return (1);
 }
 
-
 /*******************************************************************************
  *  Rule #15
  *  REDIRECTION_OP -> HERE_DOC
@@ -165,7 +164,6 @@ int	cmd_arg(t_token **cursor, t_data *data)
 
 int	redir_op(t_token **cursor, t_data *data)
 {
-
 	if ((*cursor)->token_type == E_HEREDOC)
 		data->parsing_stack = push(E_HEREDOC, data->parsing_stack);
 	else if ((*cursor)->token_type == E_APPEND)

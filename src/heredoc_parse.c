@@ -1,6 +1,14 @@
-//
-// Created by jgarcia on 1/12/23.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc_parse.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/21 02:28:46 by jgarcia           #+#    #+#             */
+/*   Updated: 2023/01/27 14:56:17 by latahbah         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec.h"
@@ -38,9 +46,10 @@ static int	end_heredoc(t_ast *node, t_here_doc *prev, t_here_doc *current_line,
  * @param current_line node to store
  ****************************************************************************/
 
-static void store_heredoc(t_ast *node, t_here_doc *current_line)
+static void	store_heredoc(t_ast *node, t_here_doc *current_line)
 {
-	t_here_doc *cursor;
+	t_here_doc	*cursor;
+
 	if (node->here_doc_list == NULL)
 		node->here_doc_list = current_line;
 	else
@@ -77,7 +86,18 @@ int	parse_here_doc(t_ast *node)
 			return (-1);
 		current_line->line = readline("heredoc> ");
 		if (current_line->line == NULL)
+		{
+			write(2,
+				"minishell error: here-document delimited by EOF", 47);
+			write(2, " (wanted `", 10);
+			ft_putstr_fd(end, 2);
+			write(2, "')\n", 3);
+			if (prev)
+				prev->next = NULL;
+			free(current_line->line);
+			free(current_line);
 			return (-7);
+		}
 		current_line->next = NULL;
 		store_heredoc(node, current_line);
 		if (end_heredoc(node, prev, current_line, end))

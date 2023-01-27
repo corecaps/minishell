@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 10:36:36 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/09 18:41:28 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:07:07 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	**get_args(t_ast *command_node)
 		return (NULL);
 	argc = count_args(command_node);
 	argv = malloc(sizeof(char *) * (argc + 2));
-	garbage_collector_add(argv);
+	gc_add(argv);
 	if (argv == NULL)
 		return (NULL);
 	argv[0] = command_node->token_node->value;

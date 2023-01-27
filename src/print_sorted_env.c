@@ -6,11 +6,15 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:10:05 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/17 11:19:30 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/23 10:14:44 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*****************************************************************************
+ * Simple buble sort of env
+ ****************************************************************************/
 
 static char	**buble_sort(char **env, int size)
 {
@@ -37,12 +41,54 @@ static char	**buble_sort(char **env, int size)
 	return (env);
 }
 
+/*****************************************************************************
+ * Create copy of env to sort and print
+ ****************************************************************************/
+
+static char	**get_copy_of(char ***origin_env)
+{
+	char	**copy_env;
+	int		env_size;
+	int		i;
+
+	i = 0;
+	env_size = count_env(origin_env);
+	copy_env = (char **)malloc(sizeof(char *) * (env_size + 1));
+	if (!copy_env)
+		copy_env = NULL;
+	while (i < env_size)
+	{
+		copy_env[i] = ft_strdup((*origin_env)[i]);
+		i++;
+	}
+	copy_env[i] = NULL;
+	return (copy_env);
+}
+
+/*****************************************************************************
+ * Free temporary copy of env
+ ****************************************************************************/
+
+void	free_env_copy(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+		free(env[i++]);
+	free(env);
+}
+
+/*****************************************************************************
+ * Print sorted env. Caller func - ft_export when its with zero args
+ ****************************************************************************/
+
 void	print_sorted(char ***env_pointer)
 {
 	char	**env;
 	int		size;
 
-	env = *env_pointer;
+	env = get_copy_of(env_pointer);
 	size = 0;
 	while (env[size])
 		size++;
@@ -52,4 +98,5 @@ void	print_sorted(char ***env_pointer)
 	{
 		printf("%s\n", env[size++]);
 	}
+	free_env_copy(env);
 }

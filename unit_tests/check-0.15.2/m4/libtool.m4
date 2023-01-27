@@ -7939,7 +7939,7 @@ objext=o
 _LT_TAGVAR(objext, $1)=$objext
 
 # Code to be used in simple compile tests
-lt_simple_compile_test_code="class foo {}"
+lt_simple_compile_test_code="class cmd_node {}"
 
 # Code to be used in simple link tests
 lt_simple_link_test_code='public class conftest { public static void main(String[[]] argv) {}; }'

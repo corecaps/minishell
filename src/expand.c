@@ -6,13 +6,17 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 16:35:29 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/18 11:19:43 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 14:19:58 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*add_to_res(char *curr_res, char *add_word)
+/*****************************************************************************
+ * Add expanded value to final result
+ ****************************************************************************/
+
+char	*add_to_res(char *curr_res, char *add_word)
 {
 	char	*res;
 
@@ -21,6 +25,10 @@ static char	*add_to_res(char *curr_res, char *add_word)
 	free(add_word);
 	return (res);
 }
+
+/*****************************************************************************
+ * Retrieve expand vaue from env
+ ****************************************************************************/
 
 static char	*retrieve_str(char *tmp, char ***env)
 {
@@ -43,70 +51,63 @@ static char	*retrieve_str(char *tmp, char ***env)
 		res = ft_strjoin("", tmp);
 		free(tmp);
 	}
-	return res;
+	return (res);
 }
+
+/*****************************************************************************
+ * Initialisation of indexes to norme
+ ****************************************************************************/
+
+t_exp	*exp_init(int num)
+{
+	t_exp	*exp;
+
+	exp = malloc(sizeof(t_exp));
+	exp->i = num;
+	exp->start = num;
+	exp->flag = 0;
+	exp->tmp = NULL;
+	exp->result = NULL;
+	return (exp);
+}
+
+void	update_exp_res(t_exp *exp, char *str, char ***env)
+{
+	exp->tmp = ft_substr(str, exp->start, (size_t)(exp->i - exp->start));
+	if (exp->flag == 1)
+		exp->tmp = retrieve_str(exp->tmp, env);
+	exp->result = add_to_res(exp->result, exp->tmp);
+	exp->start = exp->i;
+	if (str[exp->i] == '$')
+		exp->flag = 1;
+	else
+		exp->flag = 0;
+}
+
+/*****************************************************************************
+ * Check and expand word token with $
+ ****************************************************************************/
 
 char	*expand(char *str, char ***env)
 {
-	int		i;
-	int 	start;
+	t_exp	*exp;
+	char	c;
 	char	*result;
-	char	*tmp;
 
-	i = 0;
-	start = i;
-	result = ft_strjoin("", "");
-	while (str[i])
+	exp = exp_init(0);
+	exp->result = ft_strjoin("", "");
+	while (str[exp->i])
 	{
-		if (str[i] == '$')
-		{
-			tmp = ft_substr(str, start, i - start);
-			// printf("\ttmp = [%s]\n", tmp);
-			tmp = retrieve_str(tmp, env);
-			// printf("\tmtmp = [%s]\n", tmp);
-			result = add_to_res(result, tmp);
-			start = i;
-		}
-		if (str[i + 1] == '\0')
-		{
-			tmp = ft_substr(str, start, i - start + 1);
-			// printf("\ttmp = [%s]\n", tmp);
-			tmp = retrieve_str(tmp, env);
-			// printf("\tmtmp = [%s]\n", tmp);
-			result = add_to_res(result, tmp);
-			start = i;
-		}
-		++i;
+		c = str[exp->i];
+		if (c == '$' || c == ' ' || c == '\t' || c == '='
+			|| c == '\n' || c == '\v' || c == '\f' || c == '\r')
+			update_exp_res(exp, str, env);
+		++exp->i;
 	}
-	// printf("\tresult = [%s]\n", result);
-	//result = add_to_res("", ft_strjoin("",""));
+	update_exp_res(exp, str, env);
+	result = ft_strdup(exp->result);
+	free(exp->result);
+	free(exp);
 	free(str);
 	return (result);
 }
-
-// char	*expand(char *str, char ***env)
-// {
-// 	t_expand	exp;
-// 	char		*result;
-
-// 	exp.start = start_expantion(str, 0);
-// 	if (exp.start == -1)
-// 		return (str);
-// 	exp.end = end_expantion(str, exp.start);
-// 	exp.tmp = ft_substr(str, exp.start + 1, exp.end - (exp.start + 1));
-// 	exp.value = get_env(exp.tmp, env);
-// 	if (exp.value == NULL)
-// 		exp.value = ft_strjoin("", "");
-// 	free(exp.tmp);
-// 	exp.tmp = ft_substr(str, 0, (size_t)exp.start);
-// 	result = ft_strjoin(exp.tmp, exp.value);
-// 	free(exp.tmp);
-// 	free(exp.value);
-// 	exp.value = ft_substr(str, exp.end, ft_strlen(str) - (size_t)exp.end);
-// 	exp.tmp = result;
-// 	result = ft_strjoin(result, exp.value);
-// 	free(exp.tmp);
-// 	free(exp.value);
-// 	free(str);
-// 	return (result);
-// }
