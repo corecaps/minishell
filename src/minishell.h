@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:55 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 14:55:23 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:16:49 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void			get_bottom(t_token *head, t_token *new_node);
 t_token_type	pop(t_stack **head);
 t_stack			*push(t_token_type type, t_stack *head);
 char			*expand(char *str, char ***env);
-void			free_env(char ***env);
 int				count_stack(t_stack *head);
 int				parse(t_data *data);
 char			*find_binary(char *name);

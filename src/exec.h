@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 13:08:09 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 15:03:38 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:15:23 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,5 @@ char		*get_full_path(char *name, char **path);
 int			check_heredoc_last_in(t_ast *current_node);
 t_f_builtin	check_builtins(char *cmd);
 int			open_redir(char *path, int oflags, t_ast *node, int dest);
-void		free_exec(t_exec *exec);
 
 #endif

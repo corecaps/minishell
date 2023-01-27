@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:42:09 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 15:08:56 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:13:30 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,15 +76,12 @@ int	ft_echo(char **args, char *line)
 	}
 	while (args[i])
 	{
-//		ft_putstr_fd(args[i], 1);
 		printf("%s", args[i]);
 		if (args[i + 1])
-//			ft_putstr_fd(" ", 1);
 			printf(" ");
 		i++;
 	}
 	if (trailing_newline == 1)
-//		ft_putstr_fd("\n", 1);
 		printf("\n");
 	return (0);
 }

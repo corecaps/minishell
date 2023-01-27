@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 01:11:08 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 15:05:22 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:14:10 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,7 @@ int	realloc_environ(size_t size, size_t index)
 	while (j < size && (*env)[i])
 	{
 		if (index == i)
-		{
-//			gc_env_del((*env)[i]);
 			i++;
-		}
 		else
 			new_env[j] = ft_strdup((*env)[i]);
 		i++;
