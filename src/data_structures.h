@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:13:13 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/18 14:04:33 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/26 10:58:53 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_exp
 {
 	int	i;
 	int	start;
+	int	flag;
 }	t_exp;
 
 typedef struct s_garbage

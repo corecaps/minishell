@@ -6,11 +6,15 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:10:05 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/19 10:40:13 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/23 10:14:44 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*****************************************************************************
+ * Simple buble sort of env
+ ****************************************************************************/
 
 static char	**buble_sort(char **env, int size)
 {
@@ -37,6 +41,10 @@ static char	**buble_sort(char **env, int size)
 	return (env);
 }
 
+/*****************************************************************************
+ * Create copy of env to sort and print
+ ****************************************************************************/
+
 static char	**get_copy_of(char ***origin_env)
 {
 	char	**copy_env;
@@ -57,6 +65,10 @@ static char	**get_copy_of(char ***origin_env)
 	return (copy_env);
 }
 
+/*****************************************************************************
+ * Free temporary copy of env
+ ****************************************************************************/
+
 void	free_env_copy(char **env)
 {
 	int	i;
@@ -66,6 +78,10 @@ void	free_env_copy(char **env)
 		free(env[i++]);
 	free(env);
 }
+
+/*****************************************************************************
+ * Print sorted env. Caller func - ft_export when its with zero args
+ ****************************************************************************/
 
 void	print_sorted(char ***env_pointer)
 {

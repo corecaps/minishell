@@ -6,13 +6,19 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 09:34:48 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/10 20:03:46 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/26 10:17:06 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 #include "minishell.h"
 #include "data_structures.h"
+
+/*****************************************************************************
+ *
+ * Skip white space characters
+ * 
+ ****************************************************************************/
 
 void	skip_whitespaces(t_data *data)
 {
@@ -21,6 +27,12 @@ void	skip_whitespaces(t_data *data)
 		|| data->line[data->end] == '\f' || data->line[data->end] == '\r')
 		data->end++;
 }
+
+/*****************************************************************************
+ *
+ * Create token linked list from input line
+ * 
+ ****************************************************************************/
 
 void	lexer(t_data *data, char ***env)
 {

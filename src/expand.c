@@ -6,13 +6,17 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 16:35:29 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/18 14:05:40 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/26 20:45:45 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*add_to_res(char *curr_res, char *add_word)
+/*****************************************************************************
+ * Add expanded value to final result
+ ****************************************************************************/
+
+char	*add_to_res(char *curr_res, char *add_word)
 {
 	char	*res;
 
@@ -21,6 +25,10 @@ static char	*add_to_res(char *curr_res, char *add_word)
 	free(add_word);
 	return (res);
 }
+
+/*****************************************************************************
+ * Retrieve expand vaue from env
+ ****************************************************************************/
 
 static char	*retrieve_str(char *tmp, char ***env)
 {
@@ -46,48 +54,55 @@ static char	*retrieve_str(char *tmp, char ***env)
 	return (res);
 }
 
+/*****************************************************************************
+ * Initialisation of indexes to norme
+ ****************************************************************************/
+
 t_exp	exp_init(int i)
 {
 	t_exp	exp;
 
 	exp.i = i;
 	exp.start = i;
+	exp.flag = 0;
 	return (exp);
 }
 
-char	*get_exp_tmp(char *str, int start, int len, char ***env)
-{
-	char	*tmp;
-
-	tmp = ft_substr(str, start, len);
-	tmp = retrieve_str(tmp, env);
-	return (tmp);
-}
+/*****************************************************************************
+ * Check and expand word token with $
+ ****************************************************************************/
 
 char	*expand(char *str, char ***env)
 {
 	t_exp	exp;
 	char	*result;
 	char	*tmp;
+	char	c;
 
 	exp = exp_init(0);
 	result = ft_strjoin("", "");
 	while (str[exp.i])
 	{
-		if (str[exp.i] == '$')
+		c = str[exp.i];
+		if (c == '$' || c == ' ' || c == '\t'
+			|| c == '\n' || c == '\v' || c == '\f' || c == '\r')
 		{
-			tmp = get_exp_tmp(str, exp.start, exp.i - exp.start, env);
+			tmp = ft_substr(str, exp.start, (size_t)(exp.i - exp.start));
+			if (exp.flag == 1)
+				tmp = retrieve_str(tmp, env);
 			result = add_to_res(result, tmp);
 			exp.start = exp.i;
-		}
-		if (str[exp.i + 1] == '\0')
-		{
-			tmp = get_exp_tmp(str, exp.start, exp.i - exp.start + 1, env);
-			result = add_to_res(result, tmp);
-			exp.start = exp.i;
+			if (c == '$')
+				exp.flag = 1;
+			else
+				exp.flag = 0;
 		}
 		++exp.i;
 	}
+	tmp = ft_substr(str, exp.start, (size_t)(exp.i - exp.start));
+	if (exp.flag == 1)
+		tmp = retrieve_str(tmp, env);
+	result = add_to_res(result, tmp);
 	free(str);
 	return (result);
 }

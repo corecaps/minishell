@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/21 02:29:54 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/26 11:11:57 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,12 @@ static t_data	*data_init(void)
 	if (ft_strlen(data->line))
 		add_history(data->line);
 	return (data);
+}
+
+void	interactive_mode_assert(void)
+{
+	perror("minishell works only in interactive mode\n");
+	exit(EXIT_FAILURE);
 }
 
 int	main(int argc, char **argv, char **env)

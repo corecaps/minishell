@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:55 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/19 10:04:42 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 11:21:26 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int				is_dir(const char *path);
 int create_env(char **env, int argc, char **argv);
 char			*get_env(char *key, char ***env);
 t_garbage		**gc_add(void *ptr);
-void			gc_free();
+void			gc_free(void);
 void			*gc_alloc(size_t nmemb, size_t size);
 int				gc_del(void *ptr);
 int set_env(char *key, char *value);
@@ -48,11 +48,12 @@ t_ast			*ast_node_init(t_token *token, t_token_type token_type);
 void			set_signals(void);
 void			reset_signals(void);
 int				parse_here_doc(t_ast *node);
-int exec_cmd_line(t_ast *current_node, char ***env, char *line);
+int				exec_cmd_line(t_ast *current_node, char ***env, char *line);
 void			print_sorted(char ***env_pointer);
 char			*get_prompt(char ***env);
 void			parser_error(int status);
 void			exec_error(int status);
+char			*add_to_res(char *curr_res, char *add_word);
 int				gc_check_double(t_garbage *gc, void *ptr);
 char			***gc_env_alloc(int size);
 t_garbage		**gc_env_add(void *ptr);
