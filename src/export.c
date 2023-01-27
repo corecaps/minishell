@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 02:18:31 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 11:20:07 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 11:29:19 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,6 +335,14 @@ int	ft_export(char **args, char ***env, char *line)
 
 	(void) args;
 	params = get_params(line, env);
+	//test
+	i = 0;
+	while (params[i])
+	{
+		printf("[%s]\n", params[i]);
+		++i;
+	}
+	//
 	i = 1;
 	if (params[i])
 	{
