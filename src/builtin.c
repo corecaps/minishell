@@ -77,12 +77,15 @@ int	ft_echo(char **args, char *line)
 	}
 	while (args[i])
 	{
+//		ft_putstr_fd(args[i], 1);
 		printf("%s", args[i]);
 		if (args[i + 1])
+//			ft_putstr_fd(" ", 1);
 			printf(" ");
 		i++;
 	}
 	if (trailing_newline == 1)
+//		ft_putstr_fd("\n", 1);
 		printf("\n");
 	return (0);
 }

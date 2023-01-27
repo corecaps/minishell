@@ -11,11 +11,12 @@
 - [x] char	**get_path(void) uses the wrong env variable
 - [ ] **NORME**
 - [x] export refactoring
-- [ ] return code for failed execution
+- [x] return code for failed execution
 - [x] cd error code and message
 - [ ] error msg and break when incorrect file permission on redirect
 ---
-- [ ]  leaks in child when command not found 
-- [ ] get path not protected when unset path (Segfault) 
-- [ ] leaks when child segfault 
-- [ ] leaks when path set to nonsense in get_env: 106
+- [ ] fd leaks in child when command not found 
+- [x] get path not protected when unset path (Segfault) 
+- [x] leaks when child segfault 
+- [x] leaks when path set to nonsense in get_env: 106
+
