@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:42:09 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/25 11:43:48 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:06:49 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ int	ft_echo(char **args, char *line)
 
 int	ft_pwd(char **args, char *line)
 {
-	char *path;
-	char ***env;
+	char	*path;
+	char	***env;
 
 	(void) args;
 	(void) line;
@@ -114,9 +114,9 @@ int	ft_pwd(char **args, char *line)
 
 int	ft_exit(char **args, char *line)
 {
-	(void) line;
 	int	exit_status;
 
+	(void)line;
 	exit_status = 0;
 	if (args[1])
 		exit_status = ft_atoi(args[1]);

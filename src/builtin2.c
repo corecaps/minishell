@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 12:07:37 by latahbah          #+#    #+#             */
-/*   Updated: 2023/01/23 09:40:21 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:06:19 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 
 int	ft_env(char **args, char *line)
 {
-	int	i;
-	char ***env;
+	int		i;
+	char	***env;
 
 	(void) line;
 	(void) args;

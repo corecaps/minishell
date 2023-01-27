@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:10:11 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/23 10:17:52 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:04:22 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	here_doc_child(t_exec *exec)
 				close(exec->pipes[i]);
 				close(exec->pipes[i + 1]);
 			}
-			i+=2;
+			i += 2;
 		}
 	}
 	gc_env_free();

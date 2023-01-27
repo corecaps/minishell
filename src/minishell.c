@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/26 11:11:57 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 14:55:55 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 static int	initial_setup(int argc, char **argv, char **env)
 {
 	struct termios	term_info;
-	char	*cwd;
+	char			*cwd;
 
 	if (!isatty(STDIN_FILENO))
 	{
@@ -47,7 +47,7 @@ static int	initial_setup(int argc, char **argv, char **env)
 	{
 		free(cwd);
 	}
-		return (1);
+	return (1);
 }
 
 /******************************************************************************
@@ -88,7 +88,7 @@ int	main(int argc, char **argv, char **env)
 {
 	t_data	*data;
 	int		status;
-	int	old_status;
+	int		old_status;
 
 	old_status = 0;
 	if (!initial_setup(argc, argv, env))

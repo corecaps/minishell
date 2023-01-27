@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 01:11:08 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/18 14:13:48 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:05:22 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ int	count_env(char ***env)
  * @return 0 if success, -1 if error
  *****************************************************************************/
 
-int realloc_environ(size_t size, size_t index)
+int	realloc_environ(size_t size, size_t index)
 {
 	char	**new_env;
-	char 	***env;
+	char	***env;
 	size_t	i;
 	size_t	j;
 
