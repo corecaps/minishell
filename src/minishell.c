@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 15:10:17 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:31:53 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  * Create the environment
  *****************************************************************************/
 
-static int	initial_setup(int argc, char **argv, char **env)
+static void	initial_setup(int argc, char **argv, char **env)
 {
 	struct termios	term_info;
 	char			*cwd;
@@ -35,7 +35,7 @@ static int	initial_setup(int argc, char **argv, char **env)
 	term_info.c_lflag &= ~ECHOCTL;
 	tcsetattr(0, TCSANOW, &term_info);
 	if (!create_env(env, argc, argv))
-		return (0);
+		exit(EXIT_FAILURE);
 	cwd = get_env("PWD", gc_env_alloc(-1));
 	if (!cwd)
 	{
@@ -44,10 +44,7 @@ static int	initial_setup(int argc, char **argv, char **env)
 		free(cwd);
 	}
 	else
-	{
 		free(cwd);
-	}
-	return (1);
 }
 
 /******************************************************************************
@@ -91,28 +88,17 @@ int	main(int argc, char **argv, char **env)
 	int		old_status;
 
 	old_status = 0;
-	if (!initial_setup(argc, argv, env))
-		return (EXIT_FAILURE);
+	initial_setup(argc, argv, env);
 	while (1)
 	{
 		data = data_init();
 		lexer(data, gc_env_alloc(-1));
 		status = parse(data);
-		if (status < 0)
-		{
-			parser_error(status);
-			status = 2;
-		}
+		parser_error(&status);
 		if (data->root && status == 1)
-		{
-			status = exec_cmd_line(data->root, gc_env_alloc(-1), data->line);
-			if (status < 0)
-			{
-				exec_error(status);
-				status = 2;
-			}
-		}
-		else if (status == 1)
+		status = exec_cmd_line(data->root, gc_env_alloc(-1), data->line);
+		exec_error(&status);
+		if (status == 1)
 			status = old_status;
 		data->status = ft_itoa(status);
 		gc_add(data->status);

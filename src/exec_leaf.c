@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_leaf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:33:51 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/23 10:17:54 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:32:32 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	exec_leaf(t_exec *exec)
 			status = run_leaf(exec);
 		if (status < 0)
 		{
-			exec_error(status);
+			exec_error(&status);
 			status = -status;
 		}
 		close(0);
@@ -74,7 +74,7 @@ int	exec_scmd(t_exec *exec)
 		status = run_leaf(exec);
 		if (status < 0)
 		{
-			exec_error(status);
+			exec_error(&status);
 			status = -status;
 		}
 		gc_env_free();

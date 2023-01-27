@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   traverse_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:18:11 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 15:19:16 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:33:35 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,24 +33,24 @@ int	cmd_node(t_exec *exec, int pipe_local_idx, int *pid)
 int	end_pipes(const t_exec *exec, int pipe_local_idx, int status,
 	const int *pid)
 {
-	int	*return_status;
+	int	return_status;
 
 	if (pid[1] > -1)
 	{
-		waitpid(pid[1], return_status, 0);
+		waitpid(pid[1], &return_status, 0);
 		waitpid(pid[0], NULL, 0);
 		close(exec->pipes[pipe_local_idx]);
 		close(exec->pipes[pipe_local_idx + 1]);
-		return (WEXITSTATUS((*return_status)));
+		return (WEXITSTATUS(return_status));
 	}
 	else
 	{
-		waitpid(pid[0], return_status, 0);
+		waitpid(pid[0], &return_status, 0);
 		close(exec->pipes[pipe_local_idx]);
 		close(exec->pipes[pipe_local_idx + 1]);
 		if (status > 0)
 			return (status);
-		return (WEXITSTATUS((*return_status)));
+		return (WEXITSTATUS(return_status));
 	}
 }
 
