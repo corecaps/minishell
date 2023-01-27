@@ -43,22 +43,25 @@ int	ft_unset(char **args, char ***env, char *line)
 	int		i;
 	int		j;
 	size_t	index;
+	char	***envp;
 
 	(void) line;
 	(void) args;
 	(void) env;
 	i = 1;
+	envp = gc_env_alloc(-1);
 	while (args[i])
 	{
 		j = 0;
-		while ((*env)[j])
+		while ((*envp) && (*envp)[j])
 		{
-			if (!ft_strncmp(args[i], (const char *)(*env)[j],
+			if (!ft_strncmp(args[i], (const char *)(*envp)[j],
 				ft_strlen(args[i])))
 			{
 				index = (size_t) j;
-				realloc_environ(count_env(env) - 1, index);
+				realloc_environ(count_env(envp) - 1, index);
 				break ;
+				envp = gc_env_alloc(-1);
 			}
 			j++;
 		}
