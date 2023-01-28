@@ -6,13 +6,13 @@
 /*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:05 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 15:31:53 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/28 10:37:46 by jgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "termios.h"
 
+int	g_exit_status = 0;
 /******************************************************************************
  * Assure that the program is running in interactive mode
  * Set the signal handlers
@@ -22,7 +22,6 @@
 
 static void	initial_setup(int argc, char **argv, char **env)
 {
-	struct termios	term_info;
 	char			*cwd;
 
 	if (!isatty(STDIN_FILENO))
@@ -31,9 +30,6 @@ static void	initial_setup(int argc, char **argv, char **env)
 		exit(EXIT_FAILURE);
 	}
 	set_signals();
-	tcgetattr(0, &term_info);
-	term_info.c_lflag &= ~ECHOCTL;
-	tcsetattr(0, TCSANOW, &term_info);
 	if (!create_env(env, argc, argv))
 		exit(EXIT_FAILURE);
 	cwd = get_env("PWD", gc_env_alloc(-1));
@@ -69,6 +65,7 @@ static t_data	*data_init(void)
 		gc_free();
 		exit(0);
 	}
+	g_exit_status = 0;
 	gc_add(data->line);
 	if (ft_strlen(data->line))
 		add_history(data->line);
@@ -97,9 +94,9 @@ int	main(int argc, char **argv, char **env)
 		parser_error(&status);
 		if (data->root && status == 1)
 		status = exec_cmd_line(data->root, gc_env_alloc(-1), data->line);
-		exec_error(&status);
-		if (status == 1)
+		else if (status == 1)
 			status = old_status;
+		exec_error(&status);
 		data->status = ft_itoa(status);
 		gc_add(data->status);
 		old_status = status;

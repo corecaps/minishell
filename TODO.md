@@ -1,6 +1,6 @@
-- [ ] FD LEAKS in pipes 
+- [X] FD LEAKS in pipes 
 - [ ] single cmd refactoring
 - [X] TOO MANY FUNC in export.c
 - [ ] signal handling 
-- [ ] return code
+- [X] return code
 - [ ] check for debug prints

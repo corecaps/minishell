@@ -26,6 +26,7 @@ typedef struct s_exec
 }	t_exec;
 
 int			single_cmd(t_exec *exec, char ***env);
+char		*find_binary(char *name, t_exec *exec);
 int			exec_heredoc(t_exec *exec);
 int			exec_leaf(t_exec *exec);
 int			exec_scmd(t_exec *exec);
@@ -36,7 +37,7 @@ int			traverse_pipe(t_exec *exec);
 int			apply_redirections(t_ast *node);
 int			parse_here_doc(t_ast *node);
 char		**get_args(t_ast *command_node);
-char		*find_binary(char *name);
+char *find_binary(char *name, t_exec *exec);
 char		**get_path(void);
 int			ft_cd(char **args, char *line);
 int			ft_echo(char **args, char *line);
@@ -51,5 +52,5 @@ char		*get_full_path(char *name, char **path);
 int			check_heredoc_last_in(t_ast *current_node);
 t_f_builtin	check_builtins(char *cmd);
 int			open_redir(char *path, int oflags, t_ast *node, int dest);
-
+void		close_pipes(const t_exec *exec);
 #endif

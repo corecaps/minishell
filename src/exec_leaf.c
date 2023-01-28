@@ -41,7 +41,6 @@ int	exec_leaf(t_exec *exec)
 		return (-5);
 	if (pid == 0)
 	{
-		reset_signals();
 		if (builtin)
 			status = run_builtin(exec, builtin);
 		else
@@ -74,7 +73,6 @@ int	exec_scmd(t_exec *exec)
 		return (-5);
 	if (status == 0)
 	{
-		reset_signals();
 		status = run_leaf(exec);
 		if (status < 0)
 		{
@@ -85,6 +83,5 @@ int	exec_scmd(t_exec *exec)
 		gc_free();
 		exit(status);
 	}
-	exec->n_child ++;
 	return (status);
 }

@@ -30,7 +30,7 @@ void	free_here_doc_list(t_here_doc *here_doc_list)
 	}
 }
 
-static void	close_pipes(const t_exec *exec)
+void	close_pipes(const t_exec *exec)
 {
 	int	i;
 
@@ -46,6 +46,11 @@ static void	close_pipes(const t_exec *exec)
 			}
 			i += 2;
 		}
+	}
+	else if (exec->n_pipes == 1)
+	{
+		close(exec->pipes[0]);
+		close(exec->pipes[1]);
 	}
 }
 
