@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   traverse_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:18:11 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 15:33:35 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/28 11:54:46 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	end_pipes(const t_exec *exec, int pipe_local_idx, int status,
 {
 	int	return_status;
 
+	return_status = 0;
 	if (pid[1] > -1)
 	{
 		waitpid(pid[1], &return_status, 0);

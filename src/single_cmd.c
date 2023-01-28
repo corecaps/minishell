@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:48:27 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 19:10:44 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/28 11:38:38 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,10 @@ static int	single_cmd_norme(t_exec *exec, int *status, int	*flag)
 	return (0);
 }
 
-int	single_cmd(t_exec *exec, char ***env)
+int	single_cmd(t_exec *exec)
 {
 	t_single_cmd	vars;
 
-	(void)env;
 	if (exec->root->here_doc == 1 && check_heredoc_last_in(exec->current_node))
 	{
 		vars.tmp = single_cmd_norme(exec, &vars.status, &vars.flag);
@@ -65,6 +64,8 @@ int	single_cmd(t_exec *exec, char ***env)
 		return (vars.status);
 	waitpid(-1, &vars.status, 0);
 	waitpid(-1, &vars.status, 0);
+	if (g_exit_status != 0)
+		return (g_exit_status);
 	if (WIFEXITED(vars.status))
 		return (WEXITSTATUS(vars.status));
 	return (0);

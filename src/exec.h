@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 13:08:09 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 19:08:17 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/28 11:40:28 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_exec
 	char	*line;
 }	t_exec;
 
-int			single_cmd(t_exec *exec, char ***env);
+int			single_cmd(t_exec *exec);
 int			exec_heredoc(t_exec *exec);
 int			exec_leaf(t_exec *exec);
 int			exec_scmd(t_exec *exec);
@@ -43,7 +43,7 @@ int			traverse_pipe(t_exec *exec);
 int			apply_redirections(t_ast *node);
 int			parse_here_doc(t_ast *node);
 char		**get_args(t_ast *command_node);
-char		*find_binary(char *name);
+char		*find_binary(char *name, t_exec *exec);
 char		**get_path(void);
 int			ft_cd(char **args, char *line);
 int			ft_echo(char **args, char *line);
@@ -58,5 +58,5 @@ char		*get_full_path(char *name, char **path);
 int			check_heredoc_last_in(t_ast *current_node);
 t_f_builtin	check_builtins(char *cmd);
 int			open_redir(char *path, int oflags, t_ast *node, int dest);
-
+void		close_pipes(const t_exec *exec);
 #endif

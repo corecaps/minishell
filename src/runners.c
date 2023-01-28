@@ -62,7 +62,7 @@ int	run_leaf(t_exec *exec)
 	if (exec->current_node->out_pipe != NULL)
 		close(exec->current_node->out_pipe[0]);
 	argv = get_args(exec->current_node);
-	full_path = find_binary(exec->current_node->token_node->value);
+	full_path = find_binary(exec->current_node->token_node->value, exec);
 	chk_access(full_path);
 	if (exec->current_node->in_pipe != NULL)
 		apply_dup(exec->current_node->in_pipe[0], STDIN_FILENO);

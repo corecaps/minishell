@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   exec_leaf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:33:51 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 17:21:15 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/28 12:01:21 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec.h"
 
-void	end_leaf(int status)
+static void	end_leaf(int status, t_exec *exec)
 {
+	close_pipes(exec);
 	close(0);
 	close(1);
 	gc_env_free();
@@ -41,7 +42,6 @@ int	exec_leaf(t_exec *exec)
 		return (-5);
 	if (pid == 0)
 	{
-		reset_signals();
 		if (builtin)
 			status = run_builtin(exec, builtin);
 		else
@@ -51,7 +51,7 @@ int	exec_leaf(t_exec *exec)
 			exec_error(&status);
 			status = -status;
 		}
-		end_leaf(status);
+		end_leaf(status, exec);
 	}
 	return (pid);
 }
@@ -74,7 +74,6 @@ int	exec_scmd(t_exec *exec)
 		return (-5);
 	if (status == 0)
 	{
-		reset_signals();
 		status = run_leaf(exec);
 		if (status < 0)
 		{
@@ -85,6 +84,5 @@ int	exec_scmd(t_exec *exec)
 		gc_free();
 		exit(status);
 	}
-	exec->n_child ++;
 	return (status);
 }

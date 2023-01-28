@@ -35,13 +35,13 @@ START_TEST(test_find_binary)
 {
 	char	*result;
 
-	result = find_binary("ls");
+	result = find_binary("ls", NULL);
 	ck_assert_int_eq(strcmp(result,"/usr/bin/ls"),0);
 	ck_assert_ptr_nonnull(result);
-	result = find_binary("cat");
+	result = find_binary("cat", NULL);
 	ck_assert_int_eq(strcmp(result,"/usr/bin/cat"),0);
 	ck_assert_ptr_nonnull(result);
-	result = find_binary("i_do_not_exist");
+	result = find_binary("i_do_not_exist", NULL);
 	ck_assert_ptr_null(result);
 } END_TEST
 

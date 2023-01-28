@@ -6,7 +6,7 @@
 /*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:42:26 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/27 15:06:01 by latahbah         ###   ########.fr       */
+/*   Updated: 2023/01/28 11:38:30 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	exec_cmd_line(t_ast *current_node, char ***env, char *line)
 	if (exec == NULL)
 		return (-1);
 	if (current_node->type == E_COMMAND)
-		return (single_cmd(exec, env));
+		return (single_cmd(exec));
 	else if (current_node->type == E_PIPE)
 		status = traverse_pipe(exec);
 	else
