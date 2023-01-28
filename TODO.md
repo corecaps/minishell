@@ -4,3 +4,5 @@
 - [ ] signal handling 
 - [X] return code
 - [ ] check for debug prints
+- [ ] put a \n before heredoc ctrl d msg
+- [ ] ctrl-c during heredoc 

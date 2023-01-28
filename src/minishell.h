@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: latahbah <latahbah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 12:19:55 by jgarcia           #+#    #+#             */
-/*   Updated: 2023/01/28 10:51:43 by jgarcia          ###   ########.fr       */
+/*   Updated: 2023/01/28 12:03:20 by latahbah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include "data_structures.h"
 # include "lexer.h"
 
-extern int      g_exit_status;
+extern int		g_exit_status;
 void			add_token(t_data *data, t_token_type type, char *value);
 void			get_bottom(t_token *head, t_token *new_node);
 t_token_type	pop(t_stack **head);
